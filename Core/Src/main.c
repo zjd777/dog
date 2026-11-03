@@ -99,12 +99,17 @@ int main(void)
   MX_USART3_UART_Init();
   MX_TIM8_Init();
   MX_USART1_UART_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+  __HAL_TIM_SET_COUNTER(&htim3, 0);                // 清零计数器
+  __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);  // 清除残留更新标志
+  HAL_TIM_Base_Start_IT(&htim3);  
+
   control_task_init();
-    // while(BMI088_init())
-    // {
-    //     ;
-    // }
+    while(BMI088_init())
+    {
+        ;
+    }
   // motor_test();
   /* USER CODE END 2 */
 

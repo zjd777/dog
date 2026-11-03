@@ -76,7 +76,11 @@ void control_task (){
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    if (htim->Instance == TIM7)
+    if (htim->Instance == TIM3)
+    {
+    /* 每 3 ms 进入一次，预留状态机调度入口。 */
+    }
+    else if (htim->Instance == TIM7)
     {
         Task500us_Callback();    //500ns的定时
     }

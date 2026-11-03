@@ -33,6 +33,7 @@ C_SOURCES := \
   Core/Src/system_stm32h7xx.c \
   Device/BMI088/BMI088driver.c \
   Device/BMI088/BMI088Middleware.c \
+  Device/BMI088/imu.c \
   BSP/bsp_uart.c \
   BSP/bsp_sbus.c \
   my/ANO_TC.c \
