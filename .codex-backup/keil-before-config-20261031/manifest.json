@@ -1,0 +1,206 @@
+﻿[
+    {
+        "path":  "Core\\Inc\\dma.h",
+        "sha256":  "CA81391056A411962C83DB097580C964EF66C2B417ED80CADD3606FCB91A62D0"
+    },
+    {
+        "path":  "Core\\Inc\\gpio.h",
+        "sha256":  "ED4DD400A061AD318521CF96AE903FE21D1ABA75FBB685603C3F78DB56DF226B"
+    },
+    {
+        "path":  "Core\\Inc\\main.h",
+        "sha256":  "FD78432657EE5FED69B69A6BF1B9706CC41E721F772C99221DF6B19F2C478AB7"
+    },
+    {
+        "path":  "Core\\Inc\\spi.h",
+        "sha256":  "1BDD679BAAD29D59300141781CF8DA60D9F32E1BC2E403B94124E646CBB8E3CA"
+    },
+    {
+        "path":  "Core\\Inc\\stm32h7xx_hal_conf.h",
+        "sha256":  "4AE07B9228604FD84E66CE095907FC81FEBF154C0C17C46CF6E4C34CB71C10A0"
+    },
+    {
+        "path":  "Core\\Inc\\stm32h7xx_it.h",
+        "sha256":  "E8E2C9F25871BCC67FF40BC457EB687A3E736DF10F6203DEBB91F13610BFD3B6"
+    },
+    {
+        "path":  "Core\\Inc\\tim.h",
+        "sha256":  "B01785EB560D01AB1E697E3D7059357614ED77E303ED76AC4205ED6147251047"
+    },
+    {
+        "path":  "Core\\Inc\\usart.h",
+        "sha256":  "08C7B8A497AF6B9DDAF317AC0BF89C2F131FD72ABF09C3DBC4608D1D2E1BCB33"
+    },
+    {
+        "path":  "Core\\Src\\dma.c",
+        "sha256":  "61FD3499CCA1B73D40B400D24E810343B61B39F2FFDCE3E0C0126CB3DFB8D795"
+    },
+    {
+        "path":  "Core\\Src\\gpio.c",
+        "sha256":  "CFEB630C9871BFB1FB787E66BDB7F9B7762B1F2518FB6FFB663DF7E48F6EE0F0"
+    },
+    {
+        "path":  "Core\\Src\\main.c",
+        "sha256":  "829D50B35C82552C3B88DDD82E1C84B27F6D8C3988B1B8A16293EB9E881E3497"
+    },
+    {
+        "path":  "Core\\Src\\spi.c",
+        "sha256":  "2BEFDA456600391F451AEC6FE05A91CA90736201B21D58CBC45A7AFA4F977DF6"
+    },
+    {
+        "path":  "Core\\Src\\stm32h7xx_hal_msp.c",
+        "sha256":  "351997B4F1A36259481AF601086E90C82F674ACA2249B6038F788827FCE5BA8C"
+    },
+    {
+        "path":  "Core\\Src\\stm32h7xx_it.c",
+        "sha256":  "CFABBE9655518DC63895A8996FEED90F9B64DD8AE30B56416D48492B77150552"
+    },
+    {
+        "path":  "Core\\Src\\system_stm32h7xx.c",
+        "sha256":  "D664F6062704DCE39255B35A8660A9F7691D555FDD3DEDAF8C0DDB11AFE1430A"
+    },
+    {
+        "path":  "Core\\Src\\tim.c",
+        "sha256":  "3418A6232977A4BD242403473246B3EF5084DE39158AE9909197CF8730451C97"
+    },
+    {
+        "path":  "Core\\Src\\usart.c",
+        "sha256":  "915742E581F1E7C0C4E56F08008094BD87A467DADC2B3A44D405F4417A208921"
+    },
+    {
+        "path":  "BSP\\bsp.c",
+        "sha256":  "3F6B6950C65899D1B6679A050090D54E17F189A639774B5064A2D17397633228"
+    },
+    {
+        "path":  "BSP\\bsp.h",
+        "sha256":  "9E390BABA8FF2EA9D334822FA84528C19714DCE05CF51C2FD094FECFA84923D4"
+    },
+    {
+        "path":  "BSP\\bsp_beep.c",
+        "sha256":  "4BECFE3D8EE80FF44C870E66693FF8B2F88BF81D6506E1C2C77F953E4FE2AF64"
+    },
+    {
+        "path":  "BSP\\bsp_beep.h",
+        "sha256":  "A2453F20A0EAB5D91E13050C65787929D6263DD60135E8847ABE200CEB9F59F6"
+    },
+    {
+        "path":  "BSP\\bsp_key.c",
+        "sha256":  "FCC273A668E9E4200B3958F7301179B65FCEE8C6BE92BFF38E7382B63D96F7B3"
+    },
+    {
+        "path":  "BSP\\bsp_key.h",
+        "sha256":  "51D2F8D7A71F11B29C47456F0803392C9786C2C5F4BD312CBB24CA9D743F5852"
+    },
+    {
+        "path":  "BSP\\bsp_sbus.c",
+        "sha256":  "B0A32356567C437E561B8548245EA3C7696CC61FD08F3483043C993987C05E7E"
+    },
+    {
+        "path":  "BSP\\bsp_sbus.h",
+        "sha256":  "D70C450BC1D8698BDB0AC55C5754C41632BFD9868EE4749B4F2DB3A4ADAE6282"
+    },
+    {
+        "path":  "BSP\\bsp_uart.c",
+        "sha256":  "E9CDA2FD439CCD7C02664B6BEE3756BB848880C3123F39DDC52C51BDE782B564"
+    },
+    {
+        "path":  "BSP\\bsp_uart.h",
+        "sha256":  "722CECC08A76854A48CFFA3F6C06FA1C66CACDE50DBB9B84133A949186944C61"
+    },
+    {
+        "path":  "my\\control_task.cpp",
+        "sha256":  "26DF3A6DFD5B2CFCBE9BF9127E676B838428EEA68C03681887CCA12B0531E528"
+    },
+    {
+        "path":  "my\\control_task.h",
+        "sha256":  "2A6B79A2F493716F3BB2B1DE07D485EF8FB5D715E76B34D9D817AB6D72893553"
+    },
+    {
+        "path":  "my\\motor_task.cpp",
+        "sha256":  "BF13ADF27FAF68AB158B7F24B53048D15EFB2CED657BB4DC7328DA567251D735"
+    },
+    {
+        "path":  "my\\motor_task.h",
+        "sha256":  "1A0BB2103F056831717BEC4163370D70DB75CF1A2F8AADE77EEC87362ABD547B"
+    },
+    {
+        "path":  "Device\\BMI088\\BMI088driver.c",
+        "sha256":  "8086C22BF5FDA9CB85FF11FC18AFC9641D378724409749109220FC9A7F29F61F"
+    },
+    {
+        "path":  "Device\\BMI088\\BMI088Middleware.c",
+        "sha256":  "55C127284BF80C9DBC29F65DDF68AEF1735457B3D5B7FC769206E09514594D14"
+    },
+    {
+        "path":  "Device\\BMI088\\inc\\BMI088driver.h",
+        "sha256":  "4B6DD495D65D50153BD31E373A5AD734EC2B8F1E82937E7F7FDD8B0726444E95"
+    },
+    {
+        "path":  "Device\\BMI088\\inc\\BMI088Middleware.h",
+        "sha256":  "AB5CD500F5C46F45484E461C49FE2446574370C41297E395639CA1FE9A11CD4E"
+    },
+    {
+        "path":  "Device\\BMI088\\inc\\BMI088reg.h",
+        "sha256":  "17970899D531F30035CD38AB876861B313E2FA4DFB4F43C954C2D4A1AC432C6E"
+    },
+    {
+        "path":  "Device\\remote_control\\remote_control.cpp",
+        "sha256":  "2B5C457CCEE50DF8FF9AD3EEC450045F7FAB9BA544C80283F0F64177C62CB32C"
+    },
+    {
+        "path":  "Device\\remote_control\\remote_control.h",
+        "sha256":  "5FD55A9F8AF8D2E73CC757E3D7813D2C88AD5F43BABD273BC99A956601F0B2F7"
+    },
+    {
+        "path":  "Device\\unitree\\crc_ccitt.h",
+        "sha256":  "5AD7F07E071FA6A15FF0D5E6F5A853919A66790D03F783BB8310F4F79DCE35E1"
+    },
+    {
+        "path":  "Device\\unitree\\math_support.cpp",
+        "sha256":  "76141D18537B96840B075143E0613F83DEAEA1B1D83A2F3D788B352027C46DD5"
+    },
+    {
+        "path":  "Device\\unitree\\math_support.h",
+        "sha256":  "6A8DE9DE9C823231BA032BD5678266F0A7BAB7F1CDD39CFB05EC1A1B359ED0EF"
+    },
+    {
+        "path":  "Device\\unitree\\motor_YS.cpp",
+        "sha256":  "0FBE495FE72876E0EE9D14A62BD243D8849993708A84E25900B54C60156A5CC3"
+    },
+    {
+        "path":  "Device\\unitree\\motor_YS.h",
+        "sha256":  "19B50795AF332BAF1426F5536D2D8982DCEAF620E514A55A78012E22E9C1F4E6"
+    },
+    {
+        "path":  "Device\\unitree\\struct_typedef.h",
+        "sha256":  "54702A969AD727887CF4ADD9EC916070B7CC8735A6A059F2F01028A6B849D36F"
+    },
+    {
+        "path":  "Device\\unitree\\UART.cpp",
+        "sha256":  "B697C1F813D07AEBDC7A72E3D193DEA078D8A291FBA00AAD8BF35A889483839D"
+    },
+    {
+        "path":  "Device\\unitree\\UART.h",
+        "sha256":  "5A14A3AD27A558B03A50071B0C66D418C5B7DF988E0B9E61A789CABAC42724AA"
+    },
+    {
+        "path":  "MDK-ARM\\CtrBoard-H7_IMU.uvguix.disno",
+        "sha256":  "80A7E9BC35A5893C0910238C49DD7579C7217FC11E2840C9E3F9FFBC1C9A3F27"
+    },
+    {
+        "path":  "MDK-ARM\\CtrBoard-H7_IMU.uvoptx",
+        "sha256":  "153256B80B531D0AEACCF9C6E2E39329C69F6D3AA90CB14979119C8B5C039E3B"
+    },
+    {
+        "path":  "MDK-ARM\\CtrBoard-H7_IMU.uvprojx",
+        "sha256":  "35D0260B15AF2335B8688CB25B773F095C96AE1008EF420FA44085FB7356C0C1"
+    },
+    {
+        "path":  "MDK-ARM\\EventRecorderStub.scvd",
+        "sha256":  "2482A3601234C1C796DD7BE18C0AA71F194088CECDF47F641EEF11AA734AD5C3"
+    },
+    {
+        "path":  "MDK-ARM\\startup_stm32h723xx.s",
+        "sha256":  "C0F9ECE14EA6A8837705D3C243AE0AB1FF5B31DB450EA3D3AE6F6190622852D2"
+    }
+]

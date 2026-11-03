@@ -1,0 +1,42 @@
+--- a/Device/unitree/struct_typedef.h
++++ b/Device/unitree/struct_typedef.h
+@@ -10,17 +10,19 @@
+ #ifndef STRUCT_TYPEDEF_H
+ #define STRUCT_TYPEDEF_H
+ 
++#include <stdint.h>
+ 
+-typedef signed char int8_t;
+-typedef signed short int int16_t;
+-typedef signed int int32_t;
+-typedef signed long long int64_t;
++
++// typedef signed char int8_t; // Use the standard <stdint.h> type.
++// typedef signed short int int16_t; // Use the standard <stdint.h> type.
++// typedef signed int int32_t; // Use the standard <stdint.h> type.
++// typedef signed long long int64_t; // Use the standard <stdint.h> type.
+ 
+ /* exact-width unsigned integer types */
+-typedef unsigned char uint8_t;
+-typedef unsigned short int uint16_t;
+-typedef unsigned int uint32_t;
+-typedef unsigned long long uint64_t;
++// typedef unsigned char uint8_t; // Use the standard <stdint.h> type.
++// typedef unsigned short int uint16_t; // Use the standard <stdint.h> type.
++// typedef unsigned int uint32_t; // Use the standard <stdint.h> type.
++// typedef unsigned long long uint64_t; // Use the standard <stdint.h> type.
+ typedef unsigned char bool_t;
+ typedef float fp32;
+ typedef double fp64;
+--- a/Device/remote_control/remote_control.cpp
++++ b/Device/remote_control/remote_control.cpp
+@@ -16,8 +16,8 @@
+ 
+ Remote_Info_Typedef remote_ctrl={
+ 	
++    .rc_lost = true,
+     .online_cnt = 0xFAU,
+-	.rc_lost = true,
+ };
+ 
+ void Remote_Message_Moniter(Remote_Info_Typedef  *__remote_ctrl);

@@ -1,0 +1,45 @@
+{
+    "configurations": [
+        {
+            "name": "STM32H723",
+            "compilerPath": "C:/Users/MECHREVO/Desktop/make/gcc/bin/arm-none-eabi-gcc.exe",
+            "compilerArgs": [
+                "-mcpu=cortex-m7",
+                "-mthumb",
+                "-mfpu=fpv5-d16",
+                "-mfloat-abi=hard"
+            ],
+            "intelliSenseMode": "windows-gcc-arm",
+            "cStandard": "gnu99",
+            "cppStandard": "gnu++14",
+            "defines": [
+                "USE_HAL_DRIVER",
+                "STM32H723xx"
+            ],
+            "includePath": [
+                "${workspaceFolder}/Core/Inc",
+                "${workspaceFolder}/BSP",
+                "${workspaceFolder}/my",
+                "${workspaceFolder}/Device/BMI088/inc",
+                "${workspaceFolder}/Device/BMI088",
+                "${workspaceFolder}/Device/unitree",
+                "${workspaceFolder}/Device/remote_control",
+                "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc",
+                "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy",
+                "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32H7xx/Include",
+                "${workspaceFolder}/Drivers/CMSIS/Include"
+            ],
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/Core",
+                    "${workspaceFolder}/BSP",
+                    "${workspaceFolder}/my",
+                    "${workspaceFolder}/Device",
+                    "${workspaceFolder}/Drivers"
+                ],
+                "limitSymbolsToIncludedHeaders": false
+            }
+        }
+    ],
+    "version": 4
+}
