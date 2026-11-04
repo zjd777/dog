@@ -15,9 +15,9 @@
  */
 #include "fsm.h"
 #include "stdint.h"
-#include "A1_motor.h"
+// #include "A1_motor.h"
 #include "dog.h"
-#include "timer.h"
+// #include "timer.h"
 
 // 数组下标与 fsm.h 的状态枚举一一对应；例如 StateMap[Keep] 绑定保持状态的进入、运行、退出回调。
 FSM_State StateMap[] =

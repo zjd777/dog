@@ -21,7 +21,7 @@
 #include "walk.h"
 #include "action.h"
 #include "imu.h"
-#include "jump.h"
+// #include "jump.h"
 
 void line_Pos(uint8_t legid, float start_x, float start_z, float end_x, float end_z, float T, float t);
 void Cycloid_Pos(uint8_t legid, float start_x, float start_z, float end_x, float max_z, float T, float t);
@@ -32,7 +32,7 @@ void Walk_Away_Posctrl(GaitParam *gait_param, action_param *Action_Param, Euler 
 void Stand_Up_Posctrl(float t, float tm, float *h);
 void Squat_Down_Posctrl(float t, float tm, float *x, float *z);
 void Keep_All_Leg_Posctrl(float X0, float X1, float X2, float X3, float Z0, float Z1, float Z2, float Z3);
-bool Jump_s_pos(uint8_t legid, JumpParam *Jump_Param, action_param *Action_Param, Euler *Euler_Angle, float t);
+// bool Jump_s_pos(uint8_t legid, JumpParam *Jump_Param, action_param *Action_Param, Euler *Euler_Angle, float t);
 void Change_Ctrl_State(Ctrl_State state);
 Ctrl_State Get_Now_Ctrl_State(void);
 

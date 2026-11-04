@@ -18,7 +18,7 @@
 #include "imu.h"
 #include "delay_DWT.h"
 #include "pos_ctrl.h"
-#include "A1_motor.h"
+// #include "A1_motor.h"
 #include "pos_ctrl.h"
 
 action_param Action_Param = {

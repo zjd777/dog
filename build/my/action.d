@@ -1,16 +1,14 @@
-build/Device/unitree/motor_YS.o: Device/unitree/motor_YS.cpp \
- Device/unitree/motor_YS.h Device/unitree/struct_typedef.h \
- Device/unitree/UART.h Core/Inc/usart.h Core/Inc/main.h \
- Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
- Core/Inc/stm32h7xx_hal_conf.h \
- Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \
- Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h \
+build/my/action.o: my/action.c my/action.h my/dog.h my/fsm.h \
  Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h \
  Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h \
  Drivers/CMSIS/Include/core_cm7.h Drivers/CMSIS/Include/cmsis_version.h \
  Drivers/CMSIS/Include/cmsis_compiler.h Drivers/CMSIS/Include/cmsis_gcc.h \
  Drivers/CMSIS/Include/mpu_armv7.h \
  Drivers/CMSIS/Device/ST/STM32H7xx/Include/system_stm32h7xx.h \
+ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
+ Core/Inc/stm32h7xx_hal_conf.h \
+ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \
+ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc_ex.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_gpio.h \
@@ -33,18 +31,10 @@ build/Device/unitree/motor_YS.o: Device/unitree/motor_YS.cpp \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
- Device/unitree/crc_ccitt.h Device/unitree/math_support.h \
- Drivers/CMSIS/DSP/Include/arm_math.h \
- Drivers/CMSIS/Include/cmsis_compiler.h
-Device/unitree/motor_YS.h:
-Device/unitree/struct_typedef.h:
-Device/unitree/UART.h:
-Core/Inc/usart.h:
-Core/Inc/main.h:
-Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
-Core/Inc/stm32h7xx_hal_conf.h:
-Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h:
-Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h:
+ Device/BMI088/imu.h my/dog.h my/delay_DWT.h my/pos_ctrl.h my/walk.h
+my/action.h:
+my/dog.h:
+my/fsm.h:
 Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h:
 Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h:
 Drivers/CMSIS/Include/core_cm7.h:
@@ -53,6 +43,10 @@ Drivers/CMSIS/Include/cmsis_compiler.h:
 Drivers/CMSIS/Include/cmsis_gcc.h:
 Drivers/CMSIS/Include/mpu_armv7.h:
 Drivers/CMSIS/Device/ST/STM32H7xx/Include/system_stm32h7xx.h:
+Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
+Core/Inc/stm32h7xx_hal_conf.h:
+Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h:
+Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc_ex.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_gpio.h:
@@ -75,7 +69,8 @@ Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
-Device/unitree/crc_ccitt.h:
-Device/unitree/math_support.h:
-Drivers/CMSIS/DSP/Include/arm_math.h:
-Drivers/CMSIS/Include/cmsis_compiler.h:
+Device/BMI088/imu.h:
+my/dog.h:
+my/delay_DWT.h:
+my/pos_ctrl.h:
+my/walk.h:

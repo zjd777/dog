@@ -14,7 +14,7 @@
  * 说明：使用直线、摆线和贝塞尔轨迹生成足端目标，经逆运动学换算为电机位置，支持站蹲、步态、保持和跳跃。
  */
 #include "pos_ctrl.h"
-#include "jump.h"
+// #include "jump.h"
 
 /**
  * @brief 足端走一条直线,位控
@@ -300,7 +300,7 @@ Pos_motor luanch_param = {
     .kw = 5,
 };
 
-bool Jump_s_pos(uint8_t legid, JumpParam *Jump_Param, action_param *Action_Param, Euler *Euler_Angle, float t)
+// bool Jump_s_pos(uint8_t legid, JumpParam *Jump_Param, action_param *Action_Param, Euler *Euler_Angle, float t)
 {
     bool Jump_State = false;
     if (legid <= 3 && legid >= 0) // 严防数组越界

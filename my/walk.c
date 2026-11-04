@@ -17,11 +17,11 @@
 #include "walk.h"
 #include "action.h"
 #include "math.h"
-#include "timer.h"
+// #include "timer.h"
 #include "delay_DWT.h"
 #include "pos_ctrl.h"
 #include "imu.h"
-#include "A1_motor.h"
+// #include "A1_motor.h"
 #include "pos_ctrl.h"
 
 #define STAND_HEIGHT 0.2f
