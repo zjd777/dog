@@ -36,7 +36,7 @@ void Keep_All_Leg_Posctrl(float X0, float X1, float X2, float X3, float Z0, floa
 void Change_Ctrl_State(Ctrl_State state);
 Ctrl_State Get_Now_Ctrl_State(void);
 
-extern Pos_motor prep_param;
-extern Pos_motor jump_param;
-extern Pos_motor luanch_param;
+// extern Pos_motor prep_param;
+// extern Pos_motor jump_param;
+// extern Pos_motor luanch_param;
 #endif

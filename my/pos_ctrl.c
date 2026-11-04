@@ -287,6 +287,7 @@ void Walk_Away_Posctrl(GaitParam *gait_param, action_param *Action_Param, Euler 
     }
 }
 
+#if 0 /* 跳跃模块暂缓，保留参数和实现供后续适配。 */
 Pos_motor prep_param = {
     .kp = 0.2,
     .kw = 0.1,
@@ -300,7 +301,7 @@ Pos_motor luanch_param = {
     .kw = 5,
 };
 
-// bool Jump_s_pos(uint8_t legid, JumpParam *Jump_Param, action_param *Action_Param, Euler *Euler_Angle, float t)
+bool Jump_s_pos(uint8_t legid, JumpParam *Jump_Param, action_param *Action_Param, Euler *Euler_Angle, float t)
 {
     bool Jump_State = false;
     if (legid <= 3 && legid >= 0) // 严防数组越界
@@ -394,6 +395,8 @@ Pos_motor luanch_param = {
     }
     return Jump_State;
 }
+
+#endif
 
 void Change_Ctrl_State(Ctrl_State state)
 {

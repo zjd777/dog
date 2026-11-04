@@ -21,11 +21,9 @@
 #include "fsm.h"
 #include "string.h"
 #include "imu.h"
-// #include "handkey.h"
 #include "walk.h"
 // #include "jump.h"
 #include "ANO_TC.h"
-// #include "vision.h"
 #include "action.h"
 #include "delay_DWT.h"
 #include "pos_ctrl.h"
@@ -872,211 +870,20 @@ void Change_Single_Pitch_State(Pitch_Ctrl_State state, uint8_t legid)
 
 float data2send[10];
 extern action_param Action_Param;
-extern float wait_for_jump;        // 等待俯仰角符合条件时记录的中间时刻
-extern uint8_t wait_for_jump_flag; // 标志位,0表示尚未记录时刻,1表示已经记录时刻,但俯仰角尚未符合条件,2表示可以进入第二次跳跃
+// extern float wait_for_jump;        // 等待俯仰角符合条件时记录的中间时刻
+// extern uint8_t wait_for_jump_flag; // 标志位,0表示尚未记录时刻,1表示已经记录时刻,但俯仰角尚未符合条件,2表示可以进入第二次跳跃
 extern uint8_t memory_flag;
-extern speed_race_param Auto_spd;
+// extern speed_race_param Auto_spd;
 void ano_tc(void)
 {
     data2send[0] = Euler_Angle.Yaw;
     data2send[1] = Euler_Angle.Target_Yaw;
-    data2send[2] = 100.0f * Sides_PID.err;
+    // data2send[2] = 100.0f * Sides_PID.err;
 
-    data2send[3] = Auto_spd.ID * 10.0f;
+    // data2send[3] = Auto_spd.ID * 10.0f;
     data2send[4] = gait_param.std_step_length * 100.0f;
-    //    data2send[4] = Auto_spd.stage_yaw;
-    //    data2send[5] = leg[2].Foot_Target.p.z;
+    
+    // extern Jump_VMC_Param Jump_VMC;
 
-    //    data2send[6] = leg[3].Foot_Target.p.x;
-    //    data2send[7] = leg[3].Foot_Target.p.z;
-
-    //    data2send[8] = gait_param.Leg_State[0];
-    /*
-
-    data2send[0] = leg[0].Foot_Target.p.x;
-    data2send[1] = leg[0].Foot_Target.p.z;
-
-    data2send[2] = leg[1].Foot_Target.p.x;
-    data2send[3] = leg[1].Foot_Target.p.z;
-
-    data2send[4] = leg[2].Foot_Target.p.x;
-    data2send[5] = leg[2].Foot_Target.p.z;
-
-    data2send[6] = leg[3].Foot_Target.p.x;
-    data2send[7] = leg[3].Foot_Target.p.z;
-
-    data2send[8] = gait_param.Leg_State[0];
-    */
-    /*
-      data2send[0] = leg[1].Foot.p.x;
-      data2send[1] = leg[1].Foot_Target.p.x;
-
-      data2send[2] = leg[1].Foot.p.z;
-      data2send[3] = leg[1].Foot_Target.p.z;
-
-      data2send[4] = motor[3].measure.T / 100.0f;
-      data2send[5] = leg[1].Motor_Torque.Alpha / 100.0f;
-
-      data2send[6] = motor[2].measure.T / 100.0f;
-      data2send[7] = leg[1].Motor_Torque.Beta / 100.0f;
-
-          data2send[8] = sqrtf(leg[1].Foot.p.x * leg[1].Foot.p.x + leg[1].Foot.p.z * leg[1].Foot.p.z);
-  */
-
-    //    data2send[8] = leg[1].VMC_Output_Force.x / 1000.0f;
-    //    data2send[9] = leg[1].VMC_Output_Force.z / 1000.0f;
-    //		data2send[9] = Jump_Param[1].Jump_Theta[0];
-
-    /*
-    data2send[0] = gait_param.step_length[0];
-    data2send[1] = gait_param.step_length[1];
-
-    data2send[2] = gait_param.step_length[2];
-    data2send[3] = gait_param.step_length[3];
-
-    data2send[4] = gait_param.VMC_Euler_Walk.Kp_yaw * (Euler_Angle.Target_Yaw - Euler_Angle.Yaw);
-    data2send[5] = gait_param.VMC_Euler_Walk.Kw_yaw * (Euler_Angle.Last_Yaw - Euler_Angle.Yaw);
-    data2send[6] = gait_param.VMC_Euler_Walk.Kp_yaw * (Euler_Angle.Target_Yaw - Euler_Angle.Yaw)-
-                                                             gait_param.VMC_Euler_Walk.Kw_yaw * (Euler_Angle.Last_Yaw - Euler_Angle.Yaw);
-    data2send[7] = gait_param.Leg_State[0];*/
-
-    /*
-        data2send[0] = leg[0].Foot.p.x;
-        data2send[1] = leg[0].Foot.p.x;
-
-        data2send[2] = leg[1].Foot.p.x;
-        data2send[3] = leg[1].Foot.p.x;
-
-        data2send[4] = leg[2].Foot.p.x;
-        data2send[5] = leg[2].Foot.p.x;
-
-        data2send[6] = leg[3].Foot.p.x;
-        data2send[7] = leg[3].Foot.p.x;
-    */
-    /*
-    data2send[0] = leg[2].Foot.p.x;
-    data2send[1] = leg[2].Target_p.x;
-
-    data2send[2] = leg[2].Foot.p.x;
-    data2send[3] = leg[2].Target_p.z;
-
-    data2send[4] = leg[2].VMC_Output_Force.x / 100.0f;
-    data2send[5] = leg[2].VMC_Output_Force.z / 100.0f;
-
-    data2send[6] = motor[5].measure.T;
-    data2send[7] = leg[2].Motor_Torque.Alpha;
-
-    data2send[8] = motor[4].measure.T;
-    data2send[9] = leg[2].Motor_Torque.Beta;
-    */
-    extern Jump_VMC_Param Jump_VMC;
-
-    //        data2send[0] = leg[1].Foot.p.x;
-    //        data2send[1] = leg[1].Target_p.x;
-
-    //        data2send[2] = leg[1].Foot.p.x;
-    //        data2send[3] = leg[1].Target_p.z;
-
-    //        data2send[4] = leg[1].VMC_Output_Force.x / 100.0f;
-    //        data2send[5] = leg[1].VMC_Output_Force.z / 100.0f;
-
-    //        data2send[6] = motor[3].measure.T;
-    //        data2send[7] = leg[1].Motor_Torque.Alpha;
-
-    ////        data2send[8] = motor[2].measure.T;
-    ////        data2send[9] = leg[1].Motor_Torque.Beta;
-    //        data2send[8] = leg[1].Motor.Pos.Beta;
-    //        data2send[9] = leg[0].Motor.Pos.Beta;
-
-    //    data2send[6] = Jump_VMC.VMC_Cushion[4].Kw_x * (0 - leg[1].now.Foot.v.x);
-    //		data2send[7] = Jump_VMC.VMC_Cushion[4].Kw_z * (0 - leg[1].now.Foot.v.z);
-    /*
-    data2send[0] = leg[0].Foot.p.x;
-    data2send[1] = leg[0].Target_p.x;
-
-    data2send[2] = leg[0].Foot.p.x;
-    data2send[3] = leg[0].Target_p.z;
-
-    data2send[4] = Action_Param.VMC_Swing_Stand[0].differ_x / 1000.0f;
-    data2send[5] = Action_Param.VMC_Swing_Stand[0].differ_z / 1000.0f;
-
-    data2send[6] = leg[0].VMC_Output_Force.x / 1000.0f;
-    data2send[7] = leg[0].VMC_Output_Force.z / 1000.0f;
-
-    data2send[8] = Action_Param.VMC_Swing_Stand[0].err_x;
-    data2send[9] = Action_Param.VMC_Swing_Stand[0].last_err_x;
-    */
-    /*
-        data2send[0] = leg[0].Foot.p.x;
-        data2send[1] = leg[0].Foot_Target.p.x;
-
-        //    data2send[0] = wait_for_jump_flag;
-        //    data2send[1] = memory_flag;
-
-        data2send[2] = leg[0].Foot.p.z;
-        data2send[3] = leg[0].Foot_Target.p.z;
-
-        //    data2send[0] = leg[3].Foot.p.x;
-        //    data2send[1] = Action_Param.Init_Pos[3].x;
-        //
-        //    data2send[2] = leg[3].Foot.p.z;
-        //    data2send[3] = Action_Param.Init_Pos[3].z;
-
-        data2send[4] = leg[3].Foot.p.x;
-        data2send[5] = leg[3].Foot_Target.p.x;
-
-        data2send[6] = leg[3].Foot.p.z;
-        data2send[7] = leg[3].Foot_Target.p.z;
-
-        data2send[8] = GetNowDogState();
-        data2send[9] = GetDogWhetherChangeAble() sqrtf(leg[3].Foot.p.x * leg[3].Foot.p.x + leg[3].Foot.p.z * leg[3].Foot.p.z)*/
-    ;
-
-    /*
-        data2send[0] = leg[2].Foot.p.x;
-        data2send[1] = leg[2].Target_p.x;
-
-        data2send[2] = leg[2].Foot.p.x;
-        data2send[3] = leg[2].Target_p.z;
-
-        data2send[4] = leg[3].Foot.p.x;
-        data2send[5] = leg[3].Target_p.x;
-
-        data2send[6] = leg[3].Foot.p.x;
-        data2send[7] = leg[3].Target_p.z;
-
-        data2send[8] = gait_param.Leg_State[2];
-    */
-    /*
-    data2send[0] = leg[0].VMC_Output_Force.x;
-    data2send[1] = leg[0].VMC_Output_Force.z;
-
-    data2send[2] = leg[1].VMC_Output_Force.x;
-    data2send[3] = leg[1].VMC_Output_Force.z;
-
-    data2send[4] = leg[2].VMC_Output_Force.x;
-    data2send[5] = leg[2].VMC_Output_Force.z;
-
-    data2send[6] = leg[3].VMC_Output_Force.x;
-    data2send[7] = leg[3].VMC_Output_Force.z;
-    */
-    /*
-    data2send[0] = leg[0].Motor_Torque.Alpha;
-    data2send[1] = leg[0].Motor_Torque.Beta;
-
-    data2send[2] = leg[1].Motor_Torque.Alpha;
-    data2send[3] = leg[1].Motor_Torque.Beta;
-
-    data2send[4] = leg[2].Motor_Torque.Alpha;
-    data2send[5] = leg[2].Motor_Torque.Beta;
-
-    data2send[6] = leg[3].Motor_Torque.Alpha;
-    data2send[7] = leg[3].Motor_Torque.Beta;
-    */
-    /*
-    data2send[1] = leg[0].VMC_Stance.Kp_yaw * (0 - Euler_Angle.Yaw) + leg[0].VMC_Stance.Kw_yaw * (Euler_Angle.Last_Yaw - Euler_Angle.Yaw);
-    data2send[6] = Action_Param.Init_Pos[0].x;
-    data2send[7] = Action_Param.Init_Pos[0].z;
-    */
     Usart_Send_To_Show32(&huart1, data2send);
 }
