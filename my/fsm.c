@@ -20,6 +20,7 @@
 // #include "timer.h"
 
 // 数组下标与 fsm.h 的状态枚举一一对应；例如 StateMap[Keep] 绑定保持状态的进入、运行、退出回调。
+//里面是三个状态函数，以及五个参数,,0=start 0=disabls
 FSM_State StateMap[] =
     {
         {start_enter, start_run, start_exit, Start, Start, Start, ENABLE, DISABLE},
@@ -40,6 +41,8 @@ FSM_State StateMap[] =
 FSM_State *pCurrentState = &StateMap[Start]; // 一个存储当前状态的指针,可以随时切换
 
 // 提交目标状态并置位切换请求；本函数不立即切换，实际切换由 DogFSM 周期执行。
+//切换状态的请求函数，x 是要切换的状态
+//切换的顺序是提出 请求，允许请求，再切换
 void ChangeDogState(DOG_State x)
 {
     if (pCurrentState->now_state != x)
@@ -85,9 +88,11 @@ FunctionalState GetDogWhetherExecuteAble()
     return pCurrentState->execute_able;
 }
 
+//这个是放在循环里面随时检测的切换函数，同时也是每个状态下的执行函数
 void DogFSM()
 {
-    if ((pCurrentState->change_able == ENABLE) && (pCurrentState->execute_able == ENABLE) && (pCurrentState->next_state != pCurrentState->now_state)) // 切换状态
+    if ((pCurrentState->change_able == ENABLE) && (pCurrentState->execute_able == ENABLE) 
+                && (pCurrentState->next_state != pCurrentState->now_state)) // 切换状态
     {
         DOG_State now_state = pCurrentState->now_state;   // 保存当前状态
         DOG_State next_state = pCurrentState->next_state; // 保存下一个状态
@@ -101,6 +106,8 @@ void DogFSM()
         pCurrentState->next_state = next_state; // 更新下一个状态
         pCurrentState->change_able = DISABLE;   // 禁止切换状态
         pCurrentState->execute_able = DISABLE;
+
+        ////参数设置完就开始挨个执行动作函数
 
         pCurrentState->enter(); // 执行当前状态的进入函数
         pCurrentState->run();   // 循环执行run

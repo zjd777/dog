@@ -40,6 +40,7 @@ C_SOURCES := \
   my/action.c \
   my/dog.c \
   my/fsm.c \
+  my/delay_DWT.c \
   my/pos_ctrl.c \
   my/walk.c \
   build_support/runtime.c

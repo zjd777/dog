@@ -17,6 +17,35 @@ extern "C"
 	
 #include "struct_typedef.h"
 
+#define MOTOR_COUNT 8U
+
+/* 上层统一使用减速器输出端的 rad、rad/s、N·m，槽号不是通信 ID。 */
+typedef struct
+{
+    float Pos;
+    float W;
+    float T;
+} Motor_Value;
+
+typedef struct
+{
+    Motor_Value target;
+    Motor_Value measure;
+    float K_p;                 // 输出端 N·m/rad
+    float K_w;                 // 输出端 N·m/(rad/s)
+    uint8_t command_mode;       // 0：锁定；1：FOC
+    uint8_t mode;               // 电机实际反馈模式
+    uint8_t feedback_valid;     // 未收到合法反馈的槽保持为0
+    uint8_t error;
+    float temperature;
+} Motor_Control;
+
+extern Motor_Control motor[MOTOR_COUNT];
+
+struct Pos_motor;
+/* 仅设置全部逻辑槽的增益，不发送、不使能、不叠加 Tfb。 */
+void Set_All_Motor_Param(const struct Pos_motor *param);
+
 // void motor_task_init();
 uint8_t motor_task_init(void);
 void motor_task();

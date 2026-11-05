@@ -47,6 +47,7 @@ typedef enum
     Right
 } GaitDirection; // 行走方向
 */
+//控制行走模式的状态模式
 typedef enum
 {
     Gait_None = 0,

@@ -1,0 +1,572 @@
+函数调用顺序与数据链路
+整理日期：2026-11-05
+工程目录：C:\Users\MECHREVO\Desktop\dog
+
+阅读约定
+  1. 下方按当前源码整理，区分已经连接到入口的调用与尚未连接的动作模块。
+  2. 调用树中同一层的项目，除标明互斥分支外，按实际执行顺序从上到下排列。
+  3. “每条腿”表示依次处理腿 0、1、2、3；不会同时执行力控和位控两条分支。
+  4. 业务函数展开内部调用；HAL、CMSIS、数学库和 CRC 工具只保留接口名称。
+  5. 函数定义、头文件声明、状态表登记，都不等于已经连接到运行入口。
+  6. 这是一份源码调用关系说明，没有在本次整理中修改控制代码或进行硬件验证。
+
+一、先认识程序的三种执行位置
+
+  主流程：从 main() 开始，初始化后反复执行 while (1)。
+  定时器中断：定时到达后调用回调；处理完会返回被中断的位置。
+  接收中断：串口或 DMA 收到数据后调用接收回调，更新缓存后返回。
+
+  因此不存在一条“main -> 动作 -> 电机 -> 整个程序结束”的直线流程。
+  动作控制每周期计算一次，通信任务周期发送，接收回调独立更新反馈。
+
+二、当前 main() 实际调用顺序
+
+  main()                                      Core/Src/main.c
+  ├─ HAL_Init()
+  ├─ SystemClock_Config()
+  ├─ MX_GPIO_Init()
+  ├─ MX_DMA_Init()
+  ├─ MX_SPI2_Init()
+  ├─ MX_UART5_Init()
+  ├─ MX_USART2_UART_Init()
+  ├─ MX_USART3_UART_Init()
+  ├─ MX_TIM8_Init()
+  ├─ MX_USART1_UART_Init()
+  ├─ MX_TIM3_Init()
+  ├─ 清零 TIM3、清更新标志、HAL_TIM_Base_Start_IT(&htim3)
+  ├─ control_task_init()                     my/control_task.cpp
+  │  ├─ control_system_init_bl = 0
+  │  ├─ remote_control_init()                Device/remote_control/remote_control.cpp
+  │  │  └─ HAL_UART_Receive_IT()              开启 UART5 单字节接收
+  │  ├─ motor_task_init()                    my/motor_task.cpp，见第三部分
+  │  ├─ 若电机初始化失败：返回，不启动 TIM8
+  │  ├─ HAL_TIM_Base_Start_IT(&htim8)         电机初始化成功时执行
+  │  └─ control_system_init_bl = 1
+  ├─ while (BMI088_init())                   反复初始化，返回 0 才离开此循环
+  └─ while (1)
+     └─ control_task()                      每次主循环调用
+        ├─ SBUS_Handle()                    BSP/bsp_sbus.c
+        │  └─ 有新帧时 SBUS_Parse_Data()
+        │     └─ 更新 g_sbus_channels[]、failsafe_status
+        └─ motor_control_text()             当前单电机速度测试逻辑
+           ├─ 设置 send.Kp = 0、send.Kd = 0.01、send.T = 0
+           ├─ SBUS_IsOnline()
+           │  └─ HAL_GetTick()              读取毫秒节拍，判断帧是否超时
+           └─ 在线：send.W = 1 rad/s；离线：send.W = 0
+
+  电机初始化失败只退出 control_task_init()，不会直接退出 main()。
+  BMI088 初始化若持续失败，主流程不会到达后面的 while (1)。
+  当前 motor_control_text() 只使用在线状态，没有把摇杆映射成四足动作请求。
+  当前 main() 没有调用 leg_init()、Leg_Initpos_Reset()、ChangeDogState()。
+
+三、当前 8010 电机初始化的内部调用
+
+  motor_task_init()
+  ├─ USART_RX485_init(&huart2, USART2_RxHandler)
+  │  ├─ HAL_RS485Ex_Init()
+  │  ├─ 将 USART2_RxHandler 登记为串口 2 接收处理函数
+  │  └─ HAL_UART_Receive_DMA()               开启反馈接收
+  └─ motor_YS_Init(&huart2, &motor_YS, 0, &motor_ys_data.recv)
+     ├─ motor_YS.Init()                      保存串口、ID、单位选择等配置
+     ├─ 清除“已收到反馈”标志
+     ├─ HAL_GetTick()                        记录开始时间
+     ├─ 等待反馈期间反复执行：
+     │  ├─ HAL_GetTick()                     判断是否超过 500 ms
+     │  ├─ motor_YS.enable()
+     │  │  ├─ 设置使能标志
+     │  │  └─ motor_YS.UART_send()           打包和发送，展开见第四部分
+     │  └─ HAL_Delay(1)
+     ├─ motor_YS_Data_recv()                 将驱动内部反馈复制到外部结构体
+     ├─ 检查反馈 MError
+     └─ 成功返回 true；超时或报错则 lose() 后返回 false
+
+  lose()：设置失能标志 -> UART_send()。
+  USART2 接收回调在收到有效 ID 0 的反馈后置位已收到反馈标志。
+  当前代码仅初始化一个 USART2、ID 0 的对象，不代表四足八电机布局已经确定。
+
+四、当前定时器发送、反馈接收和遥控接收
+
+  4.1 TIM8 周期发送，约每 1 ms
+
+  TIM8_UP_TIM13_IRQHandler()
+  └─ HAL_TIM_IRQHandler(&htim8)
+     └─ HAL_TIM_PeriodElapsedCallback()
+        └─ TIM8 分支 -> Task1ms_Callback()
+           └─ control_system_init_bl 为真时 motor_task()
+              ├─ motor_YS_Data_send(&motor_YS, motor_ys_data.send)
+              │  ├─ Set_Angle()
+              │  ├─ Set_Pos()
+              │  ├─ Set_T()
+              │  ├─ Set_W()
+              │  ├─ Set_Kp()
+              │  └─ Set_Kd()
+              └─ motor_YS.UART_send()
+                 ├─ send_data()
+                 │  ├─ 将目标值按当前驱动规则换算、装入协议字节
+                 │  └─ crc_ccitt()
+                 └─ UART_Transmit_Data()
+                    └─ HAL_UART_Transmit_DMA()
+
+  motor_YS_Data_send() 当前没有传递 Struct_send_motor_YS 的 T_ff 字段。
+  发送函数启动 DMA 后返回，物理字节发送由外设继续完成。
+
+  4.2 TIM3 周期入口，约每 3 ms
+
+  TIM3_IRQHandler()
+  └─ HAL_TIM_IRQHandler(&htim3)
+     └─ HAL_TIM_PeriodElapsedCallback()
+        └─ TIM3 分支：当前为空，没有 DogFSM() 调用
+
+  回调中还有 TIM7 -> Task500us_Callback()，函数体为空；
+  当前 main() 未初始化或启动 TIM7。Task25ns_Callback() 也没有调用入口。
+
+  4.3 USART2 电机反馈接收
+
+  串口接收 DMA 完成
+  └─ HAL_UART_RxCpltCallback()                Device/unitree/UART.cpp
+     └─ 已注册的 USART2_RxHandler()          my/motor_task.cpp
+        ├─ crc_ccitt()                      校验失败直接返回
+        ├─ 取出反馈 ID                      当前仅 ID 0 分支做处理
+        ├─ motor_YS.UART_recv()
+        │  └─ 解包并更新驱动对象内部反馈
+        ├─ motor_YS_Data_recv()
+        │  └─ Get_MError/模式/角度/位置/速度/力矩/温度等 getter
+        │     将结果复制到 motor_ys_data.recv
+        └─ motor_ys_feedback_received = true
+
+  USART3_RxHandler() 当前为空，motor_task_init() 没有注册该串口的电机。
+
+  4.4 UART5 遥控接收
+
+  UART5 字节接收完成
+  └─ HAL_UART_RxCpltCallback()
+     ├─ SBUS_Reveive(RxTemp_2)               函数名沿用源码拼写
+     │  └─ 组帧，完整帧写入 sbus_data，更新时间与新帧标志
+     └─ HAL_UART_Receive_IT()                再开启下一字节接收
+
+  主循环稍后调用 SBUS_Handle() -> SBUS_Parse_Data() 才解析通道。
+  remote_control.cpp 中还保留 SBUS_TO_RC_Handle() -> SBUS_TO_RC() 的旧解码函数，
+  当前 remote_control_init() 使用上面的单字节接收路径，并未注册这套旧回调。
+
+五、动作状态机如何分发：模块已存在，当前周期入口尚未连接
+
+  外部业务调用 ChangeDogState(目标状态)
+  └─ 记录 next_state，置 execute_able = ENABLE；此时不调用动作
+
+  当前动作调用 SetDogChangeAble(ENABLE/DISABLE)
+  └─ 修改当前状态的退出许可 change_able
+
+  外部周期调用 DogFSM()                    my/fsm.c
+  ├─ 允许退出、有切换请求、目标不同于当前：
+  │  ├─ pCurrentState->exit()                调用旧状态退出函数
+  │  ├─ pCurrentState 指向 StateMap[目标状态]
+  │  ├─ 更新 last/now/next_state，关闭新状态切换许可并清请求
+  │  ├─ pCurrentState->enter()               调用新状态进入函数一次
+  │  └─ pCurrentState->run()                 立即执行新状态的一次运行计算
+  └─ 条件不满足：
+     └─ pCurrentState->run()                 继续执行当前状态的一次运行计算
+
+  请求和许可可以先后到达，判断时同时满足即可。
+  初始化指针指向 Start 不会自动调用 start_enter()。
+  run() 每次被调用只执行一轮；周期来自外部调度，不是 run() 自己循环。
+  GetNowDogState()/GetNextDogState()/GetLastDogState() 只返回状态记录。
+  GetDogWhetherChangeAble()/GetDogWhetherExecuteAble() 只返回标志。
+
+六、所有动作共用的当前状态计算：先读反馈，再算足端
+
+  Get_Now_Pos_Spd(legid)                     my/dog.c
+  ├─ 从旧 motor[].measure.Pos/W 复制到 leg[legid].Motor
+  ├─ Motor_Convert_To_Joint()
+  │  └─ 根据旋转方向、参考电机角、参考关节角换算，写入 leg[].Joint
+  ├─ Kinematic_Solution()
+  │  └─ 根据关节状态与杆长计算，写入 leg[].Foot.p/v
+  ├─ Get_Now_Ctrl_State()
+  └─ 若为 Force_Ctrl：Kinematic_Inversion_Update()
+     └─ 原模型再次根据足端位置更新 Joint.Pos，属于迁移时需重审的旧处理
+
+  输入：缓存电机反馈、腿参数、控制模式。
+  输出：leg[].Motor、Joint、Foot，以及原逆解连续角的中间状态。
+  它不会主动向电机发查询命令；当前位置来自反馈缓存和模型计算。
+  旧数组对应：腿 0 的 Alpha/Beta 为 1/0，腿 1 为 3/2，腿 2 为 5/4，腿 3 为 7/6。
+  这些是旧软件映射，不代表新机器人总线 ID 或髋膝安装位置。
+
+七、共用力控调用树：从一个足端目标到两个力矩目标
+
+  line() / Cycloid() / Bezier() / Bezier_Stance()    my/dog.c
+  ├─ Get_Now_Pos_Spd(legid)                   展开见第六部分
+  ├─ 对应的轨迹生成器，返回当前时刻的 Point：
+  │  ├─ line() -> line_Generator()
+  │  ├─ Cycloid() -> Cycloid_Generator()
+  │  └─ Bezier()/Bezier_Stance() -> Bezier_Generator()
+  ├─ Coordinate_Transform()
+  │  └─ 写入 leg[].Foot_Target.p；是否用 Pitch 旋转由 pitch_ctrl_state 决定
+  ├─ PD_Control()
+  │  └─ 足端目标、当前足端、PD 参数和历史误差 -> leg[].VMC_Output_Force
+  ├─ VMC_Jacobi_Matrix()
+  │  └─ 虚拟力、当前关节角、几何参数 -> leg[].Motor_Torque
+  └─ Set_Motor_Target_Torque()
+     ├─ 按原代码将 Alpha/Beta 力矩限制到 -33.5～+33.5
+     ├─ 写入对应 motor[].target.T
+     └─ target.Pos/W 取最近反馈 measure.Pos/W
+
+  这一轮控制计算到“写入 motor[].target”就返回，不会在此处发送串口数据。
+  虚拟力来自 PD 计算；当前没有足端测力数据进入这条链路。
+  当前正解、逆解和雅可比均为原并联腿模型，不能视为串联腿已适配。
+  VMC_Filter() 的调用均已注释，不在上述执行链路中。
+
+  轨迹生成器内部：
+    line_Generator()：按时间比例计算直线目标点，无其他业务函数调用。
+    Cycloid_Generator()：按时间比例计算摆线目标点，使用数学库 sinf/cosf。
+    Bezier_Generator()
+    ├─ Bezier_Trans()                        转换起点坐标
+    ├─ Bezier_Trans()                        转换终点坐标
+    ├─ 计算当前时间比例和贝塞尔曲线坐标
+    └─ Bezier_Trans_Inv()                    转回腿坐标，返回目标 Point
+
+八、共用位控调用树：从足端目标到两个位置、速度目标
+
+  line_Pos()/Cycloid_Pos()/Bezier_Pos()/Bezier_Stance_Pos()    my/pos_ctrl.c
+  ├─ Get_Now_Pos_Spd(legid)
+  ├─ 将上一轮 Foot_Target.p 保存到 Pctrl.Foot_Last_Target.p
+  ├─ 对应轨迹生成器：line_Generator/Cycloid_Generator/Bezier_Generator
+  ├─ Coordinate_Transform()                  写入 Foot_Target.p
+  ├─ Foot_Convert_To_Motor()                 my/dog.c
+  │  ├─ Kinematic_Inversion()
+  │  │  ├─ Kinematic_Inversion_Update()      足端位置 -> 原模型关节目标角度
+  │  │  └─ 继续计算关节目标角速度
+  │  └─ Joint_Convert_To_Motor()             方向和参考角转换 -> 电机目标
+  └─ Set_Motor_Target_Pos()
+     ├─ motor[].target.T = 0
+     └─ Pctrl.Motor_Target.Pos/Spd -> motor[].target.Pos/W
+
+  本分支没有调用 PD_Control() 和 VMC_Jacobi_Matrix()。
+  写入的是原 motor[] 的位置、速度目标，通信发送仍由另一执行路径完成。
+
+九、站立状态的完整顺序
+
+  DogFSM() 切入 Stand
+  ├─ stand_enter()                           my/action.c，仅进入时一次
+  │  ├─ 原来为位控时 Change_Ctrl_State(Force_Ctrl)
+  │  ├─ Launch_Flag = Launch
+  │  ├─ SetDogChangeAble(DISABLE)
+  │  ├─ GetTick()                            内部展开见第十三部分
+  │  ├─ 保存 tick_start
+  │  ├─ Set_All_Motor_Param()                当前缺少有效声明/实现
+  │  └─ Change_Dog_Pitch_State(Follow_Ground)
+  └─ stand_run()                             每次状态机调度执行一次
+     ├─ GetTick()
+     ├─ t = 当前累计秒数 - tick_start
+     └─ Stand_Up(t, tm, h)
+        ├─ Launch 阶段：对腿 0～3 依次执行
+        │  ├─ Get_Now_Pos_Spd(i)
+        │  ├─ Euler_Update()
+        │  └─ Coordinate_Transform()         保存 Action_Param.Init_Pos[i]
+        │  然后 Launch_Flag = Run，本次不进入下面的轨迹分支
+        └─ 非 Launch 阶段：
+           ├─ t <= tm：Get_Now_Ctrl_State()
+           │  ├─ Force_Ctrl：依次 line(0)、line(1)、line(2)、line(3)
+           │  │  └─ 展开为第七部分的完整力控链路
+           │  └─ Pos_Ctrl：依次 Bezier_Pos(0～3)
+           │     └─ 展开为第八部分的完整位控链路
+           └─ t > tm：SetDogChangeAble(ENABLE)，Launch_Flag = Finish
+
+  正常从 stand_enter() 进入会选择力控，因此实际走 line() 分支。
+  Stand_Up() 也会被 keep_run() 调用，不能把所有调用场景都等同于 Stand 状态。
+  Finish 只标记动作过程完成；仍要有其他状态请求才执行 stand_exit()。
+  stand_exit() 当前为空。完成站立不会自动提交 Keep 请求。
+
+十、下蹲、保持和单腿保持
+
+  10.1 下蹲
+
+  DogFSM() -> squat_enter()
+  ├─ Launch_Flag = Launch
+  ├─ SetDogChangeAble(DISABLE)
+  ├─ GetTick()
+  ├─ Change_Dog_Pitch_State(Follow_Ground)
+  ├─ 保存 tick_start
+  └─ Set_All_Motor_Param()                   当前缺实现
+
+  DogFSM() -> squat_run()
+  ├─ GetTick()
+  ├─ 若为位控：Change_Ctrl_State(Force_Ctrl)
+  ├─ 计算已用时间 t
+  ├─ t <= squat_tm：Squat_Down()
+  │  ├─ Launch：每条腿 Get_Now_Pos_Spd -> Euler_Update -> Coordinate_Transform
+  │  │          保存起点，再置 Launch_Flag = Run
+  │  └─ 后续：Get_Now_Ctrl_State()
+  │     ├─ 力控：每条腿 line() -> 第七部分
+  │     └─ 位控：每条腿 line_Pos() -> 第八部分
+  └─ t > squat_tm：Keep_All_Leg() 保持下蹲位置，再 SetDogChangeAble(ENABLE)
+
+  squat_run() 当前会转为力控；Squat_Down() 中保留的位控分支通常不由该入口走到。
+  squat_run() 超时后直接调用 Keep_All_Leg()，没有调用 Squat_Down() 的结束分支，
+  所以不能认为每次从 Squat 状态运行结束都必然把 Launch_Flag 写成 Finish。
+  squat_exit() 当前使用 fsm.c 中的弱空函数。
+
+  10.2 四腿保持
+
+  DogFSM() -> keep_enter()
+  ├─ Launch_Flag = Launch
+  ├─ SetDogChangeAble(DISABLE)
+  ├─ GetTick()
+  ├─ Change_Dog_Pitch_State(Follow_Ground)
+  ├─ 保存 tick_start
+  └─ Set_All_Motor_Param()                   当前缺实现
+
+  DogFSM() -> keep_run()
+  ├─ GetTick()，计算 t
+  ├─ keep_type == 0：
+  │  ├─ Judge_Keep_State()
+  │  │  └─ 多次 Abs_Diff_Judge()             根据已有足端缓存做误差判断
+  │  ├─ 超过 stand_tm/2 时强制认为应转入保持分支
+  │  ├─ 尚未满足条件：Stand_Up()             走第九部分动作过程
+  │  └─ 满足条件：Keep_All_Leg()，然后 SetDogChangeAble(ENABLE)
+  └─ keep_type == 1：
+     ├─ 每条腿 Get_Now_Pos_Spd() -> Coordinate_Transform()，更新 Init_Pos
+     ├─ Keep_All_Leg()
+     └─ SetDogChangeAble(ENABLE)
+
+  Keep_All_Leg()
+  ├─ 构造四条腿的目标 Point
+  ├─ 对腿 0～3 依次 Coordinate_Transform()，更新 Foot_Target.p
+  ├─ Get_Now_Ctrl_State()
+  ├─ 力控：每条腿依次执行
+  │  ├─ Get_Now_Pos_Spd()
+  │  ├─ PD_Control()
+  │  ├─ VMC_Jacobi_Matrix()
+  │  └─ Set_Motor_Target_Torque()
+  └─ 其他模式分支：每条腿依次执行
+     ├─ Get_Now_Pos_Spd()
+     ├─ Foot_Convert_To_Motor()               内部逆解与转换见第八部分
+     └─ Set_Motor_Target_Pos()
+
+  keep_exit() 当前使用 fsm.c 中的弱空函数。
+  Judge_Keep_State() 现有代码的 z 判定读了 Foot.p.x，这处尚未修复；
+  本文只记录调用关系，不将它当成已经正确实现的站稳判定。
+
+  10.3 单腿保持
+
+  Keep_One_Leg()
+  ├─ Coordinate_Transform()
+  ├─ Get_Now_Pos_Spd()
+  ├─ PD_Control()
+  ├─ VMC_Jacobi_Matrix()
+  └─ Set_Motor_Target_Torque()
+
+  当前有效函数体固定走力控，位控分支被注释。
+  唯一找到的上层调用位于 #if 0 的跳跃实现，因此未进入有效动作调用链。
+
+十一、行走状态：先排四腿时序，再调用共用单腿控制
+
+  DogFSM() -> walk_enter()                   my/walk.c
+  ├─ 清 gait_param.t
+  ├─ SetDogChangeAble(DISABLE)
+  ├─ gait_param.Walk_State = First
+  ├─ Action_Param.Launch_Flag = Launch
+  ├─ GetTick()，保存本文件的 tick_start
+  ├─ 每条腿依次执行：
+  │  ├─ Get_Now_Pos_Spd()
+  │  ├─ Euler_Update()
+  │  └─ Coordinate_Transform()               保存当前足端为本段起点
+  └─ Set_All_Motor_Param()                   当前缺实现
+
+  DogFSM() -> walk_run()
+  ├─ SetDogChangeAble(DISABLE)
+  ├─ GetTick()，计算 t
+  ├─ Get_Now_Ctrl_State() 为 Force_Ctrl：Walk_Away()
+  └─ Get_Now_Ctrl_State() 为 Pos_Ctrl：Walk_Away_Posctrl()
+
+  11.1 力控步态
+
+  Walk_Away()
+  ├─ 必要时 fmodf(t, term)，将时间折算到一个步态周期内
+  ├─ 更新 last_t、t
+  ├─ SetDogChangeAble(DISABLE)
+  ├─ 若到达半周期换相时刻：
+  │  ├─ 更新四腿 Leg_State[]
+  │  │  ├─ 前半周期：腿 0、2 为 Swing，腿 1、3 为 Stance
+  │  │  └─ 后半周期：腿 1、3 为 Swing，腿 0、2 为 Stance
+  │  ├─ SetDogChangeAble(ENABLE)
+  │  ├─ 每条腿 Get_Now_Pos_Spd -> Euler_Update -> Coordinate_Transform
+  │  │  └─ 保存新一段轨迹起点 Init_Pos[]
+  │  ├─ Yaw_Pos_Crol()                       用偏航误差修正各腿步长
+  │  └─ Pitch_Pos_Offest()                   当前函数体有效逻辑全部被注释
+  ├─ gait(0)
+  ├─ gait(1)
+  ├─ gait(2)
+  ├─ gait(3)
+  └─ Walk_State == Stop 时：允许切换，并设置 Launch_Flag = Finish
+
+  gait(每一条腿)
+  ├─ Swing：Bezier() -> 第七部分力控链路
+  └─ Stance：Bezier_Stance() -> 第七部分力控链路
+
+  Bezier() 与 Bezier_Stance() 的控制调用骨架相同，采用各自的轨迹参数和 PD 参数。
+  各腿的 t 或 t-term/2、终点 x 的符号由 gait() 内按腿编号选择。
+  Stop 判断在本次四腿 gait() 调用之后，不能仅凭 Stop 名称认定已经发送失能指令。
+
+  11.2 位控步态
+
+  Walk_Away_Posctrl()                        my/pos_ctrl.c
+  ├─ 必要时 fmodf(t, term)
+  ├─ 更新 last_t、t
+  ├─ SetDogChangeAble(DISABLE)
+  ├─ 换相时：更新 Leg_State[]，允许切换，保存各腿起点，
+  │          调用 Yaw_Pos_Crol() 和 Pitch_Pos_Offest()
+  ├─ gait_posctrl(0)
+  ├─ gait_posctrl(1)
+  ├─ gait_posctrl(2)
+  ├─ gait_posctrl(3)
+  └─ Walk_State == Stop 时：允许切换，并设置 Launch_Flag = Finish
+
+  gait_posctrl(每一条腿)
+  ├─ Swing：Bezier_Pos() -> 第八部分位控链路
+  └─ Stance：Bezier_Stance_Pos() -> 第八部分位控链路
+
+  walk_exit() 当前为空。
+  与站立不同，行走是周期动作，会在换步时机开放切换，而非等待固定秒数才结束。
+
+十二、其他状态与目前停用的模块
+
+  Start：start_enter()/start_run()/start_exit() 当前有效实现均为空。
+
+  CrossLeg：
+    crossleg_enter() -> 必要时转力控、设置 Launch、禁止切换、GetTick、
+                        保存开始时间、Change_Dog_Pitch_State。
+    crossleg_run() -> GetTick() -> Cross_leg(t)。
+    Cross_leg() 当前有效函数体为空，原动作全部注释；crossleg_exit() 为弱空函数。
+
+  Jump、Backflip、JumpHurdles、Line、Test1～Test3：
+    StateMap 保留入口，当前回调由 fsm.c 中弱空函数占位。
+    Jump_s_pos() 处于 #if 0 中，不参与当前编译。
+    Line 状态回调 line_run() 与轨迹控制函数 line() 是两个不同函数。
+
+  VMC_Filter()：函数保留，但调用位置全部注释。
+  motor_test()：函数保留，main() 中调用已注释，不属于当前主循环链路。
+  motor_YS.zero()：当前有效初始化流程没有调用它。
+
+十三、时间和姿态两条辅助链路
+
+  13.1 动作时间
+
+  各状态 enter()/run()
+  └─ GetTick()                              my/delay_DWT.c
+     └─ Generate_Time_Points()
+        ├─ DWT_Init()                       首次启动计数，后续不清零
+        ├─ CPU_TS_TmrRd()                   读取内核周期计数
+        └─ 统计回绕，换算并更新 Time_Points_Param.Now_Tick，单位秒
+
+  动作 t = Now_Tick - tick_start；行走再按 term 对 t 取余。
+  HAL_GetTick() 是毫秒节拍，用于电机初始化和 SBUS 超时，不能直接与动作秒数混用。
+  Delay_ms 宏 -> Delay_us() -> DWT_Init()、反复 CPU_TS_TmrRd() 忙等待。
+  本次检查的 build_support/sources.mk 尚未加入 my/delay_DWT.c。
+
+  13.2 姿态
+
+  当前已连接：main() -> BMI088_init()，配置传感器。
+
+  周期读取与解算尚未在主循环/定时器连接，下列是各接口应衔接的数据顺序：
+    BMI088_read(gyro, accel, &temperature)
+      -> gyro/accel 采样数据
+      -> imu_data_process(gyro, accel, dt_s)
+         ├─ normalize_sample()              入口校验和加速度方向归一化
+         ├─ 首次：initialize_attitude()
+         ├─ 后续：integrate_attitude()
+         └─ update_angles()                 更新 imu_angle[]
+      -> Euler_Update(&Euler_Angle)          将缓存姿态发布给动作层
+      -> Coordinate_Transform()/Yaw_Pos_Crol() 等使用姿态
+
+  上面箭头表示需要连接的数据步骤，不表示 BMI088_read() 内部已经调用姿态解算。
+  Euler_Update() 仅复制缓存，不读取 BMI088，也不执行四元数积分。
+  get_imu_angle() 直接返回缓存；Yaw_Reset() 保存航向参考并清控制层偏航值。
+  gyro 使用 rad/s、accel 使用 m/s²、dt_s 使用秒，发布的 Euler 角使用度。
+
+十四、初始化、参数接口和调试输出的其他函数
+
+  leg_init()                                当前没有入口调用
+  ├─ 写入旧几何、方向、参考角与电机索引
+  └─ 每条腿调用 Get_Now_Pos_Spd()
+
+  Leg_Initpos_Reset()                        当前没有入口调用
+  └─ 原代码检查 8 个 motor[].mode 均为 0 后，把反馈位置保存为参考电机角
+
+  Motor_Convert_To_Foot()                    当前没有有效上层调用
+  ├─ Motor_Convert_To_Joint()
+  └─ Kinematic_Solution()
+  Get_Now_Pos_Spd() 中是直接调用上述两函数，并未使用此包装函数。
+
+  Change_Ctrl_State()/Get_Now_Ctrl_State()    写/读 leg[0].ctrl_state
+  Change_Dog_Pitch_State()                   设置四腿 pitch_ctrl_state
+  Change_Single_Pitch_State()                设置指定腿 pitch_ctrl_state，当前无上层调用
+  Set_Target_Yaw()                           写 Euler_Angle.Target_Yaw
+  Set_Walk_Dire()                            写 gait_param.Dire
+  Set_Walk_Length()                          写 gait_param.std_step_length
+  Set_Turning_Kp()                           写偏航控制增益
+  上述四个 Set_Walk/Set_Target/Set_Turning 参数入口当前未找到业务调用。
+
+  ano_tc()                                  当前未找到周期调用入口
+  ├─ 将姿态、步长等值放入 data2send[]
+  └─ Usart_Send_To_Show32(&huart1, data2send)
+     └─ 打包波形协议 -> HAL_UART_Transmit_DMA()
+
+十五、目前明确没有接通的位置
+
+  1. 周期调度 -> DogFSM()：TIM3 当前为空。
+  2. 自己的遥控动作映射 -> ChangeDogState()：当前没有调用。
+  3. 启动流程 -> leg_init()/Leg_Initpos_Reset()：当前没有调用。
+  4. motor_ys_data.recv -> 旧 motor[].measure：没有适配连接。
+  5. 旧 motor[].target -> motor_ys_data.send：没有适配连接。
+  6. 当前上层仍引用缺失的 A1_Motor_Struct/motor[8]，Set_All_Motor_Param() 也未接上。
+  7. BMI088 周期采样 -> imu_data_process()：当前没有连接。
+  8. delay_DWT.c -> 显式构建源文件列表：当前尚未加入。
+
+  正因为这些位置尚未连接，不能把下面两段直接画成已经工作的连续调用：
+    Set_Motor_Target_Torque() -> motor_task()        当前不是这样的函数调用
+    USART2_RxHandler() -> Get_Now_Pos_Spd()         当前也不是这样的函数调用
+  前者应由目标数据连接，后者应由反馈数据连接，而非简单在函数末尾相互调用。
+
+十六、与原 Corgi 工程的调度对应
+
+  参考工程：C:\Users\MECHREVO\Desktop\farmwork\Corgi_for_ROBOCON\corgi
+
+  原 main() 启动后提交 ChangeDogState(Stand)。
+  原 TIM3 每 3 ms：Euler_Update() -> DogFSM() -> 当前动作的一轮计算。
+  原遥控任务：Gamepad_Ctl() -> GamePad_Control_Obs() -> ChangeDogState()。
+  原电机定时发送：TIM2 -> A1_All_Send()，与状态机计算分开。
+  当前工程的发送入口改为 TIM8 -> motor_task()，仍需补齐模型与电机的数据适配。
+  这些是调度职责对应，不能直接复制原模型、原电机参数与原遥控通道绑定。
+
+十七、最常用的三条阅读路径
+
+  站立力控：
+    DogFSM -> stand_enter（进入一次）
+           -> stand_run -> GetTick -> Stand_Up
+              -> Launch 时记录起点
+              -> 后续 line -> Get_Now_Pos_Spd -> line_Generator
+                 -> Coordinate_Transform -> PD_Control
+                 -> VMC_Jacobi_Matrix -> Set_Motor_Target_Torque
+                 -> 写旧 motor[].target，逐层返回
+
+  行走力控：
+    DogFSM -> walk_enter（进入一次）
+           -> walk_run -> GetTick -> Walk_Away
+              -> 换相时更新起点与步长
+              -> gait(0～3) -> Bezier / Bezier_Stance
+                 -> Get_Now_Pos_Spd -> Bezier_Generator
+                 -> Coordinate_Transform -> PD_Control
+                 -> VMC_Jacobi_Matrix -> Set_Motor_Target_Torque
+                 -> 写旧 motor[].target，逐层返回
+
+  行走位控：
+    DogFSM -> walk_enter（进入一次）
+           -> walk_run -> GetTick -> Walk_Away_Posctrl
+              -> gait_posctrl(0～3) -> Bezier_Pos / Bezier_Stance_Pos
+                 -> Get_Now_Pos_Spd -> Bezier_Generator -> Coordinate_Transform
+                 -> Foot_Convert_To_Motor
+                    -> Kinematic_Inversion -> Kinematic_Inversion_Update
+                    -> Joint_Convert_To_Motor
+                 -> Set_Motor_Target_Pos -> 写旧 motor[].target，逐层返回
+
+  不需要把 sinf、cosf、sqrtf、atan2f 等当成新的业务层；
+  它们是运动学与轨迹计算使用的数学库函数。

@@ -124,7 +124,8 @@ void Class_Motor_YS::UART_recv(uint8_t *data){
     int32_t YS_Angle_Pos;
     memcpy(motor_YS_recv_Temp_buffer,data,16);
     
-    mode = motor_YS_recv_Temp_buffer[2]>>4 & 0xF;
+    mode = motor_YS_recv_Temp_buffer[2]>>4 & 0x7;
+    recv.mode = mode;
     YS_T = motor_YS_recv_Temp_buffer[4]<<8 | motor_YS_recv_Temp_buffer[3];
     recv.Now_T  = YS_T;
     recv.Now_T /= 256;

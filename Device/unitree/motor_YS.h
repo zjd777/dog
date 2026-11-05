@@ -45,25 +45,6 @@ struct Struct_recv_motor_YS
     fp32 Now_Temperature;          //温度
 };
 
-//发送数据
-struct Struct_send_motor_YS
-{
-	fp32 Angle;
-	fp32 Pos;
-	fp32 T;
-	fp32 W;	
-	fp32 Kp;
-	fp32 Kd;
-	fp32 T_ff;
-};
-
-//电机的控制结构体里面包含了电机的发送和电机的返回
-struct motor_YS_control
-{
-	Struct_send_motor_YS send;
-	Struct_recv_motor_YS recv;
-};
-
 //创建宇树电机类
 class Class_Motor_YS{
 

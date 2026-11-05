@@ -205,7 +205,7 @@ void Yaw_Pos_Crol(Euler *Euler, GaitParam *gait_param, float Upper_Limit, float 
     }
 }
 */
-
+//步态函数，原并联的支撑相，摆动相，贝塞尔曲线
 void gait(uint8_t legid, GaitParam *gait_param, action_param *Action_Param, Euler *Euler_Angle, float t)
 {
     if (legid <= 3 && legid >= 0) // 严防数组越界
@@ -290,10 +290,12 @@ void gait(uint8_t legid, GaitParam *gait_param, action_param *Action_Param, Eule
     }
 }
 
-// 目标位置采用当前位置累加一个步长还是初始位置加n个步长
+/*// 目标位置采用当前位置累加一个步长还是初始位置加n个步长
 // 如果有某一条腿偏离预定位置过多怎么办
 // 写一个复位回原始keep状态的函数
 // 支撑相的腿应该始终位于什么地方,启动时的单独位移差?
+*/
+//控制四条腿行走的函数
 void Walk_Away(GaitParam *gait_param, action_param *Action_Param, Euler *Euler_Angle, float t)
 {
     // 因为步态是周期运动,把时间t缩短到一个周期中

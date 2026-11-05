@@ -1,4 +1,5 @@
-build/my/walk.o: my/walk.c my/dog.h my/fsm.h \
+build/my/walk.o: my/walk.c my/dog.h my/motor_task.h \
+ Device/unitree/struct_typedef.h my/fsm.h \
  Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h \
  Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h \
  Drivers/CMSIS/Include/core_cm7.h Drivers/CMSIS/Include/cmsis_version.h \
@@ -33,6 +34,8 @@ build/my/walk.o: my/walk.c my/dog.h my/fsm.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h my/walk.h \
  my/action.h my/delay_DWT.h my/pos_ctrl.h Device/BMI088/imu.h my/dog.h
 my/dog.h:
+my/motor_task.h:
+Device/unitree/struct_typedef.h:
 my/fsm.h:
 Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h:
 Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h:

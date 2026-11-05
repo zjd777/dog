@@ -20,9 +20,9 @@
 typedef enum // 这里用枚举量定义了狗的状态
 {
     Start = 0,   // 初始模式
-    Keep,        // 保持关节位置
+    Keep,        // 保持关节位置    
     Squat,       // 蹲着
-    Stand,       // 站立模式
+    Stand,       // 站立模式，起立
     Walk,        // 行走
     Jump,        // 跳跃
     Backflip,    // 后空翻
@@ -45,7 +45,9 @@ typedef struct
     FunctionalState change_able; // 是否允许退出当前状态并切换
     FunctionalState execute_able; // 是否存在待执行的切换请求
 } FSM_State;
-
+#ifdef __cplusplus
+extern "C" {
+#endif
 void DogFSM(void);
 // 提交切换请求；由 DogFSM 在获得切换许可后执行退出、进入和运行回调。
 void ChangeDogState(DOG_State x);
@@ -108,5 +110,9 @@ void test3_run(void);
 void jump_hurdles_enter(void);
 void jump_hurdles_exit(void);
 void jump_hurdles_run(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

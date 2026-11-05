@@ -40,7 +40,6 @@
 
 LEG leg[4];
 Euler Euler_Angle;
-extern A1_Motor_Struct motor[8]; // 电机
 extern float data2send[10];
 /* ------------------------------------------运动学分析------------------------------------------------ */
 
@@ -265,6 +264,7 @@ void Motor_Convert_To_Foot(Param *param, foot *Foot, Kine *Joint, Kine *Motor) /
  * @brief  力控发送目标力矩
  * @param  leg 腿大结构体
  */
+//实际只是写内存，还没有执行串口发送
 void Set_Motor_Target_Torque(LEG *leg)
 {
     if (leg->Motor_Torque.Alpha >= 33.5f)

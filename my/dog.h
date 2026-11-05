@@ -16,6 +16,7 @@
 #ifndef _DOG_H
 #define _DOG_H
 #include "stdint.h"
+#include "motor_task.h"
 #include "fsm.h"
 #define RADIN_TO_REG 57.296f
 #define REG_TO_RADIN 0.0174533f
@@ -36,6 +37,7 @@ typedef struct
     float Beta;
 } Order;
 
+//角度 角速度有
 typedef struct
 {
     Order Pos;
@@ -110,6 +112,7 @@ typedef struct
     foot Foot_Last_Target;
 } pctrl;
 
+//得大改
 typedef struct
 {
     uint8_t id;              // 腿id(0~3)
@@ -127,9 +130,9 @@ typedef struct
     float true_a1; // 运动学逆解的中间变量
 } Param;
 
-typedef struct
+typedef struct Pos_motor
 {
-    float Tfb; // 前馈力
+    float Tfb; // 保留旧前馈参数；Set_All_Motor_Param 不使用此字段
     float kp;
     float kw;
 } Pos_motor;

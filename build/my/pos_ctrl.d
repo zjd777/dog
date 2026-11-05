@@ -1,4 +1,5 @@
-build/my/pos_ctrl.o: my/pos_ctrl.c my/pos_ctrl.h my/dog.h my/fsm.h \
+build/my/pos_ctrl.o: my/pos_ctrl.c my/pos_ctrl.h my/dog.h my/motor_task.h \
+ Device/unitree/struct_typedef.h my/fsm.h \
  Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h \
  Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h \
  Drivers/CMSIS/Include/core_cm7.h Drivers/CMSIS/Include/cmsis_version.h \
@@ -34,6 +35,8 @@ build/my/pos_ctrl.o: my/pos_ctrl.c my/pos_ctrl.h my/dog.h my/fsm.h \
  my/action.h Device/BMI088/imu.h my/dog.h
 my/pos_ctrl.h:
 my/dog.h:
+my/motor_task.h:
+Device/unitree/struct_typedef.h:
 my/fsm.h:
 Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h:
 Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h:

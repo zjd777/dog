@@ -14,6 +14,8 @@
 #include "remote_control.h"
 #include "bsp_sbus.h"
 #include "tim.h"
+#include "imu.h"
+#include "fsm.h"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 
 /**
  * @brief 1ms的回调函数
@@ -63,7 +65,7 @@ void control_task_init(){
  */
 void control_task (){
 	SBUS_Handle();
-	motor_control_text();
+	motor_control_text(); // 显式台架测试入口，常规循环不覆盖动作目标。
 
 }
 
@@ -76,13 +78,16 @@ void control_task (){
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    if (htim->Instance == TIM3)     //有关状态机的tim3
+    if (htim->Instance == TIM3)     //有关状态机的切换tim3
     {
+        Euler_Update(&Euler_Angle);
+        //状态的执行和切换函数，切换请求再遥控那一部分
+        DogFSM();
     /* 每 3 ms 进入一次，预留状态机调度入口。 */
     }
     else if (htim->Instance == TIM7)
     {
-        Task500us_Callback();    //500ns的定时
+        Task500us_Callback();    //500ns的定时，暂时没有使用
     }
     else if (htim->Instance == TIM8)       //有关电机发送指令的tim8
     {

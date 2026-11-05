@@ -1,5 +1,6 @@
 build/Device/BMI088/imu.o: Device/BMI088/imu.c Device/BMI088/imu.h \
- my/dog.h my/fsm.h Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h \
+ my/dog.h my/motor_task.h Device/unitree/struct_typedef.h my/fsm.h \
+ Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h \
  Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h \
  Drivers/CMSIS/Include/core_cm7.h Drivers/CMSIS/Include/cmsis_version.h \
  Drivers/CMSIS/Include/cmsis_compiler.h Drivers/CMSIS/Include/cmsis_gcc.h \
@@ -33,6 +34,8 @@ build/Device/BMI088/imu.o: Device/BMI088/imu.c Device/BMI088/imu.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h
 Device/BMI088/imu.h:
 my/dog.h:
+my/motor_task.h:
+Device/unitree/struct_typedef.h:
 my/fsm.h:
 Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h:
 Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h:
