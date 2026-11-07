@@ -368,9 +368,29 @@ bool Judge_Keep_State(void)
 /* ---------------------------------------启动------------------------------------------ */
 void start_enter(void)
 {
+    Action_Param.Launch_Flag = Launch;
+    SetDogChangeAble(DISABLE); // 动作完成前禁止切换状态
+    motor[1].K_p = 0.0f;
+    motor[1].K_w = 0.0f;
+    motor[0].K_p = 0.0f;
+    motor[0].K_w = 0.0f;
+    GetTick();
+    // Change_Dog_Pitch_State(Follow_Ground);
+    //设置参考系，传入腿的id
+    Change_Single_Pitch_State(Follow_Dog, 0);
+    //读取当前足端的坐标，里面是正解，已经把当前坐标设置到 leg[0].Foot.p
+    Get_Now_Pos_Spd(0);
+    //作为动作的初始点
+    Action_Param.Init_Pos[0] = leg[0].Foot.p;
+    tick_start = Time_Points_Param.Now_Tick; // 获取当前时间
+    // Set_All_Motor_Param(&Action_Param.Posctrl_keep);
 }
 void start_run(void)
 {
+    GetTick();
+    float t = Time_Points_Param.Now_Tick - tick_start;
+    line(0,Action_Param.Init_Pos[0].x,Action_Param.Init_Pos[0].z,
+        Action_Param.Init_Pos[0].x + 0.05f,Action_Param.Init_Pos[0].z,2.0f,t,&Action_Param.VMC_Swing_Stand[0]);
 }
 
 void start_exit(void)
@@ -506,26 +526,4 @@ void crossleg_run()
     Cross_leg(t);
 }
 
-////////void test1_enter()
-////////{
-////////}
 
-////////void test1_run()
-////////{
-////////}
-
-////////void test2_enter()
-////////{
-////////}
-
-////////void test2_run()
-////////{
-////////}
-
-////////void test3_enter()
-////////{
-////////}
-
-////////void test3_run()
-////////{
-////////}

@@ -271,8 +271,8 @@ static bool Kinematic_Inversion_Update(Param *param, foot *Foot, Kine *Joint)
     const float L2 = param->rod[1];
     const float hip_min = -PI / 3.0f;
     const float hip_max = PI / 3.0f;
-    const float knee_min = -PI / 3.0f;
-    const float knee_max = 4.0f * PI / 9.0f;
+    const float knee_min = -5.0f * PI / 6.0f;
+    const float knee_max = PI / 6.0f;
     const float roundoff = 8.0f * FLT_EPSILON;
     float cosine = (Foot->p.x * Foot->p.x + Foot->p.z * Foot->p.z -
                     L1 * L1 - L2 * L2) / (2.0f * L1 * L2);
@@ -289,6 +289,10 @@ static bool Kinematic_Inversion_Update(Param *param, foot *Foot, Kine *Joint)
     for (int branch = 0; branch < 2; ++branch)
     {
         float q2 = branch == 0 ? knee : -knee;
+        // 当前分支超限时不自动换支；参考膝角为零时允许选择任一合法分支。
+        if ((Joint->Pos.Beta > 0.0f && q2 < 0.0f) ||
+            (Joint->Pos.Beta < 0.0f && q2 > 0.0f))
+            continue;
         float q1 = atan2f(Foot->p.x, -Foot->p.z) -
                    atan2f(L2 * sinf(q2), L1 + L2 * cosf(q2));
         if (q1 < hip_min - roundoff || q1 > hip_max + roundoff ||
@@ -486,13 +490,13 @@ void Set_Motor_Target_Pos(LEG *leg)
 }
 
 /* ------------------------------------------电机的初始化------------------------------------------------ */
-
+//把当前电机反馈读数，记录为已知关节姿态对应的参考读数
 void Leg_Initpos_Reset(void)
 {
     if ((motor[0].mode == 0) && (motor[1].mode == 0) && (motor[2].mode == 0) && (motor[3].mode == 0) && (motor[4].mode == 0) && (motor[5].mode == 0) && (motor[6].mode == 0) && (motor[7].mode == 0))
     {
-        leg[0].const_param.start_motor_Alpha = motor[1].measure.Pos;
-        leg[0].const_param.start_motor_Beta = motor[0].measure.Pos;
+        leg[0].const_param.start_motor_Alpha = motor[0].measure.Pos;
+        leg[0].const_param.start_motor_Beta = motor[1].measure.Pos;
 
         leg[1].const_param.start_motor_Alpha = motor[3].measure.Pos;
         leg[1].const_param.start_motor_Beta = motor[2].measure.Pos;
@@ -505,22 +509,24 @@ void Leg_Initpos_Reset(void)
     }
 }
 
+//大腿 0 2 4 6
+//小腿 1 3 5 7
 void leg_init() // 更换电机只需改此部分
 {
     uint8_t id = 0;
-    // 腿0
+    // 腿0：软件测试参考姿态，非实物标定；逻辑槽1/0分别表示髋/膝。
     id = 0;
-    leg[id].const_param.motor_Alpha_id = 1;
+    leg[id].const_param.motor_Alpha_id = 0;
     leg[id].const_param.motor_Alpha_dir = 1;
-    leg[id].const_param.start_Alpha = -116.41f * REG_TO_RADIN;
-    leg[id].const_param.start_motor_Alpha = 0.3352;
+    leg[id].const_param.start_Alpha = 30.0f * CHANGE_TO_RADIAN;
+    leg[id].const_param.start_motor_Alpha = 0.0f;
 
-    leg[id].const_param.motor_Beta_id = 0;
-    leg[id].const_param.motor_Beta_dir = -1;
-    leg[id].const_param.start_Beta = -203.01f * REG_TO_RADIN;
-    leg[id].const_param.start_motor_Beta = 0.3107;
+    leg[id].const_param.motor_Beta_id = 1;
+    leg[id].const_param.motor_Beta_dir = 1;
+    leg[id].const_param.start_Beta = -60.0f * CHANGE_TO_RADIAN;
+    leg[id].const_param.start_motor_Beta = 0.0f;
 
-    // 腿1
+    // 腿1。后面的参数还没有改
     id = 1;
     leg[id].const_param.motor_Alpha_id = 1;
     leg[id].const_param.motor_Alpha_dir = 1;
@@ -597,10 +603,10 @@ void Get_Now_Pos_Spd(uint8_t legid)
         switch (legid)
         {
         case 0:
-            leg[0].Motor.Pos.Alpha = motor[1].measure.Pos;
-            leg[0].Motor.Pos.Beta = motor[0].measure.Pos;
-            leg[0].Motor.Spd.Alpha = motor[1].measure.W;
-            leg[0].Motor.Spd.Beta = motor[0].measure.W;
+            leg[0].Motor.Pos.Alpha = motor[0].measure.Pos;
+            leg[0].Motor.Pos.Beta = motor[1].measure.Pos;
+            leg[0].Motor.Spd.Alpha = motor[0].measure.W;
+            leg[0].Motor.Spd.Beta = motor[1].measure.W;
 
             // 电机坐标系转化到足端,更新足端位置
             //正解，得到的是当前的位置，一个更新角度，一个更新足端相对于当前的位置

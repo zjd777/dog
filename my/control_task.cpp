@@ -47,15 +47,16 @@ void Task25ns_Callback (){
 
 /**
  * @brief 控制任务的初始化
- * @return void
+ * @return 1：电机初始化成功并启动周期发送；0：电机初始化失败。
  */
-void control_task_init(){
+uint8_t control_task_init(void){
     control_system_init_bl = 0;
 	remote_control_init();
 	if(motor_task_init()==0u)
-        return;
+        return 0U;
    HAL_TIM_Base_Start_IT(&htim8);
    control_system_init_bl=1;
+   return 1U;
 }
 
 
@@ -65,7 +66,7 @@ void control_task_init(){
  */
 void control_task (){
 	SBUS_Handle();
-	motor_control_text(); // 显式台架测试入口，常规循环不覆盖动作目标。
+	// motor_control_text(); // 显式台架测试入口，常规循环不覆盖动作目标。
 
 }
 

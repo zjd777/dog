@@ -29,6 +29,7 @@
 #include "BMI088driver.h"
 #include "control_task.h"
 #include "motor_task.h"
+#include "dog.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -101,16 +102,27 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-  __HAL_TIM_SET_COUNTER(&htim3, 0);                // 清零计数器
-  __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);  // 清除残留更新标志
-  HAL_TIM_Base_Start_IT(&htim3);  
+  if (control_task_init() == 0U)
+  {
+    Error_Handler();
+  }
+  leg_init();                                       //给腿设参数
+  HAL_Delay(2000);
+  // 软件测试使用预设参考值；实物在已知姿态下再采集。
+  // Leg_Initpos_Reset();                             //记录当前的角度，和init的值形成对照
 
-  control_task_init();
+
     while(BMI088_init())
     {
         ;
     }
+    
+  start_enter();
+  __HAL_TIM_SET_COUNTER(&htim3, 0);                // 清零计数器
+  __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);  // 清除残留更新标志
+  HAL_TIM_Base_Start_IT(&htim3); 
   // motor_test();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -120,7 +132,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    control_task ();
+    // control_task ();
   }
   /* USER CODE END 3 */
 }

@@ -17,13 +17,11 @@ extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart3;
 
 //宇树电机类和控制所需数据
-Class_Motor_YS motor_YS;
+Class_Motor_YS motor_YS[8];
 Motor_Control motor[MOTOR_COUNT] = {};
 // 仅为现有 USART2 / ID0 分配通信测试槽，尚未确认它的实际髋膝位置。
 static constexpr uint8_t motor_ys_test_slot = 0U;
 static constexpr float motor_ys_gear_ratio = 6.33f;
-// 中断写入，初始化函数读取
-static volatile bool motor_ys_feedback_received = false;
 
 void motor_YS_Data_send(Class_Motor_YS *__motor_YS, const Motor_Control *data);
 void motor_YS_Data_recv(Class_Motor_YS *__motor_YS, Motor_Control *data);
@@ -55,9 +53,36 @@ void USART2_RxHandler(UART_HandleTypeDef *Header, uint8_t *Buffer){
     switch (User_Rx_usart_id )
     {
     case  0:
-        motor_YS.UART_recv(Buffer);
-	    motor_YS_Data_recv(&motor_YS, &motor[motor_ys_test_slot]);
-        motor_ys_feedback_received = true;
+        motor_YS[0].UART_recv(Buffer);
+	    motor_YS_Data_recv(&motor_YS[0], &motor[0]);
+    break;
+    case  1:
+        motor_YS[1].UART_recv(Buffer);
+	    motor_YS_Data_recv(&motor_YS[1], &motor[1]);
+    break;
+    case  2:
+        motor_YS[2].UART_recv(Buffer);
+	    motor_YS_Data_recv(&motor_YS[2], &motor[2]);
+    break;
+    case  3:
+        motor_YS[3].UART_recv(Buffer);
+	    motor_YS_Data_recv(&motor_YS[3], &motor[3]);
+    break;       
+    case  4:
+        motor_YS[4].UART_recv(Buffer);
+	    motor_YS_Data_recv(&motor_YS[4], &motor[4]);
+    break;    
+       case  5:
+        motor_YS[5].UART_recv(Buffer);
+	    motor_YS_Data_recv(&motor_YS[5], &motor[5]);
+    break;
+        case  6:
+        motor_YS[6].UART_recv(Buffer);
+	    motor_YS_Data_recv(&motor_YS[6], &motor[6]);
+    break;
+        case  7:
+        motor_YS[7].UART_recv(Buffer);
+	    motor_YS_Data_recv(&motor_YS[7], &motor[7]);
     break;
     default:
         break;
@@ -99,13 +124,12 @@ void USART3_RxHandler(UART_HandleTypeDef *Header, uint8_t *Buffer){
 
 bool motor_YS_Init(UART_HandleTypeDef *huart, Class_Motor_YS *__motor, uint8_t id, Motor_Control *data){
     __motor->Init(huart, id, Motor_YS_Pos_control);
-    motor_ys_feedback_received = false;
     data->feedback_valid = 0U;
 
     const uint32_t start_tick = HAL_GetTick();
     const uint32_t timeout_ms = 500U;  // 示例超时时间
 
-    while (!motor_ys_feedback_received)
+    while (!data->feedback_valid)
     {
         if ((uint32_t)(HAL_GetTick() - start_tick) >= timeout_ms)
         {
@@ -170,28 +194,43 @@ void motor_YS_Data_send(Class_Motor_YS *__motor_YS, const Motor_Control *data){
  * @return void
  */
 // void motor_task_init(){
-uint8_t motor_task_init(){
+uint8_t motor_task_init(void)
+{
+    USART_RX485_init(&huart2, USART2_RxHandler);
 
-	// HAL_TIM_Base_Start_IT(&htim8);
+    for (uint8_t id = 0U; id < 2U; ++id)
+    {
+        if (!motor_YS_Init(&huart2,
+                           &motor_YS[id],
+                           id,
+                           &motor[id]))
+        {
+            return 0U;
+        }
+    }
 
-   USART_RX485_init(&huart2,USART2_RxHandler);//串口2回调函数的初始化
-
- //宇树电机初始化,成功返回
-	// motor_YS_Init(&huart2,&motor_YS,1,&motor[motor_ys_test_slot]);
-    return motor_YS_Init(
-        &huart2, &motor_YS, 0, &motor[motor_ys_test_slot]
-    ) ? 1U : 0U;
+    return 1U;
 }
 
 /**
  * @brief 电机任务
  * @return void
  */
- //在这里面把数据处理好之后发给电机
+ //在这里面把数据处理好之后发给电机,再中断里被调用
 void motor_task(){
 
-	motor_YS_Data_send(&motor_YS, &motor[motor_ys_test_slot]);
-	motor_YS.UART_send();
+    //进一次中断每一次仅仅发一个电机的数据
+    static uint8_t index = 0U;
+    if(index==2)
+    {
+        index=0;
+    }
+	motor_YS_Data_send(&motor_YS[index], &motor[index]);
+	motor_YS[index].UART_send();
+
+    //当前只有两个后面再改
+
+    index++;
 }
 
 void motor_test(void)

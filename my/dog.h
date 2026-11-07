@@ -112,7 +112,6 @@ typedef struct
     foot Foot_Last_Target;
 } pctrl;
 
-//得大改
 typedef struct
 {
     uint8_t id;              // 腿id(0~3)
