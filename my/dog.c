@@ -15,6 +15,8 @@
  */
 #include "dog.h"
 #include "math.h"
+#include <float.h>
+#include <stdbool.h>
 #include "stm32h7xx_hal.h"
 // #include "timer.h"
 // #include "A1_motor.h"
@@ -39,6 +41,7 @@
 // 腿长最短0.14667m 最长0.4048m
 
 LEG leg[4];
+static bool position_target_initialized[4];
 Euler Euler_Angle;
 extern float data2send[10];
 /* ------------------------------------------运动学分析------------------------------------------------ */
@@ -55,50 +58,82 @@ extern float data2send[10];
     关节和足端坐标系的转换就是运动学的正逆解,但是注意关节的坐标量和电机实际编码器上的量有一些区别,具体区别看下面注释
 */
 
+// /**
+//  * @brief 四连杆运动学正解,输入电机转角,输出足端位置；输入电机转速,输出足端速度
+//  * @param param 狗单腿结构体里的一些不会变的定参
+//  * @param Joint 两电机在关节坐标系的速度 位置
+//  * @param Foot 解算出的足端速度 位置结构体
+//  */
+// void Kinematic_Solution(Param *param, foot *Foot, Kine *Joint) // 其实就是Motor_Covert_To_Foot,关节坐标系到足端坐标系
+// {
+//     float xb, xd, zb, zd;
+//     float A, B, C;
+//     float vbx, vbz, vdx, vdz;
+//     float sin_Phi1, sin_Phi2, cos_Phi1, cos_Phi2, w_Phi1;
+
+//     // 根据电机转角计算足端位置
+//     xb = param->rod[0] * cosf(Joint->Pos.Alpha);
+//     xd = param->rod[2] * cosf(Joint->Pos.Beta);
+//     zb = param->rod[0] * sinf(Joint->Pos.Alpha);
+//     zd = param->rod[2] * sinf(Joint->Pos.Beta);
+
+//     A = 2 * param->rod[1] * (xb + xd);
+//     B = 2 * param->rod[1] * (zb + zd);
+//     C = param->rod[1] * param->rod[1] + (xb + xd) * (xb + xd) + (zb + zd) * (zb + zd) - param->rod[3] * param->rod[3];
+
+//     cos_Phi1 = (-C * A - B * sqrtf(A * A - B * B - C * C)) / (A * A + B * B);
+//     cos_Phi2 = (xb - xd + param->rod[1] * cos_Phi1) / param->rod[3];
+
+//     sin_Phi1 = (-C - A * cos_Phi1) / B;
+//     sin_Phi2 = (zb + zd + param->rod[1] * sin_Phi1) / param->rod[3];
+
+//     Foot->p.x = xb + param->rod[1] * cos_Phi1;
+//     Foot->p.z = zb + param->rod[1] * sin_Phi1;
+
+//     // 根据电机角速度计算足端速度
+//     vbx = -param->rod[0] * Joint->Spd.Alpha * sinf(Joint->Pos.Alpha);
+//     vbz = param->rod[0] * Joint->Spd.Alpha * cosf(Joint->Pos.Alpha);
+//     vdx = -param->rod[2] * Joint->Spd.Beta * sinf(Joint->Pos.Beta);
+//     vdz = param->rod[2] * Joint->Spd.Beta * cosf(Joint->Pos.Beta);
+
+//     w_Phi1 = ((vbx - vdx) * cos_Phi2 + (vbz - vdz) * sin_Phi2) / (param->rod[1] * (sin_Phi1 * cos_Phi2 - sin_Phi2 * cos_Phi1));
+
+//     Foot->v.x = vbx - param->rod[1] * w_Phi1 * sin_Phi1;
+//     Foot->v.z = vbz + param->rod[1] * w_Phi1 * cos_Phi1;
+// }
+
 /**
- * @brief 四连杆运动学正解,输入电机转角,输出足端位置；输入电机转速,输出足端速度
- * @param param 狗单腿结构体里的一些不会变的定参
- * @param Joint 两电机在关节坐标系的速度 位置
- * @param Foot 解算出的足端速度 位置结构体
+ * @brief 串联腿正解及足端相对机身的速度，髋轴为原点，X向前、Z向上。
+ * @param param rod[0]为大腿长，rod[1]为膝轴到足端球心的长度，单位m。
+ * @param Foot 输出足端球心位置(m)和速度(m/s)，Y方向为0。
+ * @param Joint Alpha为髋角，Beta为相对膝角；位置rad，速度rad/s。
  */
-void Kinematic_Solution(Param *param, foot *Foot, Kine *Joint) // 其实就是Motor_Covert_To_Foot,关节坐标系到足端坐标系
+void Kinematic_Solution(Param *param, foot *Foot, Kine *Joint)
 {
-    float xb, xd, zb, zd;
-    float A, B, C;
-    float vbx, vbz, vdx, vdz;
-    float sin_Phi1, sin_Phi2, cos_Phi1, cos_Phi2, w_Phi1;
+    const float L1 = param->rod[0];
+    const float L2 = param->rod[1];
+    const float q1 = Joint->Pos.Alpha;
+    const float q2 = Joint->Pos.Beta;
+    const float dq1 = Joint->Spd.Alpha;
+    const float dq2 = Joint->Spd.Beta;
 
-    // 根据电机转角计算足端位置
-    xb = param->rod[0] * cosf(Joint->Pos.Alpha);
-    xd = param->rod[2] * cosf(Joint->Pos.Beta);
-    zb = param->rod[0] * sinf(Joint->Pos.Alpha);
-    zd = param->rod[2] * sinf(Joint->Pos.Beta);
+    // 膝角相对大腿定义，小腿相对机身的角度及角速度均为两关节量之和。
+    const float s1 = sinf(q1);
+    const float c1 = cosf(q1);
+    const float s12 = sinf(q1 + q2);
+    const float c12 = cosf(q1 + q2);
+    const float dq12 = dq1 + dq2;
 
-    A = 2 * param->rod[1] * (xb + xd);
-    B = 2 * param->rod[1] * (zb + zd);
-    C = param->rod[1] * param->rod[1] + (xb + xd) * (xb + xd) + (zb + zd) * (zb + zd) - param->rod[3] * param->rod[3];
+    Foot->p.x = L1 * s1 + L2 * s12;
+    Foot->p.y = 0.0f;
+    Foot->p.z = -L1 * c1 - L2 * c12;
 
-    cos_Phi1 = (-C * A - B * sqrtf(A * A - B * B - C * C)) / (A * A + B * B);
-    cos_Phi2 = (xb - xd + param->rod[1] * cos_Phi1) / param->rod[3];
-
-    sin_Phi1 = (-C - A * cos_Phi1) / B;
-    sin_Phi2 = (zb + zd + param->rod[1] * sin_Phi1) / param->rod[3];
-
-    Foot->p.x = xb + param->rod[1] * cos_Phi1;
-    Foot->p.z = zb + param->rod[1] * sin_Phi1;
-
-    // 根据电机角速度计算足端速度
-    vbx = -param->rod[0] * Joint->Spd.Alpha * sinf(Joint->Pos.Alpha);
-    vbz = param->rod[0] * Joint->Spd.Alpha * cosf(Joint->Pos.Alpha);
-    vdx = -param->rod[2] * Joint->Spd.Beta * sinf(Joint->Pos.Beta);
-    vdz = param->rod[2] * Joint->Spd.Beta * cosf(Joint->Pos.Beta);
-
-    w_Phi1 = ((vbx - vdx) * cos_Phi2 + (vbz - vdz) * sin_Phi2) / (param->rod[1] * (sin_Phi1 * cos_Phi2 - sin_Phi2 * cos_Phi1));
-
-    Foot->v.x = vbx - param->rod[1] * w_Phi1 * sin_Phi1;
-    Foot->v.z = vbz + param->rod[1] * w_Phi1 * cos_Phi1;
+    Foot->v.x = L1 * c1 * dq1 + L2 * c12 * dq12;
+    Foot->v.y = 0.0f;
+    Foot->v.z = L1 * s1 * dq1 + L2 * s12 * dq12;
 }
 
+/* 旧并联腿位置逆解，保留供对照。
 void Kinematic_Inversion_Update(Param *param, foot *Foot, Kine *Joint)
 {
     // 根据足端位置计算关节电机转角
@@ -141,6 +176,7 @@ void Kinematic_Inversion_Update(Param *param, foot *Foot, Kine *Joint)
     Joint->Pos.Alpha = param->true_a1 + AOB;
     Joint->Pos.Beta = 2.0f * param->true_a1 - Joint->Pos.Alpha + 6.2832f;
 }
+*/
 
 /**
  * @brief 四连杆运动学逆解,输入足端位置,输出电机转角；输入足端速度,输出电机转速
@@ -148,11 +184,12 @@ void Kinematic_Inversion_Update(Param *param, foot *Foot, Kine *Joint)
  * @param Joint 两电机在关节坐标系的速度 位置
  * @param Foot 解算出的足端速度 位置结构体
  */
+/* 旧并联腿速度逆解，保留供对照。
 void Kinematic_Inversion(Param *param, foot *Foot, Kine *Joint)
 {
+    // 根据足端速度计算关节电机角速度
     Kinematic_Inversion_Update(param, Foot, Joint);
 
-    // 根据足端速度计算关节电机角速度
     float sin_Phi1, sin_Phi2, cos_Phi1, cos_Phi2;
     float xb, xd, zb, zd;
     float A, B, C;
@@ -175,6 +212,107 @@ void Kinematic_Inversion(Param *param, foot *Foot, Kine *Joint)
     Joint->Spd.Alpha = (Foot->v.x * cos_Phi1 + Foot->v.z * sin_Phi1) / (param->rod[0] * (sin_Phi1 * cosf(Joint->Pos.Alpha) - sinf(Joint->Pos.Alpha) * cos_Phi1));
     Joint->Spd.Beta = (Foot->v.x * cos_Phi2 + Foot->v.z * sin_Phi2) / (param->rod[2] * (sin_Phi2 * cosf(Joint->Pos.Beta) - sinf(Joint->Pos.Beta) * cos_Phi2));
 }
+*/
+
+//调用位置求解，再算关节角速度；全部成功才更新 Joint
+//来自ai的莫名其妙的防御性编程，就是逆解函数，加了一层结算完成判断
+static bool Kinematic_Inversion_Try(Param *param, foot *Foot, Kine *Joint);
+static bool Kinematic_Inversion_Update(Param *param, foot *Foot, Kine *Joint);
+
+/* Joint->Pos 同时作为选支参考；无可用解时保留传入的位置和速度。 */
+void Kinematic_Inversion(Param *param, foot *Foot, Kine *Joint)
+{
+    Kinematic_Inversion_Try(param, Foot, Joint);
+}
+
+static bool Kinematic_Inversion_Try(Param *param, foot *Foot, Kine *Joint)
+{
+    if (!isfinite(Foot->p.x) || !isfinite(Foot->p.z) ||
+        !isfinite(Foot->v.x) || !isfinite(Foot->v.z))
+        return false;
+
+    Kine result = *Joint;
+    if (!Kinematic_Inversion_Update(param, Foot, &result))
+        return false;
+
+    if (Foot->v.x == 0.0f && Foot->v.z == 0.0f)
+    {
+        result.Spd.Alpha = 0.0f;
+        result.Spd.Beta = 0.0f;
+    }
+    else
+    {
+        const float L1 = param->rod[0];
+        const float L2 = param->rod[1];
+        const float q1 = result.Pos.Alpha;
+        const float q2 = result.Pos.Beta;
+        const float sin_q2 = sinf(q2);
+
+        // 伸直附近 J 不可稳定求逆；|sin(q2)| <= 0.001 时不求非零速度解。
+        if (fabsf(sin_q2) <= 0.001f)
+            return false;
+
+        const float j11 = L1 * cosf(q1) + L2 * cosf(q1 + q2);
+        const float j12 = L2 * cosf(q1 + q2);
+        const float j21 = L1 * sinf(q1) + L2 * sinf(q1 + q2);
+        const float j22 = L2 * sinf(q1 + q2);
+        const float det = L1 * L2 * sin_q2;
+        result.Spd.Alpha = (j22 * Foot->v.x - j12 * Foot->v.z) / det;
+        result.Spd.Beta = (j11 * Foot->v.z - j21 * Foot->v.x) / det;
+    }
+
+    *Joint = result;
+    return true;
+}
+//足端位置 → 关节角度的计算
+static bool Kinematic_Inversion_Update(Param *param, foot *Foot, Kine *Joint)
+{
+    const float L1 = param->rod[0];
+    const float L2 = param->rod[1];
+    const float hip_min = -PI / 3.0f;
+    const float hip_max = PI / 3.0f;
+    const float knee_min = -PI / 3.0f;
+    const float knee_max = 4.0f * PI / 9.0f;
+    const float roundoff = 8.0f * FLT_EPSILON;
+    float cosine = (Foot->p.x * Foot->p.x + Foot->p.z * Foot->p.z -
+                    L1 * L1 - L2 * L2) / (2.0f * L1 * L2);
+
+    // 只吸收浮点舍入造成的微小越界，不把不可达目标投影到工作空间。
+    if (cosine < -1.0f - roundoff || cosine > 1.0f + roundoff)
+        return false;
+    cosine = fminf(1.0f, fmaxf(-1.0f, cosine));
+
+    const float knee = acosf(cosine);
+    Order best = Joint->Pos;
+    float best_distance = FLT_MAX;
+    bool found = false;
+    for (int branch = 0; branch < 2; ++branch)
+    {
+        float q2 = branch == 0 ? knee : -knee;
+        float q1 = atan2f(Foot->p.x, -Foot->p.z) -
+                   atan2f(L2 * sinf(q2), L1 + L2 * cosf(q2));
+        if (q1 < hip_min - roundoff || q1 > hip_max + roundoff ||
+            q2 < knee_min - roundoff || q2 > knee_max + roundoff)
+            continue;
+        q1 = fminf(hip_max, fmaxf(hip_min, q1));
+        q2 = fminf(knee_max, fmaxf(knee_min, q2));
+
+        const float delta1 = q1 - Joint->Pos.Alpha;
+        const float delta2 = q2 - Joint->Pos.Beta;
+        const float distance = delta1 * delta1 + delta2 * delta2;
+        if (!found || distance < best_distance)
+        {
+            best.Alpha = q1;
+            best.Beta = q2;
+            best_distance = distance;
+            found = true;
+        }
+    }
+
+    if (found)
+        Joint->Pos = best;
+    return found;
+}
 
 /**
  * @brief 四连杆运动学逆解,输入足端位置,输出电机转角；输入足端速度,输出电机转速
@@ -184,6 +322,7 @@ void Kinematic_Inversion(Param *param, foot *Foot, Kine *Joint)
  * @param Motor_Torque 关节电机输出力矩
  * @warning 使用这个函数前必须用Get_Now_Pos_Spd函数获得关节坐标系的电机位置
  */
+/* 旧并联五连杆雅可比，保留供对照。
 void VMC_Jacobi_Matrix(LEG *leg, Param *param, Point *VMC_Output, Order *Motor_Torque)
 {
     // 算出Phi1,Phi2,和运动学正解的一模一样
@@ -219,6 +358,33 @@ void VMC_Jacobi_Matrix(LEG *leg, Param *param, Point *VMC_Output, Order *Motor_T
     Motor_Torque->Alpha = (VMC_Output->x * Jacobi[0][0] + VMC_Output->z * Jacobi[0][1]) * param->motor_Alpha_dir;
     Motor_Torque->Beta = (VMC_Output->x * Jacobi[1][0] + VMC_Output->z * Jacobi[1][1]) * param->motor_Beta_dir;
 }
+*/
+
+/**
+ * @brief 串联腿 J^T*F，将足端虚拟力转换为电机输出轴力矩。
+ * @param leg Joint中Alpha为髋角，Beta为相对膝角，单位rad。
+ * @param param rod[0]/rod[1]为大腿/小腿长度(m)，方向符号取自关节标定。
+ * @param VMC_Output 与正解相同的机身方向、髋轴原点下的足端虚拟力(N)。
+ * @param Motor_Torque 输出轴力矩(N·m)，关节到电机的方向符号仅在此应用一次。
+ */
+void VMC_Jacobi_Matrix(LEG *leg, Param *param, Point *VMC_Output, Order *Motor_Torque)
+{
+    const float L1 = param->rod[0];
+    const float L2 = param->rod[1];
+    const float q1 = leg->Joint.Pos.Alpha;
+    const float q12 = q1 + leg->Joint.Pos.Beta;
+
+    // J的行对应足端(x,z)，列对应关节(q1,q2)，与正解的速度定义一致。
+    const float j11 = L1 * cosf(q1) + L2 * cosf(q12);
+    const float j12 = L2 * cosf(q12);
+    const float j21 = L1 * sinf(q1) + L2 * sinf(q12);
+    const float j22 = L2 * sinf(q12);
+
+    const float tau_hip = j11 * VMC_Output->x + j21 * VMC_Output->z;
+    const float tau_knee = j12 * VMC_Output->x + j22 * VMC_Output->z;
+    Motor_Torque->Alpha = tau_hip * param->motor_Alpha_dir;
+    Motor_Torque->Beta = tau_knee * param->motor_Beta_dir;
+}
 
 /**
  * @brief  因为宇树电机没有绝对编码器,上电时编码器的值就是0。所以要做一步电机坐标系和关节坐标系的转化
@@ -246,12 +412,23 @@ void Motor_Convert_To_Joint(Param *param, Kine *Joint, Kine *Motor) // 电机坐
     Joint->Spd.Beta = param->motor_Beta_dir * Motor->Spd.Beta;
 }
 
+//计算下个时刻电机的位置，逆解，由目标点算来
 void Foot_Convert_To_Motor(Param *param, foot *Foot, Kine *Joint, Kine *Motor) // 足端坐标系下角度与角速度转换到电机坐标系下角度与角速度
 {
-    Kinematic_Inversion(param, Foot, Joint);
+    Kine result = *Joint;
+    // 调用方已通过 Get_Now_Pos_Spd 更新该腿反馈；首次选支以反馈角为参考，第一次执行的时候进入
+    if (!position_target_initialized[param->id]){
+            result.Pos = leg[param->id].Joint.Pos;
+            // position_target_initialized[param->id] = true;
+    }
+    //逆解，就是外面逃了一层判断
+    if (!Kinematic_Inversion_Try(param, Foot, &result))
+        return;
+    *Joint = result;
     Joint_Convert_To_Motor(param, Joint, Motor);
+    position_target_initialized[param->id] = true;
 }
-
+//更新当前点的参数，正解，类似pid的闭环反馈
 void Motor_Convert_To_Foot(Param *param, foot *Foot, Kine *Joint, Kine *Motor) // 电机坐标系下角度与角速度转换到足端坐标系下角度与角速度
 {
     Motor_Convert_To_Joint(param, Joint, Motor);
@@ -267,6 +444,9 @@ void Motor_Convert_To_Foot(Param *param, foot *Foot, Kine *Joint, Kine *Motor) /
 //实际只是写内存，还没有执行串口发送
 void Set_Motor_Target_Torque(LEG *leg)
 {
+    // 再次进入位控时，从反馈姿态重新建立选支参考。
+    position_target_initialized[leg->const_param.id] = false;
+
     if (leg->Motor_Torque.Alpha >= 33.5f)
         leg->Motor_Torque.Alpha = 33.5f;
 
@@ -380,9 +560,9 @@ void leg_init() // 更换电机只需改此部分
     {
         leg[i].const_param.id = i;
 
-        // 腿四连杆长度
-        leg[i].const_param.rod[0] = 0.175f;
-        leg[i].const_param.rod[1] = 0.3f;
+        // 串联正解使用前两项：髋到膝、膝到足端球心，单位m。
+        leg[i].const_param.rod[0] = 0.250f;
+        leg[i].const_param.rod[1] = 0.247f;
         leg[i].const_param.rod[2] = 0.175f;
         leg[i].const_param.rod[3] = 0.3f;
 
@@ -423,12 +603,13 @@ void Get_Now_Pos_Spd(uint8_t legid)
             leg[0].Motor.Spd.Beta = motor[0].measure.W;
 
             // 电机坐标系转化到足端,更新足端位置
+            //正解，得到的是当前的位置，一个更新角度，一个更新足端相对于当前的位置
             Motor_Convert_To_Joint(&leg[0].const_param, &leg[0].Joint, &leg[0].Motor);
             Kinematic_Solution(&leg[0].const_param, &leg[0].Foot, &leg[0].Joint);
 
-            // 更新运动学逆解算出的电机转角
-            if (Get_Now_Ctrl_State() == Force_Ctrl)
-                Kinematic_Inversion_Update(&leg[0].const_param, &leg[0].Foot, &leg[0].Joint);
+            // 串联反馈直接使用标定转换后的关节角，不再由旧并联逆解回写。
+            // if (Get_Now_Ctrl_State() == Force_Ctrl)
+            //     Kinematic_Inversion_Update(&leg[0].const_param, &leg[0].Foot, &leg[0].Joint);
 
             break;
 
@@ -442,9 +623,8 @@ void Get_Now_Pos_Spd(uint8_t legid)
             Motor_Convert_To_Joint(&leg[1].const_param, &leg[1].Joint, &leg[1].Motor);
             Kinematic_Solution(&leg[1].const_param, &leg[1].Foot, &leg[1].Joint);
 
-            // 更新运动学逆解算出的电机转角
-            if (Get_Now_Ctrl_State() == Force_Ctrl)
-                Kinematic_Inversion_Update(&leg[1].const_param, &leg[1].Foot, &leg[1].Joint);
+            // if (Get_Now_Ctrl_State() == Force_Ctrl)
+            //     Kinematic_Inversion_Update(&leg[1].const_param, &leg[1].Foot, &leg[1].Joint);
 
             break;
 
@@ -458,9 +638,8 @@ void Get_Now_Pos_Spd(uint8_t legid)
             Motor_Convert_To_Joint(&leg[2].const_param, &leg[2].Joint, &leg[2].Motor);
             Kinematic_Solution(&leg[2].const_param, &leg[2].Foot, &leg[2].Joint);
 
-            // 更新运动学逆解算出的电机转角
-            if (Get_Now_Ctrl_State() == Force_Ctrl)
-                Kinematic_Inversion_Update(&leg[2].const_param, &leg[2].Foot, &leg[2].Joint);
+            // if (Get_Now_Ctrl_State() == Force_Ctrl)
+            //     Kinematic_Inversion_Update(&leg[2].const_param, &leg[2].Foot, &leg[2].Joint);
 
             break;
 
@@ -474,9 +653,8 @@ void Get_Now_Pos_Spd(uint8_t legid)
             Motor_Convert_To_Joint(&leg[3].const_param, &leg[3].Joint, &leg[3].Motor);
             Kinematic_Solution(&leg[3].const_param, &leg[3].Foot, &leg[3].Joint);
 
-            // 更新运动学逆解算出的电机转角
-            if (Get_Now_Ctrl_State() == Force_Ctrl)
-                Kinematic_Inversion_Update(&leg[3].const_param, &leg[3].Foot, &leg[3].Joint);
+            // if (Get_Now_Ctrl_State() == Force_Ctrl)
+            //     Kinematic_Inversion_Update(&leg[3].const_param, &leg[3].Foot, &leg[3].Joint);
 
             break;
         }
@@ -489,12 +667,28 @@ void Get_Now_Pos_Spd(uint8_t legid)
  * @param Output
  * @param Pitch
  */
+// void Coordinate_Transform(Point *Input, Point *Output, float Pitch, LEG *leg, uint8_t legid)
+// {
+//     if (leg->pitch_ctrl_state == Follow_Ground)
+//     {
+//         Output->x = Input->x * cosf(Pitch * 0.1217f) + Input->z * sinf(Pitch * 0.1217f);
+//         Output->z = -Input->x * sinf(Pitch * 0.1217f) + Input->z * cosf(Pitch * 0.1217f);
+//     }
+//     else
+//     {
+//         Output->x = Input->x;
+//         Output->z = Input->z;
+//     }
+// }
+
+// Pitch 单位为度；传入 Pitch 将水平参考坐标转到机身坐标，传入 -Pitch 做反向转换。
 void Coordinate_Transform(Point *Input, Point *Output, float Pitch, LEG *leg, uint8_t legid)
 {
     if (leg->pitch_ctrl_state == Follow_Ground)
     {
-        Output->x = Input->x * cosf(Pitch * 0.1217f) + Input->z * sinf(Pitch * 0.1217f);
-        Output->z = -Input->x * sinf(Pitch * 0.1217f) + Input->z * cosf(Pitch * 0.1217f);
+        const float theta = Pitch * CHANGE_TO_RADIAN;
+        Output->x = Input->x * cosf(theta) - Input->z * sinf(theta);
+        Output->z = Input->x * sinf(theta) + Input->z * cosf(theta);
     }
     else
     {

@@ -6395,15 +6395,18 @@ Discarded input sections
  .group         0x00000000        0xc build/my/dog.o
  .group         0x00000000        0xc build/my/dog.o
  .group         0x00000000        0xc build/my/dog.o
+ .group         0x00000000        0xc build/my/dog.o
  .text          0x00000000        0x0 build/my/dog.o
  .data          0x00000000        0x0 build/my/dog.o
  .bss           0x00000000        0x0 build/my/dog.o
+ .text.Kinematic_Inversion
+                0x00000000        0x8 build/my/dog.o
  .text.Motor_Convert_To_Foot
                 0x00000000       0x1c build/my/dog.o
  .text.Leg_Initpos_Reset
                 0x00000000       0x88 build/my/dog.o
  .text.leg_init
-                0x00000000      0x140 build/my/dog.o
+                0x00000000      0x14c build/my/dog.o
  .text.Cycloid_Generator
                 0x00000000       0xb4 build/my/dog.o
  .text.Cycloid  0x00000000       0xd0 build/my/dog.o
@@ -6477,9 +6480,9 @@ Discarded input sections
  .debug_macro   0x00000000       0xa6 build/my/dog.o
  .debug_macro   0x00000000      0x5e6 build/my/dog.o
  .debug_macro   0x00000000       0x1c build/my/dog.o
+ .debug_macro   0x00000000       0x22 build/my/dog.o
  .debug_macro   0x00000000       0x16 build/my/dog.o
  .debug_macro   0x00000000       0x3c build/my/dog.o
- .debug_macro   0x00000000       0x22 build/my/dog.o
  .debug_macro   0x00000000       0x34 build/my/dog.o
  .debug_macro   0x00000000       0x16 build/my/dog.o
  .group         0x00000000        0xc build/my/fsm.o
@@ -8362,6 +8365,10 @@ Discarded input sections
  .text          0x00000000        0x0 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_sqrt.o)
  .data          0x00000000        0x0 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_sqrt.o)
  .bss           0x00000000        0x0 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_sqrt.o)
+ .text.sqrtf    0x00000000       0x44 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_sqrt.o)
+ .debug_frame   0x00000000       0x44 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_sqrt.o)
+ .ARM.attributes
+                0x00000000       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_sqrt.o)
  .text          0x00000000        0x0 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_fabs.o)
  .data          0x00000000        0x0 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_fabs.o)
  .bss           0x00000000        0x0 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_fabs.o)
@@ -8630,7 +8637,7 @@ END GROUP
                 0x08000000                g_pfnVectors
                 0x080002cc                        . = ALIGN (0x4)
 
-.text           0x080002d0     0xc410
+.text           0x080002d0     0xc210
                 0x080002d0                        . = ALIGN (0x4)
  *(.text*)
  .text.Error_Handler
@@ -9155,683 +9162,677 @@ END GROUP
  .text.crossleg_run
                 0x08007dbc        0x8 build/my/action.o
                 0x08007dbc                crossleg_run
- .text.Kinematic_Solution
-                0x08007dc4      0x19a build/my/dog.o
-                0x08007dc4                Kinematic_Solution
- *fill*         0x08007f5e        0x2 
  .text.Kinematic_Inversion_Update
-                0x08007f60      0x130 build/my/dog.o
-                0x08007f60                Kinematic_Inversion_Update
- .text.Kinematic_Inversion
-                0x08008090      0x14a build/my/dog.o
-                0x08008090                Kinematic_Inversion
+                0x08007dc4      0x1a8 build/my/dog.o
+ .text.Kinematic_Inversion_Try
+                0x08007f6c      0x168 build/my/dog.o
+ .text.Kinematic_Solution
+                0x080080d4       0xa0 build/my/dog.o
+                0x080080d4                Kinematic_Solution
  .text.VMC_Jacobi_Matrix
-                0x080081da      0x1a4 build/my/dog.o
-                0x080081da                VMC_Jacobi_Matrix
+                0x08008174       0xa6 build/my/dog.o
+                0x08008174                VMC_Jacobi_Matrix
  .text.Joint_Convert_To_Motor
-                0x0800837e       0x82 build/my/dog.o
-                0x0800837e                Joint_Convert_To_Motor
+                0x0800821a       0x82 build/my/dog.o
+                0x0800821a                Joint_Convert_To_Motor
  .text.Motor_Convert_To_Joint
-                0x08008400       0x82 build/my/dog.o
-                0x08008400                Motor_Convert_To_Joint
+                0x0800829c       0x82 build/my/dog.o
+                0x0800829c                Motor_Convert_To_Joint
  .text.Foot_Convert_To_Motor
-                0x08008482       0x18 build/my/dog.o
-                0x08008482                Foot_Convert_To_Motor
- *fill*         0x0800849a        0x2 
+                0x0800831e       0x1c build/my/dog.o
+                0x0800831e                Foot_Convert_To_Motor
+ *fill*         0x0800833a        0x2 
  .text.Set_Motor_Target_Torque
-                0x0800849c      0x110 build/my/dog.o
-                0x0800849c                Set_Motor_Target_Torque
+                0x0800833c      0x110 build/my/dog.o
+                0x0800833c                Set_Motor_Target_Torque
  .text.Set_Motor_Target_Pos
-                0x080085ac       0x94 build/my/dog.o
-                0x080085ac                Set_Motor_Target_Pos
+                0x0800844c       0x94 build/my/dog.o
+                0x0800844c                Set_Motor_Target_Pos
  .text.Get_Now_Pos_Spd
-                0x08008640      0x178 build/my/dog.o
-                0x08008640                Get_Now_Pos_Spd
+                0x080084e0      0x120 build/my/dog.o
+                0x080084e0                Get_Now_Pos_Spd
  .text.Coordinate_Transform
-                0x080087b8       0x70 build/my/dog.o
-                0x080087b8                Coordinate_Transform
+                0x08008600       0x70 build/my/dog.o
+                0x08008600                Coordinate_Transform
  .text.PD_Control
-                0x08008828       0xc6 build/my/dog.o
-                0x08008828                PD_Control
+                0x08008670       0xc6 build/my/dog.o
+                0x08008670                PD_Control
  .text.line_Generator
-                0x080088ee       0x6c build/my/dog.o
-                0x080088ee                line_Generator
- *fill*         0x0800895a        0x2 
- .text.line     0x0800895c       0xd0 build/my/dog.o
-                0x0800895c                line
+                0x08008736       0x6c build/my/dog.o
+                0x08008736                line_Generator
+ *fill*         0x080087a2        0x2 
+ .text.line     0x080087a4       0xd0 build/my/dog.o
+                0x080087a4                line
  .text.Bezier_Trans
-                0x08008a2c       0x36 build/my/dog.o
-                0x08008a2c                Bezier_Trans
+                0x08008874       0x36 build/my/dog.o
+                0x08008874                Bezier_Trans
  .text.Bezier_Trans_Inv
-                0x08008a62       0x36 build/my/dog.o
-                0x08008a62                Bezier_Trans_Inv
+                0x080088aa       0x36 build/my/dog.o
+                0x080088aa                Bezier_Trans_Inv
  .text.Bezier_Generator
-                0x08008a98      0x168 build/my/dog.o
-                0x08008a98                Bezier_Generator
- .text.Bezier   0x08008c00       0xe8 build/my/dog.o
-                0x08008c00                Bezier
+                0x080088e0      0x168 build/my/dog.o
+                0x080088e0                Bezier_Generator
+ .text.Bezier   0x08008a48       0xe8 build/my/dog.o
+                0x08008a48                Bezier
  .text.Bezier_Stance
-                0x08008ce8       0xe8 build/my/dog.o
-                0x08008ce8                Bezier_Stance
+                0x08008b30       0xe8 build/my/dog.o
+                0x08008b30                Bezier_Stance
  .text.Change_Dog_Pitch_State
-                0x08008dd0       0x18 build/my/dog.o
-                0x08008dd0                Change_Dog_Pitch_State
+                0x08008c18       0x18 build/my/dog.o
+                0x08008c18                Change_Dog_Pitch_State
  .text.keep_exit
-                0x08008de8        0x2 build/my/fsm.o
-                0x08008de8                keep_exit
+                0x08008c30        0x2 build/my/fsm.o
+                0x08008c30                keep_exit
  .text.squat_exit
-                0x08008dea        0x2 build/my/fsm.o
-                0x08008dea                squat_exit
+                0x08008c32        0x2 build/my/fsm.o
+                0x08008c32                squat_exit
  .text.jump_enter
-                0x08008dec        0x2 build/my/fsm.o
-                0x08008dec                jump_enter
+                0x08008c34        0x2 build/my/fsm.o
+                0x08008c34                jump_enter
  .text.jump_exit
-                0x08008dee        0x2 build/my/fsm.o
-                0x08008dee                jump_exit
+                0x08008c36        0x2 build/my/fsm.o
+                0x08008c36                jump_exit
  .text.jump_run
-                0x08008df0        0x2 build/my/fsm.o
-                0x08008df0                jump_run
+                0x08008c38        0x2 build/my/fsm.o
+                0x08008c38                jump_run
  .text.backflip_enter
-                0x08008df2        0x2 build/my/fsm.o
-                0x08008df2                backflip_enter
+                0x08008c3a        0x2 build/my/fsm.o
+                0x08008c3a                backflip_enter
  .text.backflip_exit
-                0x08008df4        0x2 build/my/fsm.o
-                0x08008df4                backflip_exit
+                0x08008c3c        0x2 build/my/fsm.o
+                0x08008c3c                backflip_exit
  .text.backflip_run
-                0x08008df6        0x2 build/my/fsm.o
-                0x08008df6                backflip_run
+                0x08008c3e        0x2 build/my/fsm.o
+                0x08008c3e                backflip_run
  .text.crossleg_exit
-                0x08008df8        0x2 build/my/fsm.o
-                0x08008df8                crossleg_exit
+                0x08008c40        0x2 build/my/fsm.o
+                0x08008c40                crossleg_exit
  .text.line_enter
-                0x08008dfa        0x2 build/my/fsm.o
-                0x08008dfa                line_enter
+                0x08008c42        0x2 build/my/fsm.o
+                0x08008c42                line_enter
  .text.line_exit
-                0x08008dfc        0x2 build/my/fsm.o
-                0x08008dfc                line_exit
+                0x08008c44        0x2 build/my/fsm.o
+                0x08008c44                line_exit
  .text.line_run
-                0x08008dfe        0x2 build/my/fsm.o
-                0x08008dfe                line_run
+                0x08008c46        0x2 build/my/fsm.o
+                0x08008c46                line_run
  .text.test1_enter
-                0x08008e00        0x2 build/my/fsm.o
-                0x08008e00                test1_enter
+                0x08008c48        0x2 build/my/fsm.o
+                0x08008c48                test1_enter
  .text.test1_exit
-                0x08008e02        0x2 build/my/fsm.o
-                0x08008e02                test1_exit
+                0x08008c4a        0x2 build/my/fsm.o
+                0x08008c4a                test1_exit
  .text.test1_run
-                0x08008e04        0x2 build/my/fsm.o
-                0x08008e04                test1_run
+                0x08008c4c        0x2 build/my/fsm.o
+                0x08008c4c                test1_run
  .text.test2_enter
-                0x08008e06        0x2 build/my/fsm.o
-                0x08008e06                test2_enter
+                0x08008c4e        0x2 build/my/fsm.o
+                0x08008c4e                test2_enter
  .text.test2_exit
-                0x08008e08        0x2 build/my/fsm.o
-                0x08008e08                test2_exit
+                0x08008c50        0x2 build/my/fsm.o
+                0x08008c50                test2_exit
  .text.test2_run
-                0x08008e0a        0x2 build/my/fsm.o
-                0x08008e0a                test2_run
+                0x08008c52        0x2 build/my/fsm.o
+                0x08008c52                test2_run
  .text.test3_enter
-                0x08008e0c        0x2 build/my/fsm.o
-                0x08008e0c                test3_enter
+                0x08008c54        0x2 build/my/fsm.o
+                0x08008c54                test3_enter
  .text.test3_exit
-                0x08008e0e        0x2 build/my/fsm.o
-                0x08008e0e                test3_exit
+                0x08008c56        0x2 build/my/fsm.o
+                0x08008c56                test3_exit
  .text.test3_run
-                0x08008e10        0x2 build/my/fsm.o
-                0x08008e10                test3_run
+                0x08008c58        0x2 build/my/fsm.o
+                0x08008c58                test3_run
  .text.jump_hurdles_enter
-                0x08008e12        0x2 build/my/fsm.o
-                0x08008e12                jump_hurdles_enter
+                0x08008c5a        0x2 build/my/fsm.o
+                0x08008c5a                jump_hurdles_enter
  .text.jump_hurdles_exit
-                0x08008e14        0x2 build/my/fsm.o
-                0x08008e14                jump_hurdles_exit
+                0x08008c5c        0x2 build/my/fsm.o
+                0x08008c5c                jump_hurdles_exit
  .text.jump_hurdles_run
-                0x08008e16        0x2 build/my/fsm.o
-                0x08008e16                jump_hurdles_run
+                0x08008c5e        0x2 build/my/fsm.o
+                0x08008c5e                jump_hurdles_run
  .text.SetDogChangeAble
-                0x08008e18        0xc build/my/fsm.o
-                0x08008e18                SetDogChangeAble
- .text.DogFSM   0x08008e24       0x58 build/my/fsm.o
-                0x08008e24                DogFSM
+                0x08008c60        0xc build/my/fsm.o
+                0x08008c60                SetDogChangeAble
+ .text.DogFSM   0x08008c6c       0x58 build/my/fsm.o
+                0x08008c6c                DogFSM
  .text.DWT_Init
-                0x08008e7c       0x38 build/my/delay_DWT.o
-                0x08008e7c                DWT_Init
+                0x08008cc4       0x38 build/my/delay_DWT.o
+                0x08008cc4                DWT_Init
  .text.CPU_TS_TmrRd
-                0x08008eb4        0xc build/my/delay_DWT.o
-                0x08008eb4                CPU_TS_TmrRd
+                0x08008cfc        0xc build/my/delay_DWT.o
+                0x08008cfc                CPU_TS_TmrRd
  .text.Generate_Time_Points
-                0x08008ec0       0x78 build/my/delay_DWT.o
-                0x08008ec0                Generate_Time_Points
- .text.GetTick  0x08008f38        0x8 build/my/delay_DWT.o
-                0x08008f38                GetTick
+                0x08008d08       0x78 build/my/delay_DWT.o
+                0x08008d08                Generate_Time_Points
+ .text.GetTick  0x08008d80        0x8 build/my/delay_DWT.o
+                0x08008d80                GetTick
  .text.line_Pos
-                0x08008f40       0xc4 build/my/pos_ctrl.o
-                0x08008f40                line_Pos
+                0x08008d88       0xc4 build/my/pos_ctrl.o
+                0x08008d88                line_Pos
  .text.Bezier_Pos
-                0x08009004       0xdc build/my/pos_ctrl.o
-                0x08009004                Bezier_Pos
+                0x08008e4c       0xdc build/my/pos_ctrl.o
+                0x08008e4c                Bezier_Pos
  .text.Bezier_Stance_Pos
-                0x080090e0       0xdc build/my/pos_ctrl.o
-                0x080090e0                Bezier_Stance_Pos
+                0x08008f28       0xdc build/my/pos_ctrl.o
+                0x08008f28                Bezier_Stance_Pos
  .text.gait_posctrl
-                0x080091bc      0x274 build/my/pos_ctrl.o
-                0x080091bc                gait_posctrl
+                0x08009004      0x274 build/my/pos_ctrl.o
+                0x08009004                gait_posctrl
  .text.Walk_Away_Posctrl
-                0x08009430      0x230 build/my/pos_ctrl.o
-                0x08009430                Walk_Away_Posctrl
+                0x08009278      0x230 build/my/pos_ctrl.o
+                0x08009278                Walk_Away_Posctrl
  .text.Change_Ctrl_State
-                0x08009660        0xc build/my/pos_ctrl.o
-                0x08009660                Change_Ctrl_State
+                0x080094a8        0xc build/my/pos_ctrl.o
+                0x080094a8                Change_Ctrl_State
  .text.Get_Now_Ctrl_State
-                0x0800966c        0xc build/my/pos_ctrl.o
-                0x0800966c                Get_Now_Ctrl_State
+                0x080094b4        0xc build/my/pos_ctrl.o
+                0x080094b4                Get_Now_Ctrl_State
  .text.Pitch_Pos_Offest
-                0x08009678        0x2 build/my/walk.o
-                0x08009678                Pitch_Pos_Offest
+                0x080094c0        0x2 build/my/walk.o
+                0x080094c0                Pitch_Pos_Offest
  .text.Yaw_Pos_Crol
-                0x0800967a      0x128 build/my/walk.o
-                0x0800967a                Yaw_Pos_Crol
- *fill*         0x080097a2        0x2 
- .text.gait     0x080097a4      0x294 build/my/walk.o
-                0x080097a4                gait
+                0x080094c2      0x128 build/my/walk.o
+                0x080094c2                Yaw_Pos_Crol
+ *fill*         0x080095ea        0x2 
+ .text.gait     0x080095ec      0x294 build/my/walk.o
+                0x080095ec                gait
  .text.Walk_Away
-                0x08009a38      0x22c build/my/walk.o
-                0x08009a38                Walk_Away
+                0x08009880      0x22c build/my/walk.o
+                0x08009880                Walk_Away
  .text.walk_enter
-                0x08009c64       0x8c build/my/walk.o
-                0x08009c64                walk_enter
+                0x08009aac       0x8c build/my/walk.o
+                0x08009aac                walk_enter
  .text.walk_run
-                0x08009cf0       0x68 build/my/walk.o
-                0x08009cf0                walk_run
+                0x08009b38       0x68 build/my/walk.o
+                0x08009b38                walk_run
  .text.walk_exit
-                0x08009d58        0x2 build/my/walk.o
-                0x08009d58                walk_exit
- .text._init    0x08009d5a        0x2 build/build_support/runtime.o
-                0x08009d5a                _init
- .text._fini    0x08009d5c        0x2 build/build_support/runtime.o
-                0x08009d5c                _fini
- .text._close   0x08009d5e       0x10 build/build_support/runtime.o
-                0x08009d5e                _close
- .text._fstat   0x08009d6e       0x1e build/build_support/runtime.o
-                0x08009d6e                _fstat
- .text._isatty  0x08009d8c       0x16 build/build_support/runtime.o
-                0x08009d8c                _isatty
- .text._lseek   0x08009da2       0x10 build/build_support/runtime.o
-                0x08009da2                _lseek
- .text._read    0x08009db2       0x10 build/build_support/runtime.o
-                0x08009db2                _read
- .text._write   0x08009dc2       0x1a build/build_support/runtime.o
-                0x08009dc2                _write
- .text._sbrk    0x08009ddc       0x48 build/build_support/runtime.o
-                0x08009ddc                _sbrk
+                0x08009ba0        0x2 build/my/walk.o
+                0x08009ba0                walk_exit
+ .text._init    0x08009ba2        0x2 build/build_support/runtime.o
+                0x08009ba2                _init
+ .text._fini    0x08009ba4        0x2 build/build_support/runtime.o
+                0x08009ba4                _fini
+ .text._close   0x08009ba6       0x10 build/build_support/runtime.o
+                0x08009ba6                _close
+ .text._fstat   0x08009bb6       0x1e build/build_support/runtime.o
+                0x08009bb6                _fstat
+ .text._isatty  0x08009bd4       0x16 build/build_support/runtime.o
+                0x08009bd4                _isatty
+ .text._lseek   0x08009bea       0x10 build/build_support/runtime.o
+                0x08009bea                _lseek
+ .text._read    0x08009bfa       0x10 build/build_support/runtime.o
+                0x08009bfa                _read
+ .text._write   0x08009c0a       0x1a build/build_support/runtime.o
+                0x08009c0a                _write
+ .text._sbrk    0x08009c24       0x48 build/build_support/runtime.o
+                0x08009c24                _sbrk
  .text._Z16Task1ms_Callbackv
-                0x08009e24       0x14 build/my/control_task.o
-                0x08009e24                Task1ms_Callback()
+                0x08009c6c       0x14 build/my/control_task.o
+                0x08009c6c                Task1ms_Callback()
  .text.control_task_init
-                0x08009e38       0x2c build/my/control_task.o
-                0x08009e38                control_task_init
+                0x08009c80       0x2c build/my/control_task.o
+                0x08009c80                control_task_init
  .text.control_task
-                0x08009e64        0xc build/my/control_task.o
-                0x08009e64                control_task
+                0x08009cac        0xc build/my/control_task.o
+                0x08009cac                control_task
  .text.HAL_TIM_PeriodElapsedCallback
-                0x08009e70       0x38 build/my/control_task.o
-                0x08009e70                HAL_TIM_PeriodElapsedCallback
+                0x08009cb8       0x38 build/my/control_task.o
+                0x08009cb8                HAL_TIM_PeriodElapsedCallback
  .text._ZL14crc_ccitt_byteth
-                0x08009ea8       0x18 build/my/motor_task.o
+                0x08009cf0       0x18 build/my/motor_task.o
  .text._ZL9crc_ccittPKhj
-                0x08009ec0       0x1a build/my/motor_task.o
- *fill*         0x08009eda        0x2 
+                0x08009d08       0x1a build/my/motor_task.o
+ *fill*         0x08009d22        0x2 
  .text._Z41__static_initialization_and_destruction_0v
-                0x08009edc       0x10 build/my/motor_task.o
+                0x08009d24       0x10 build/my/motor_task.o
  .text.Set_All_Motor_Param
-                0x08009eec       0x30 build/my/motor_task.o
-                0x08009eec                Set_All_Motor_Param
+                0x08009d34       0x30 build/my/motor_task.o
+                0x08009d34                Set_All_Motor_Param
  .text._Z18motor_YS_Data_recvP14Class_Motor_YSP13Motor_Control
-                0x08009f1c       0x34 build/my/motor_task.o
-                0x08009f1c                motor_YS_Data_recv(Class_Motor_YS*, Motor_Control*)
+                0x08009d64       0x34 build/my/motor_task.o
+                0x08009d64                motor_YS_Data_recv(Class_Motor_YS*, Motor_Control*)
  .text._Z16USART2_RxHandlerP20__UART_HandleTypeDefPh
-                0x08009f50       0x5c build/my/motor_task.o
-                0x08009f50                USART2_RxHandler(__UART_HandleTypeDef*, unsigned char*)
+                0x08009d98       0x5c build/my/motor_task.o
+                0x08009d98                USART2_RxHandler(__UART_HandleTypeDef*, unsigned char*)
  .text._Z13motor_YS_InitP20__UART_HandleTypeDefP14Class_Motor_YShP13Motor_Control
-                0x08009fac       0x7c build/my/motor_task.o
-                0x08009fac                motor_YS_Init(__UART_HandleTypeDef*, Class_Motor_YS*, unsigned char, Motor_Control*)
+                0x08009df4       0x7c build/my/motor_task.o
+                0x08009df4                motor_YS_Init(__UART_HandleTypeDef*, Class_Motor_YS*, unsigned char, Motor_Control*)
  .text._Z18motor_YS_Data_sendP14Class_Motor_YSPK13Motor_Control
-                0x0800a028       0x4c build/my/motor_task.o
-                0x0800a028                motor_YS_Data_send(Class_Motor_YS*, Motor_Control const*)
+                0x08009e70       0x4c build/my/motor_task.o
+                0x08009e70                motor_YS_Data_send(Class_Motor_YS*, Motor_Control const*)
  .text.motor_task_init
-                0x0800a074       0x34 build/my/motor_task.o
-                0x0800a074                motor_task_init
+                0x08009ebc       0x34 build/my/motor_task.o
+                0x08009ebc                motor_task_init
  .text.motor_task
-                0x0800a0a8       0x1c build/my/motor_task.o
-                0x0800a0a8                motor_task
+                0x08009ef0       0x1c build/my/motor_task.o
+                0x08009ef0                motor_task
  .text.motor_control_text
-                0x0800a0c4       0x34 build/my/motor_task.o
-                0x0800a0c4                motor_control_text
+                0x08009f0c       0x34 build/my/motor_task.o
+                0x08009f0c                motor_control_text
  .text._GLOBAL__sub_I_motor_YS
-                0x0800a0f8        0x8 build/my/motor_task.o
+                0x08009f40        0x8 build/my/motor_task.o
  .text._Z16USART_RX485_initP20__UART_HandleTypeDefPFvS0_PhE
-                0x0800a100       0x68 build/Device/unitree/UART.o
-                0x0800a100                USART_RX485_init(__UART_HandleTypeDef*, void (*)(__UART_HandleTypeDef*, unsigned char*))
+                0x08009f48       0x68 build/Device/unitree/UART.o
+                0x08009f48                USART_RX485_init(__UART_HandleTypeDef*, void (*)(__UART_HandleTypeDef*, unsigned char*))
  .text._Z18UART_Transmit_DataP20__UART_HandleTypeDefPhh
-                0x0800a168       0x24 build/Device/unitree/UART.o
-                0x0800a168                UART_Transmit_Data(__UART_HandleTypeDef*, unsigned char*, unsigned char)
+                0x08009fb0       0x24 build/Device/unitree/UART.o
+                0x08009fb0                UART_Transmit_Data(__UART_HandleTypeDef*, unsigned char*, unsigned char)
  .text.HAL_UART_RxCpltCallback
-                0x0800a18c       0x68 build/Device/unitree/UART.o
-                0x0800a18c                HAL_UART_RxCpltCallback
+                0x08009fd4       0x68 build/Device/unitree/UART.o
+                0x08009fd4                HAL_UART_RxCpltCallback
  .text._ZL14crc_ccitt_byteth
-                0x0800a1f4       0x18 build/Device/unitree/motor_YS.o
+                0x0800a03c       0x18 build/Device/unitree/motor_YS.o
  .text._ZL9crc_ccittPKhj
-                0x0800a20c       0x1a build/Device/unitree/motor_YS.o
- *fill*         0x0800a226        0x2 
+                0x0800a054       0x1a build/Device/unitree/motor_YS.o
+ *fill*         0x0800a06e        0x2 
  .text._ZN14Class_Motor_YS4InitEP20__UART_HandleTypeDeftRK18Enum_Motor_YS_Mode
-                0x0800a228       0x1c build/Device/unitree/motor_YS.o
-                0x0800a228                Class_Motor_YS::Init(__UART_HandleTypeDef*, unsigned short, Enum_Motor_YS_Mode const&)
+                0x0800a070       0x1c build/Device/unitree/motor_YS.o
+                0x0800a070                Class_Motor_YS::Init(__UART_HandleTypeDef*, unsigned short, Enum_Motor_YS_Mode const&)
  .text._ZN14Class_Motor_YS9send_dataEv
-                0x0800a244      0x144 build/Device/unitree/motor_YS.o
-                0x0800a244                Class_Motor_YS::send_data()
+                0x0800a08c      0x144 build/Device/unitree/motor_YS.o
+                0x0800a08c                Class_Motor_YS::send_data()
  .text._ZN14Class_Motor_YS9UART_sendEv
-                0x0800a388       0x18 build/Device/unitree/motor_YS.o
-                0x0800a388                Class_Motor_YS::UART_send()
+                0x0800a1d0       0x18 build/Device/unitree/motor_YS.o
+                0x0800a1d0                Class_Motor_YS::UART_send()
  .text._ZN14Class_Motor_YS6enableEv
-                0x0800a3a0        0xc build/Device/unitree/motor_YS.o
-                0x0800a3a0                Class_Motor_YS::enable()
+                0x0800a1e8        0xc build/Device/unitree/motor_YS.o
+                0x0800a1e8                Class_Motor_YS::enable()
  .text._ZN14Class_Motor_YS4loseEv
-                0x0800a3ac        0xc build/Device/unitree/motor_YS.o
-                0x0800a3ac                Class_Motor_YS::lose()
+                0x0800a1f4        0xc build/Device/unitree/motor_YS.o
+                0x0800a1f4                Class_Motor_YS::lose()
  .text._ZN14Class_Motor_YS9UART_recvEPh
-                0x0800a3b8      0x104 build/Device/unitree/motor_YS.o
-                0x0800a3b8                Class_Motor_YS::UART_recv(unsigned char*)
+                0x0800a200      0x104 build/Device/unitree/motor_YS.o
+                0x0800a200                Class_Motor_YS::UART_recv(unsigned char*)
  .text._Z19remote_control_initv
-                0x0800a4bc       0x18 build/Device/remote_control/remote_control.o
-                0x0800a4bc                remote_control_init()
+                0x0800a304       0x18 build/Device/remote_control/remote_control.o
+                0x0800a304                remote_control_init()
  .text.Reset_Handler
-                0x0800a4d4       0x50 build/build_support/startup_stm32h723xx.o
-                0x0800a4d4                Reset_Handler
+                0x0800a31c       0x50 build/build_support/startup_stm32h723xx.o
+                0x0800a31c                Reset_Handler
  .text.Default_Handler
-                0x0800a524        0x2 build/build_support/startup_stm32h723xx.o
-                0x0800a524                RTC_Alarm_IRQHandler
-                0x0800a524                EXTI2_IRQHandler
-                0x0800a524                TIM8_CC_IRQHandler
-                0x0800a524                UART8_IRQHandler
-                0x0800a524                SPI4_IRQHandler
-                0x0800a524                FDCAN3_IT0_IRQHandler
-                0x0800a524                TIM1_CC_IRQHandler
-                0x0800a524                BDMA_Channel6_IRQHandler
-                0x0800a524                DMA2_Stream5_IRQHandler
-                0x0800a524                CORDIC_IRQHandler
-                0x0800a524                BDMA_Channel1_IRQHandler
-                0x0800a524                TAMP_STAMP_IRQHandler
-                0x0800a524                EXTI3_IRQHandler
-                0x0800a524                LPTIM4_IRQHandler
-                0x0800a524                TIM8_TRG_COM_TIM14_IRQHandler
-                0x0800a524                LPTIM2_IRQHandler
-                0x0800a524                DFSDM1_FLT1_IRQHandler
-                0x0800a524                DMAMUX2_OVR_IRQHandler
-                0x0800a524                I2C3_ER_IRQHandler
-                0x0800a524                DFSDM1_FLT2_IRQHandler
-                0x0800a524                I2C5_EV_IRQHandler
-                0x0800a524                USART10_IRQHandler
-                0x0800a524                MDMA_IRQHandler
-                0x0800a524                LPTIM3_IRQHandler
-                0x0800a524                HSEM1_IRQHandler
-                0x0800a524                EXTI0_IRQHandler
-                0x0800a524                I2C2_EV_IRQHandler
-                0x0800a524                FPU_IRQHandler
-                0x0800a524                OTG_HS_WKUP_IRQHandler
-                0x0800a524                FDCAN1_IT1_IRQHandler
-                0x0800a524                LTDC_ER_IRQHandler
-                0x0800a524                DMA2_Stream2_IRQHandler
-                0x0800a524                SPI1_IRQHandler
-                0x0800a524                OCTOSPI1_IRQHandler
-                0x0800a524                TIM6_DAC_IRQHandler
-                0x0800a524                DMA2_Stream3_IRQHandler
-                0x0800a524                OCTOSPI2_IRQHandler
-                0x0800a524                DFSDM1_FLT3_IRQHandler
-                0x0800a524                TIM23_IRQHandler
-                0x0800a524                USART6_IRQHandler
-                0x0800a524                TIM17_IRQHandler
-                0x0800a524                BDMA_Channel7_IRQHandler
-                0x0800a524                LPTIM5_IRQHandler
-                0x0800a524                ADC3_IRQHandler
-                0x0800a524                DMA2_Stream0_IRQHandler
-                0x0800a524                TIM4_IRQHandler
-                0x0800a524                BDMA_Channel2_IRQHandler
-                0x0800a524                I2C1_EV_IRQHandler
-                0x0800a524                DMAMUX1_OVR_IRQHandler
-                0x0800a524                TIM16_IRQHandler
-                0x0800a524                UART4_IRQHandler
-                0x0800a524                BDMA_Channel5_IRQHandler
-                0x0800a524                RCC_IRQHandler
-                0x0800a524                UART9_IRQHandler
-                0x0800a524                TIM8_BRK_TIM12_IRQHandler
-                0x0800a524                TIM1_TRG_COM_IRQHandler
-                0x0800a524                ECC_IRQHandler
-                0x0800a524                FMAC_IRQHandler
-                0x0800a524                CEC_IRQHandler
-                0x0800a524                EXTI15_10_IRQHandler
-                0x0800a524                BDMA_Channel0_IRQHandler
-                0x0800a524                ADC_IRQHandler
-                0x0800a524                I2C5_ER_IRQHandler
-                0x0800a524                SPI5_IRQHandler
-                0x0800a524                TIM7_IRQHandler
-                0x0800a524                FDCAN3_IT1_IRQHandler
-                0x0800a524                SDMMC1_IRQHandler
-                0x0800a524                TIM5_IRQHandler
-                0x0800a524                DMA2_Stream7_IRQHandler
-                0x0800a524                TIM15_IRQHandler
-                0x0800a524                PVD_AVD_IRQHandler
-                0x0800a524                I2C3_EV_IRQHandler
-                0x0800a524                EXTI9_5_IRQHandler
-                0x0800a524                RTC_WKUP_IRQHandler
-                0x0800a524                LTDC_IRQHandler
-                0x0800a524                ETH_WKUP_IRQHandler
-                0x0800a524                SPDIF_RX_IRQHandler
-                0x0800a524                OTG_HS_EP1_IN_IRQHandler
-                0x0800a524                TIM24_IRQHandler
-                0x0800a524                CRS_IRQHandler
-                0x0800a524                EXTI4_IRQHandler
-                0x0800a524                RNG_IRQHandler
-                0x0800a524                FDCAN2_IT1_IRQHandler
-                0x0800a524                ETH_IRQHandler
-                0x0800a524                TIM1_UP_IRQHandler
-                0x0800a524                BDMA_Channel4_IRQHandler
-                0x0800a524                OTG_HS_EP1_OUT_IRQHandler
-                0x0800a524                WWDG_IRQHandler
-                0x0800a524                SPI6_IRQHandler
-                0x0800a524                MDIOS_IRQHandler
-                0x0800a524                I2C4_EV_IRQHandler
-                0x0800a524                FDCAN2_IT0_IRQHandler
-                0x0800a524                LPUART1_IRQHandler
-                0x0800a524                FDCAN1_IT0_IRQHandler
-                0x0800a524                TIM2_IRQHandler
-                0x0800a524                OTG_HS_IRQHandler
-                0x0800a524                DMA2D_IRQHandler
-                0x0800a524                TIM1_BRK_IRQHandler
-                0x0800a524                EXTI1_IRQHandler
-                0x0800a524                SDMMC2_IRQHandler
-                0x0800a524                BDMA_Channel3_IRQHandler
-                0x0800a524                DTS_IRQHandler
-                0x0800a524                UART7_IRQHandler
-                0x0800a524                MDIOS_WKUP_IRQHandler
-                0x0800a524                DFSDM1_FLT0_IRQHandler
-                0x0800a524                SAI4_IRQHandler
-                0x0800a524                I2C2_ER_IRQHandler
-                0x0800a524                DMA2_Stream1_IRQHandler
-                0x0800a524                FLASH_IRQHandler
-                0x0800a524                DMA2_Stream4_IRQHandler
-                0x0800a524                SPI3_IRQHandler
-                0x0800a524                WAKEUP_PIN_IRQHandler
-                0x0800a524                I2C1_ER_IRQHandler
-                0x0800a524                FMC_IRQHandler
-                0x0800a524                FDCAN_CAL_IRQHandler
-                0x0800a524                SWPMI1_IRQHandler
-                0x0800a524                COMP1_IRQHandler
-                0x0800a524                LPTIM1_IRQHandler
-                0x0800a524                DCMI_PSSI_IRQHandler
-                0x0800a524                I2C4_ER_IRQHandler
-                0x0800a524                DMA2_Stream6_IRQHandler
-                0x0800a524                SAI1_IRQHandler
- *fill*         0x0800a526        0x2 
- .text.acosf    0x0800a528       0x58 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_acos.o)
-                0x0800a528                acosf
- .text.atan2f   0x0800a580        0x4 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_atan2.o)
-                0x0800a580                atan2f
- .text.fmodf    0x0800a584       0x48 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_fmod.o)
-                0x0800a584                fmodf
- .text.sqrtf    0x0800a5cc       0x44 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_sqrt.o)
-                0x0800a5cc                sqrtf
- .text.fabsf    0x0800a610       0x10 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_fabs.o)
-                0x0800a610                fabsf
- .text.nanf     0x0800a620        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_nan.o)
-                0x0800a620                nanf
- *fill*         0x0800a62c        0x4 
- .text.sinf     0x0800a630      0x1ec C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sinf.o)
-                0x0800a630                sinf
- *fill*         0x0800a81c        0x4 
- .text.cosf     0x0800a820      0x1b4 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-cosf.o)
-                0x0800a820                cosf
+                0x0800a36c        0x2 build/build_support/startup_stm32h723xx.o
+                0x0800a36c                RTC_Alarm_IRQHandler
+                0x0800a36c                EXTI2_IRQHandler
+                0x0800a36c                TIM8_CC_IRQHandler
+                0x0800a36c                UART8_IRQHandler
+                0x0800a36c                SPI4_IRQHandler
+                0x0800a36c                FDCAN3_IT0_IRQHandler
+                0x0800a36c                TIM1_CC_IRQHandler
+                0x0800a36c                BDMA_Channel6_IRQHandler
+                0x0800a36c                DMA2_Stream5_IRQHandler
+                0x0800a36c                CORDIC_IRQHandler
+                0x0800a36c                BDMA_Channel1_IRQHandler
+                0x0800a36c                TAMP_STAMP_IRQHandler
+                0x0800a36c                EXTI3_IRQHandler
+                0x0800a36c                LPTIM4_IRQHandler
+                0x0800a36c                TIM8_TRG_COM_TIM14_IRQHandler
+                0x0800a36c                LPTIM2_IRQHandler
+                0x0800a36c                DFSDM1_FLT1_IRQHandler
+                0x0800a36c                DMAMUX2_OVR_IRQHandler
+                0x0800a36c                I2C3_ER_IRQHandler
+                0x0800a36c                DFSDM1_FLT2_IRQHandler
+                0x0800a36c                I2C5_EV_IRQHandler
+                0x0800a36c                USART10_IRQHandler
+                0x0800a36c                MDMA_IRQHandler
+                0x0800a36c                LPTIM3_IRQHandler
+                0x0800a36c                HSEM1_IRQHandler
+                0x0800a36c                EXTI0_IRQHandler
+                0x0800a36c                I2C2_EV_IRQHandler
+                0x0800a36c                FPU_IRQHandler
+                0x0800a36c                OTG_HS_WKUP_IRQHandler
+                0x0800a36c                FDCAN1_IT1_IRQHandler
+                0x0800a36c                LTDC_ER_IRQHandler
+                0x0800a36c                DMA2_Stream2_IRQHandler
+                0x0800a36c                SPI1_IRQHandler
+                0x0800a36c                OCTOSPI1_IRQHandler
+                0x0800a36c                TIM6_DAC_IRQHandler
+                0x0800a36c                DMA2_Stream3_IRQHandler
+                0x0800a36c                OCTOSPI2_IRQHandler
+                0x0800a36c                DFSDM1_FLT3_IRQHandler
+                0x0800a36c                TIM23_IRQHandler
+                0x0800a36c                USART6_IRQHandler
+                0x0800a36c                TIM17_IRQHandler
+                0x0800a36c                BDMA_Channel7_IRQHandler
+                0x0800a36c                LPTIM5_IRQHandler
+                0x0800a36c                ADC3_IRQHandler
+                0x0800a36c                DMA2_Stream0_IRQHandler
+                0x0800a36c                TIM4_IRQHandler
+                0x0800a36c                BDMA_Channel2_IRQHandler
+                0x0800a36c                I2C1_EV_IRQHandler
+                0x0800a36c                DMAMUX1_OVR_IRQHandler
+                0x0800a36c                TIM16_IRQHandler
+                0x0800a36c                UART4_IRQHandler
+                0x0800a36c                BDMA_Channel5_IRQHandler
+                0x0800a36c                RCC_IRQHandler
+                0x0800a36c                UART9_IRQHandler
+                0x0800a36c                TIM8_BRK_TIM12_IRQHandler
+                0x0800a36c                TIM1_TRG_COM_IRQHandler
+                0x0800a36c                ECC_IRQHandler
+                0x0800a36c                FMAC_IRQHandler
+                0x0800a36c                CEC_IRQHandler
+                0x0800a36c                EXTI15_10_IRQHandler
+                0x0800a36c                BDMA_Channel0_IRQHandler
+                0x0800a36c                ADC_IRQHandler
+                0x0800a36c                I2C5_ER_IRQHandler
+                0x0800a36c                SPI5_IRQHandler
+                0x0800a36c                TIM7_IRQHandler
+                0x0800a36c                FDCAN3_IT1_IRQHandler
+                0x0800a36c                SDMMC1_IRQHandler
+                0x0800a36c                TIM5_IRQHandler
+                0x0800a36c                DMA2_Stream7_IRQHandler
+                0x0800a36c                TIM15_IRQHandler
+                0x0800a36c                PVD_AVD_IRQHandler
+                0x0800a36c                I2C3_EV_IRQHandler
+                0x0800a36c                EXTI9_5_IRQHandler
+                0x0800a36c                RTC_WKUP_IRQHandler
+                0x0800a36c                LTDC_IRQHandler
+                0x0800a36c                ETH_WKUP_IRQHandler
+                0x0800a36c                SPDIF_RX_IRQHandler
+                0x0800a36c                OTG_HS_EP1_IN_IRQHandler
+                0x0800a36c                TIM24_IRQHandler
+                0x0800a36c                CRS_IRQHandler
+                0x0800a36c                EXTI4_IRQHandler
+                0x0800a36c                RNG_IRQHandler
+                0x0800a36c                FDCAN2_IT1_IRQHandler
+                0x0800a36c                ETH_IRQHandler
+                0x0800a36c                TIM1_UP_IRQHandler
+                0x0800a36c                BDMA_Channel4_IRQHandler
+                0x0800a36c                OTG_HS_EP1_OUT_IRQHandler
+                0x0800a36c                WWDG_IRQHandler
+                0x0800a36c                SPI6_IRQHandler
+                0x0800a36c                MDIOS_IRQHandler
+                0x0800a36c                I2C4_EV_IRQHandler
+                0x0800a36c                FDCAN2_IT0_IRQHandler
+                0x0800a36c                LPUART1_IRQHandler
+                0x0800a36c                FDCAN1_IT0_IRQHandler
+                0x0800a36c                TIM2_IRQHandler
+                0x0800a36c                OTG_HS_IRQHandler
+                0x0800a36c                DMA2D_IRQHandler
+                0x0800a36c                TIM1_BRK_IRQHandler
+                0x0800a36c                EXTI1_IRQHandler
+                0x0800a36c                SDMMC2_IRQHandler
+                0x0800a36c                BDMA_Channel3_IRQHandler
+                0x0800a36c                DTS_IRQHandler
+                0x0800a36c                UART7_IRQHandler
+                0x0800a36c                MDIOS_WKUP_IRQHandler
+                0x0800a36c                DFSDM1_FLT0_IRQHandler
+                0x0800a36c                SAI4_IRQHandler
+                0x0800a36c                I2C2_ER_IRQHandler
+                0x0800a36c                DMA2_Stream1_IRQHandler
+                0x0800a36c                FLASH_IRQHandler
+                0x0800a36c                DMA2_Stream4_IRQHandler
+                0x0800a36c                SPI3_IRQHandler
+                0x0800a36c                WAKEUP_PIN_IRQHandler
+                0x0800a36c                I2C1_ER_IRQHandler
+                0x0800a36c                FMC_IRQHandler
+                0x0800a36c                FDCAN_CAL_IRQHandler
+                0x0800a36c                SWPMI1_IRQHandler
+                0x0800a36c                COMP1_IRQHandler
+                0x0800a36c                LPTIM1_IRQHandler
+                0x0800a36c                DCMI_PSSI_IRQHandler
+                0x0800a36c                I2C4_ER_IRQHandler
+                0x0800a36c                DMA2_Stream6_IRQHandler
+                0x0800a36c                SAI1_IRQHandler
+ *fill*         0x0800a36e        0x2 
+ .text.acosf    0x0800a370       0x58 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_acos.o)
+                0x0800a370                acosf
+ .text.atan2f   0x0800a3c8        0x4 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_atan2.o)
+                0x0800a3c8                atan2f
+ .text.fmodf    0x0800a3cc       0x48 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_fmod.o)
+                0x0800a3cc                fmodf
+ .text.fabsf    0x0800a414       0x10 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_fabs.o)
+                0x0800a414                fabsf
+ .text.nanf     0x0800a424        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_nan.o)
+                0x0800a424                nanf
+ .text.sinf     0x0800a430      0x1ec C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sinf.o)
+                0x0800a430                sinf
+ *fill*         0x0800a61c        0x4 
+ .text.cosf     0x0800a620      0x1b4 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-cosf.o)
+                0x0800a620                cosf
  .text.with_errnof
-                0x0800a9d4       0x1c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-math_errf.o)
+                0x0800a7d4       0x1c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-math_errf.o)
  .text.__math_invalidf
-                0x0800a9f0       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-math_errf.o)
-                0x0800a9f0                __math_invalidf
+                0x0800a7f0       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-math_errf.o)
+                0x0800a7f0                __math_invalidf
  .text.__ieee754_sqrtf
-                0x0800aa10        0x8 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_sqrt.o)
-                0x0800aa10                __ieee754_sqrtf
+                0x0800a810        0x8 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_sqrt.o)
+                0x0800a810                __ieee754_sqrtf
  .text.__ieee754_acosf
-                0x0800aa18      0x248 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_acos.o)
-                0x0800aa18                __ieee754_acosf
+                0x0800a818      0x248 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_acos.o)
+                0x0800a818                __ieee754_acosf
  .text.__ieee754_atan2f
-                0x0800ac60      0x14c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_atan2.o)
-                0x0800ac60                __ieee754_atan2f
+                0x0800aa60      0x14c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_atan2.o)
+                0x0800aa60                __ieee754_atan2f
  .text.__ieee754_fmodf
-                0x0800adac      0x184 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_fmod.o)
-                0x0800adac                __ieee754_fmodf
- .text.atanf    0x0800af30      0x1a4 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_atan.o)
-                0x0800af30                atanf
- .text._puts_r  0x0800b0d4       0xaa C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-puts.o)
-                0x0800b0d4                _puts_r
- *fill*         0x0800b17e        0x2 
- .text.puts     0x0800b180       0x10 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-puts.o)
-                0x0800b180                puts
+                0x0800abac      0x184 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_fmod.o)
+                0x0800abac                __ieee754_fmodf
+ .text.atanf    0x0800ad30      0x1a4 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_atan.o)
+                0x0800ad30                atanf
+ .text._puts_r  0x0800aed4       0xaa C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-puts.o)
+                0x0800aed4                _puts_r
+ *fill*         0x0800af7e        0x2 
+ .text.puts     0x0800af80       0x10 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-puts.o)
+                0x0800af80                puts
  .text.__swbuf_r
-                0x0800b190       0x7c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-wbuf.o)
-                0x0800b190                __swbuf_r
+                0x0800af90       0x7c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-wbuf.o)
+                0x0800af90                __swbuf_r
  .text.__swsetup_r
-                0x0800b20c       0xa8 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-wsetup.o)
-                0x0800b20c                __swsetup_r
- .text.memset   0x0800b2b4       0x10 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-memset.o)
-                0x0800b2b4                memset
- .text.__errno  0x0800b2c4        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-errno.o)
-                0x0800b2c4                __errno
+                0x0800b00c       0xa8 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-wsetup.o)
+                0x0800b00c                __swsetup_r
+ .text.memset   0x0800b0b4       0x10 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-memset.o)
+                0x0800b0b4                memset
+ .text.__errno  0x0800b0c4        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-errno.o)
+                0x0800b0c4                __errno
  .text.__libc_init_array
-                0x0800b2d0       0x48 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-init.o)
-                0x0800b2d0                __libc_init_array
+                0x0800b0d0       0x48 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-init.o)
+                0x0800b0d0                __libc_init_array
  .text.__retarget_lock_init_recursive
-                0x0800b318        0x2 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lock.o)
-                0x0800b318                __retarget_lock_init_recursive
+                0x0800b118        0x2 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lock.o)
+                0x0800b118                __retarget_lock_init_recursive
  .text.__retarget_lock_acquire_recursive
-                0x0800b31a        0x2 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lock.o)
-                0x0800b31a                __retarget_lock_acquire_recursive
+                0x0800b11a        0x2 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lock.o)
+                0x0800b11a                __retarget_lock_acquire_recursive
  .text.__retarget_lock_release_recursive
-                0x0800b31c        0x2 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lock.o)
-                0x0800b31c                __retarget_lock_release_recursive
- *fill*         0x0800b31e        0x2 
- .text._free_r  0x0800b320       0x94 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-freer.o)
-                0x0800b320                _free_r
+                0x0800b11c        0x2 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lock.o)
+                0x0800b11c                __retarget_lock_release_recursive
+ *fill*         0x0800b11e        0x2 
+ .text._free_r  0x0800b120       0x94 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-freer.o)
+                0x0800b120                _free_r
  .text.sbrk_aligned
-                0x0800b3b4       0x44 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mallocr.o)
+                0x0800b1b4       0x44 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mallocr.o)
  .text._malloc_r
-                0x0800b3f8      0x100 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mallocr.o)
-                0x0800b3f8                _malloc_r
+                0x0800b1f8      0x100 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mallocr.o)
+                0x0800b1f8                _malloc_r
  .text.__malloc_lock
-                0x0800b4f8        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mlock.o)
-                0x0800b4f8                __malloc_lock
+                0x0800b2f8        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mlock.o)
+                0x0800b2f8                __malloc_lock
  .text.__malloc_unlock
-                0x0800b504        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mlock.o)
-                0x0800b504                __malloc_unlock
+                0x0800b304        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mlock.o)
+                0x0800b304                __malloc_unlock
  .text.__sflush_r
-                0x0800b510      0x104 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fflush.o)
-                0x0800b510                __sflush_r
+                0x0800b310      0x104 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fflush.o)
+                0x0800b310                __sflush_r
  .text._fflush_r
-                0x0800b614       0x50 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fflush.o)
-                0x0800b614                _fflush_r
- .text.std      0x0800b664       0x6c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
+                0x0800b414       0x50 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fflush.o)
+                0x0800b414                _fflush_r
+ .text.std      0x0800b464       0x6c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
  .text.stdio_exit_handler
-                0x0800b6d0       0x18 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
+                0x0800b4d0       0x18 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
  .text.cleanup_stdio
-                0x0800b6e8       0x40 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
+                0x0800b4e8       0x40 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
  .text.global_stdio_init.part.0
-                0x0800b728       0x40 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
+                0x0800b528       0x40 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
  .text.__sfp_lock_acquire
-                0x0800b768        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
-                0x0800b768                __sfp_lock_acquire
+                0x0800b568        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
+                0x0800b568                __sfp_lock_acquire
  .text.__sfp_lock_release
-                0x0800b774        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
-                0x0800b774                __sfp_lock_release
- .text.__sinit  0x0800b780       0x30 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
-                0x0800b780                __sinit
+                0x0800b574        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
+                0x0800b574                __sfp_lock_release
+ .text.__sinit  0x0800b580       0x30 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
+                0x0800b580                __sinit
  .text._fwalk_sglue
-                0x0800b7b0       0x3c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fwalk.o)
-                0x0800b7b0                _fwalk_sglue
+                0x0800b5b0       0x3c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fwalk.o)
+                0x0800b5b0                _fwalk_sglue
  .text.__swhatbuf_r
-                0x0800b7ec       0x48 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-makebuf.o)
-                0x0800b7ec                __swhatbuf_r
+                0x0800b5ec       0x48 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-makebuf.o)
+                0x0800b5ec                __swhatbuf_r
  .text.__smakebuf_r
-                0x0800b834       0x72 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-makebuf.o)
-                0x0800b834                __smakebuf_r
- .text.__sread  0x0800b8a6       0x22 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-stdio.o)
-                0x0800b8a6                __sread
+                0x0800b634       0x72 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-makebuf.o)
+                0x0800b634                __smakebuf_r
+ .text.__sread  0x0800b6a6       0x22 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-stdio.o)
+                0x0800b6a6                __sread
  .text.__swrite
-                0x0800b8c8       0x38 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-stdio.o)
-                0x0800b8c8                __swrite
- .text.__sseek  0x0800b900       0x26 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-stdio.o)
-                0x0800b900                __sseek
+                0x0800b6c8       0x38 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-stdio.o)
+                0x0800b6c8                __swrite
+ .text.__sseek  0x0800b700       0x26 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-stdio.o)
+                0x0800b700                __sseek
  .text.__sclose
-                0x0800b926        0x8 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-stdio.o)
-                0x0800b926                __sclose
- *fill*         0x0800b92e        0x2 
+                0x0800b726        0x8 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-stdio.o)
+                0x0800b726                __sclose
+ *fill*         0x0800b72e        0x2 
  .text._close_r
-                0x0800b930       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-closer.o)
-                0x0800b930                _close_r
+                0x0800b730       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-closer.o)
+                0x0800b730                _close_r
  .text._fstat_r
-                0x0800b950       0x24 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fstatr.o)
-                0x0800b950                _fstat_r
+                0x0800b750       0x24 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fstatr.o)
+                0x0800b750                _fstat_r
  .text._isatty_r
-                0x0800b974       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-isattyr.o)
-                0x0800b974                _isatty_r
+                0x0800b774       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-isattyr.o)
+                0x0800b774                _isatty_r
  .text._lseek_r
-                0x0800b994       0x24 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lseekr.o)
-                0x0800b994                _lseek_r
- .text._read_r  0x0800b9b8       0x24 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-readr.o)
-                0x0800b9b8                _read_r
- .text._sbrk_r  0x0800b9dc       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-sbrkr.o)
-                0x0800b9dc                _sbrk_r
+                0x0800b794       0x24 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lseekr.o)
+                0x0800b794                _lseek_r
+ .text._read_r  0x0800b7b8       0x24 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-readr.o)
+                0x0800b7b8                _read_r
+ .text._sbrk_r  0x0800b7dc       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-sbrkr.o)
+                0x0800b7dc                _sbrk_r
  .text._write_r
-                0x0800b9fc       0x24 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-writer.o)
-                0x0800b9fc                _write_r
- .text          0x0800ba20      0x378 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_arm_addsubdf3.o)
-                0x0800ba20                __aeabi_drsub
-                0x0800ba28                __aeabi_dsub
-                0x0800ba28                __subdf3
-                0x0800ba2c                __aeabi_dadd
-                0x0800ba2c                __adddf3
-                0x0800bca4                __floatunsidf
-                0x0800bca4                __aeabi_ui2d
-                0x0800bcc4                __floatsidf
-                0x0800bcc4                __aeabi_i2d
-                0x0800bce8                __aeabi_f2d
-                0x0800bce8                __extendsfdf2
-                0x0800bd2c                __floatundidf
-                0x0800bd2c                __aeabi_ul2d
-                0x0800bd3c                __floatdidf
-                0x0800bd3c                __aeabi_l2d
- .text          0x0800bd98       0x30 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_aeabi_uldivmod.o)
-                0x0800bd98                __aeabi_uldivmod
+                0x0800b7fc       0x24 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-writer.o)
+                0x0800b7fc                _write_r
+ .text          0x0800b820      0x378 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_arm_addsubdf3.o)
+                0x0800b820                __aeabi_drsub
+                0x0800b828                __aeabi_dsub
+                0x0800b828                __subdf3
+                0x0800b82c                __aeabi_dadd
+                0x0800b82c                __adddf3
+                0x0800baa4                __floatunsidf
+                0x0800baa4                __aeabi_ui2d
+                0x0800bac4                __floatsidf
+                0x0800bac4                __aeabi_i2d
+                0x0800bae8                __aeabi_f2d
+                0x0800bae8                __extendsfdf2
+                0x0800bb2c                __floatundidf
+                0x0800bb2c                __aeabi_ul2d
+                0x0800bb3c                __floatdidf
+                0x0800bb3c                __aeabi_l2d
+ .text          0x0800bb98       0x30 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_aeabi_uldivmod.o)
+                0x0800bb98                __aeabi_uldivmod
  .text.__udivmoddi4
-                0x0800bdc8      0x2f8 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_udivmoddi4.o)
-                0x0800bdc8                __udivmoddi4
- .text          0x0800c0c0        0x4 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_dvmd_tls.o)
-                0x0800c0c0                __aeabi_idiv0
-                0x0800c0c0                __aeabi_ldiv0
+                0x0800bbc8      0x2f8 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_udivmoddi4.o)
+                0x0800bbc8                __udivmoddi4
+ .text          0x0800bec0        0x4 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_dvmd_tls.o)
+                0x0800bec0                __aeabi_idiv0
+                0x0800bec0                __aeabi_ldiv0
  *(.rodata*)
  .rodata.flagBitshiftOffset.0
-                0x0800c0c4        0x8 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.o
+                0x0800bec4        0x8 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.o
  .rodata.UARTPrescTable
-                0x0800c0cc       0x18 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.o
-                0x0800c0cc                UARTPrescTable
+                0x0800becc       0x18 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.o
+                0x0800becc                UARTPrescTable
  .rodata.denominator.0
-                0x0800c0e4        0x8 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o
+                0x0800bee4        0x8 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o
  .rodata.numerator.1
-                0x0800c0ec        0x8 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o
+                0x0800beec        0x8 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o
  .rodata.D1CorePrescTable
-                0x0800c0f4       0x10 build/Core/Src/system_stm32h7xx.o
-                0x0800c0f4                D1CorePrescTable
+                0x0800bef4       0x10 build/Core/Src/system_stm32h7xx.o
+                0x0800bef4                D1CorePrescTable
  .rodata.write_BMI088_gyro_reg_data_error
-                0x0800c104       0x12 build/Device/BMI088/BMI088driver.o
- *fill*         0x0800c116        0x2 
+                0x0800bf04       0x12 build/Device/BMI088/BMI088driver.o
+ *fill*         0x0800bf16        0x2 
  .rodata.write_BMI088_accel_reg_data_error
-                0x0800c118       0x12 build/Device/BMI088/BMI088driver.o
- *fill*         0x0800c12a        0x2 
+                0x0800bf18       0x12 build/Device/BMI088/BMI088driver.o
+ *fill*         0x0800bf2a        0x2 
  .rodata.SBUS_Parse_Data.str1.4
-                0x0800c12c       0x29 build/BSP/bsp_sbus.o
- *fill*         0x0800c155        0x3 
+                0x0800bf2c       0x29 build/BSP/bsp_sbus.o
+ *fill*         0x0800bf55        0x3 
  .rodata._ZL15crc_ccitt_table
-                0x0800c158      0x200 build/my/motor_task.o
+                0x0800bf58      0x200 build/my/motor_task.o
  .rodata._ZL15crc_ccitt_table
-                0x0800c358      0x200 build/Device/unitree/motor_YS.o
+                0x0800c158      0x200 build/Device/unitree/motor_YS.o
  .rodata.MATH_DEG_TO_RAD
-                0x0800c558        0x4 build/Device/unitree/math_support.o
-                0x0800c558                MATH_DEG_TO_RAD
+                0x0800c358        0x4 build/Device/unitree/math_support.o
+                0x0800c358                MATH_DEG_TO_RAD
  .rodata.MATH_RPM_TO_RADPS
-                0x0800c55c        0x4 build/Device/unitree/math_support.o
-                0x0800c55c                MATH_RPM_TO_RADPS
+                0x0800c35c        0x4 build/Device/unitree/math_support.o
+                0x0800c35c                MATH_RPM_TO_RADPS
  .rodata.acosf.str1.4
-                0x0800c560        0x1 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_acos.o)
+                0x0800c360        0x1 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_acos.o)
  .rodata.__inv_pio4
-                0x0800c560       0x60 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sincosf_data.o)
-                0x0800c560                __inv_pio4
+                0x0800c360       0x60 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sincosf_data.o)
+                0x0800c360                __inv_pio4
  .rodata.__sincosf_table
-                0x0800c5c0       0xe0 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sincosf_data.o)
-                0x0800c5c0                __sincosf_table
+                0x0800c3c0       0xe0 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sincosf_data.o)
+                0x0800c3c0                __sincosf_table
  .rodata.CSWTCH.9
-                0x0800c6a0        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_atan2.o)
+                0x0800c4a0        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_atan2.o)
  .rodata.CSWTCH.8
-                0x0800c6ac        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_atan2.o)
- .rodata.Zero   0x0800c6b8        0x8 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_fmod.o)
+                0x0800c4ac        0xc C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_atan2.o)
+ .rodata.Zero   0x0800c4b8        0x8 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_fmod.o)
  .rodata.atanlo
-                0x0800c6c0       0x10 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_atan.o)
+                0x0800c4c0       0x10 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_atan.o)
  .rodata.atanhi
-                0x0800c6d0       0x10 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_atan.o)
+                0x0800c4d0       0x10 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_atan.o)
  *(.glue_7*)
- .glue_7        0x0800c6e0        0x0 linker stubs
- .glue_7t       0x0800c6e0        0x0 linker stubs
+ .glue_7        0x0800c4e0        0x0 linker stubs
+ .glue_7t       0x0800c4e0        0x0 linker stubs
  *(.init)
  *(.fini)
-                0x0800c6e0                        . = ALIGN (0x4)
+                0x0800c4e0                        . = ALIGN (0x4)
 
-.vfp11_veneer   0x0800c6e0        0x0
- .vfp11_veneer  0x0800c6e0        0x0 linker stubs
+.vfp11_veneer   0x0800c4e0        0x0
+ .vfp11_veneer  0x0800c4e0        0x0 linker stubs
 
-.v4_bx          0x0800c6e0        0x0
- .v4_bx         0x0800c6e0        0x0 linker stubs
+.v4_bx          0x0800c4e0        0x0
+ .v4_bx         0x0800c4e0        0x0 linker stubs
 
-.iplt           0x0800c6e0        0x0
- .iplt          0x0800c6e0        0x0 build/Core/Src/main.o
+.iplt           0x0800c4e0        0x0
+ .iplt          0x0800c4e0        0x0 build/Core/Src/main.o
 
 .ARM.extab
  *(.ARM.extab*)
 
-.ARM.exidx      0x0800c6e0        0x8
-                0x0800c6e0                        __exidx_start = .
+.ARM.exidx      0x0800c4e0        0x8
+                0x0800c4e0                        __exidx_start = .
  *(.ARM.exidx*)
  .ARM.exidx.text.__udivmoddi4
-                0x0800c6e0        0x8 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_udivmoddi4.o)
-                0x0800c6e8                        __exidx_end = .
+                0x0800c4e0        0x8 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_udivmoddi4.o)
+                0x0800c4e8                        __exidx_end = .
 
-.rel.dyn        0x0800c6e8        0x0
- .rel.iplt      0x0800c6e8        0x0 build/Core/Src/main.o
+.rel.dyn        0x0800c4e8        0x0
+ .rel.iplt      0x0800c4e8        0x0 build/Core/Src/main.o
 
-.preinit_array  0x0800c6e8        0x0
-                0x0800c6e8                        PROVIDE (__preinit_array_start = .)
+.preinit_array  0x0800c4e8        0x0
+                0x0800c4e8                        PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x0800c6e8                        PROVIDE (__preinit_array_end = .)
+                0x0800c4e8                        PROVIDE (__preinit_array_end = .)
 
-.init_array     0x0800c6e8        0x4
-                0x0800c6e8                        PROVIDE (__init_array_start = .)
+.init_array     0x0800c4e8        0x4
+                0x0800c4e8                        PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array)
- .init_array    0x0800c6e8        0x4 build/my/motor_task.o
-                0x0800c6ec                        PROVIDE (__init_array_end = .)
+ .init_array    0x0800c4e8        0x4 build/my/motor_task.o
+                0x0800c4ec                        PROVIDE (__init_array_end = .)
 
-.fini_array     0x0800c6ec        0x0
+.fini_array     0x0800c4ec        0x0
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array)
                 [!provide]                        PROVIDE (__fini_array_end = .)
-                0x0800c6ec                        _sidata = LOADADDR (.data)
+                0x0800c4ec                        _sidata = LOADADDR (.data)
 
-.data           0x24000000      0x834 load address 0x0800c6ec
+.data           0x24000000      0x834 load address 0x0800c4ec
                 0x24000000                        . = ALIGN (0x4)
                 0x24000000                        _sdata = .
  *(.data*)
@@ -9883,7 +9884,7 @@ END GROUP
  *fill*         0x24000831        0x3 
                 0x24000834                        _edata = .
 
-.igot.plt       0x24000834        0x0 load address 0x0800cf20
+.igot.plt       0x24000834        0x0 load address 0x0800cd20
  .igot.plt      0x24000834        0x0 build/Core/Src/main.o
 
 .bss            0x20000000      0xe10
@@ -10029,7 +10030,7 @@ END GROUP
 OUTPUT(build/CtrBoard-H7_IMU.elf elf32-littlearm)
 LOAD linker stubs
 
-.debug_info     0x00000000    0x365db
+.debug_info     0x00000000    0x36543
  .debug_info    0x00000000      0xc96 build/Core/Src/main.o
  .debug_info    0x00000c96      0x6e6 build/Core/Src/gpio.o
  .debug_info    0x0000137c      0x992 build/Core/Src/dma.o
@@ -10057,21 +10058,21 @@ LOAD linker stubs
  .debug_info    0x00020f9e      0x947 build/BSP/bsp_uart.o
  .debug_info    0x000218e5      0x271 build/BSP/bsp_sbus.o
  .debug_info    0x00021b56     0x182c build/my/action.o
- .debug_info    0x00023382     0x2958 build/my/dog.o
- .debug_info    0x00025cda      0x559 build/my/fsm.o
- .debug_info    0x00026233      0x424 build/my/delay_DWT.o
- .debug_info    0x00026657     0x14c0 build/my/pos_ctrl.o
- .debug_info    0x00027b17     0x1185 build/my/walk.o
- .debug_info    0x00028c9c      0x55d build/build_support/runtime.o
- .debug_info    0x000291f9     0x1f5b build/my/control_task.o
- .debug_info    0x0002b154     0x2dc6 build/my/motor_task.o
- .debug_info    0x0002df1a     0x2113 build/Device/unitree/UART.o
- .debug_info    0x0003002d     0x25e9 build/Device/unitree/motor_YS.o
- .debug_info    0x00032616     0x18ee build/Device/unitree/math_support.o
- .debug_info    0x00033f04     0x1f2e build/Device/remote_control/remote_control.o
- .debug_info    0x00035e32      0x7a9 build/build_support/startup_stm32h723xx.o
+ .debug_info    0x00023382     0x28c0 build/my/dog.o
+ .debug_info    0x00025c42      0x559 build/my/fsm.o
+ .debug_info    0x0002619b      0x424 build/my/delay_DWT.o
+ .debug_info    0x000265bf     0x14c0 build/my/pos_ctrl.o
+ .debug_info    0x00027a7f     0x1185 build/my/walk.o
+ .debug_info    0x00028c04      0x55d build/build_support/runtime.o
+ .debug_info    0x00029161     0x1f5b build/my/control_task.o
+ .debug_info    0x0002b0bc     0x2dc6 build/my/motor_task.o
+ .debug_info    0x0002de82     0x2113 build/Device/unitree/UART.o
+ .debug_info    0x0002ff95     0x25e9 build/Device/unitree/motor_YS.o
+ .debug_info    0x0003257e     0x18ee build/Device/unitree/math_support.o
+ .debug_info    0x00033e6c     0x1f2e build/Device/remote_control/remote_control.o
+ .debug_info    0x00035d9a      0x7a9 build/build_support/startup_stm32h723xx.o
 
-.debug_abbrev   0x00000000     0x6256
+.debug_abbrev   0x00000000     0x6271
  .debug_abbrev  0x00000000      0x25f build/Core/Src/main.o
  .debug_abbrev  0x0000025f      0x197 build/Core/Src/gpio.o
  .debug_abbrev  0x000003f6      0x13d build/Core/Src/dma.o
@@ -10099,21 +10100,21 @@ LOAD linker stubs
  .debug_abbrev  0x00003858      0x1e0 build/BSP/bsp_uart.o
  .debug_abbrev  0x00003a38      0x148 build/BSP/bsp_sbus.o
  .debug_abbrev  0x00003b80      0x349 build/my/action.o
- .debug_abbrev  0x00003ec9      0x3ab build/my/dog.o
- .debug_abbrev  0x00004274      0x1a9 build/my/fsm.o
- .debug_abbrev  0x0000441d      0x1db build/my/delay_DWT.o
- .debug_abbrev  0x000045f8      0x298 build/my/pos_ctrl.o
- .debug_abbrev  0x00004890      0x317 build/my/walk.o
- .debug_abbrev  0x00004ba7      0x16a build/build_support/runtime.o
- .debug_abbrev  0x00004d11      0x308 build/my/control_task.o
- .debug_abbrev  0x00005019      0x5e3 build/my/motor_task.o
- .debug_abbrev  0x000055fc      0x367 build/Device/unitree/UART.o
- .debug_abbrev  0x00005963      0x3db build/Device/unitree/motor_YS.o
- .debug_abbrev  0x00005d3e      0x22a build/Device/unitree/math_support.o
- .debug_abbrev  0x00005f68      0x2c8 build/Device/remote_control/remote_control.o
- .debug_abbrev  0x00006230       0x26 build/build_support/startup_stm32h723xx.o
+ .debug_abbrev  0x00003ec9      0x3c6 build/my/dog.o
+ .debug_abbrev  0x0000428f      0x1a9 build/my/fsm.o
+ .debug_abbrev  0x00004438      0x1db build/my/delay_DWT.o
+ .debug_abbrev  0x00004613      0x298 build/my/pos_ctrl.o
+ .debug_abbrev  0x000048ab      0x317 build/my/walk.o
+ .debug_abbrev  0x00004bc2      0x16a build/build_support/runtime.o
+ .debug_abbrev  0x00004d2c      0x308 build/my/control_task.o
+ .debug_abbrev  0x00005034      0x5e3 build/my/motor_task.o
+ .debug_abbrev  0x00005617      0x367 build/Device/unitree/UART.o
+ .debug_abbrev  0x0000597e      0x3db build/Device/unitree/motor_YS.o
+ .debug_abbrev  0x00005d59      0x22a build/Device/unitree/math_support.o
+ .debug_abbrev  0x00005f83      0x2c8 build/Device/remote_control/remote_control.o
+ .debug_abbrev  0x0000624b       0x26 build/build_support/startup_stm32h723xx.o
 
-.debug_aranges  0x00000000     0x1b08
+.debug_aranges  0x00000000     0x1b10
  .debug_aranges
                 0x00000000       0x30 build/Core/Src/main.o
  .debug_aranges
@@ -10169,34 +10170,34 @@ LOAD linker stubs
  .debug_aranges
                 0x00001438       0xb0 build/my/action.o
  .debug_aranges
-                0x000014e8       0xf8 build/my/dog.o
+                0x000014e8      0x100 build/my/dog.o
  .debug_aranges
-                0x000015e0      0x1a8 build/my/fsm.o
+                0x000015e8      0x1a8 build/my/fsm.o
  .debug_aranges
-                0x00001788       0x40 build/my/delay_DWT.o
+                0x00001790       0x40 build/my/delay_DWT.o
  .debug_aranges
-                0x000017c8       0x58 build/my/pos_ctrl.o
+                0x000017d0       0x58 build/my/pos_ctrl.o
  .debug_aranges
-                0x00001820       0x70 build/my/walk.o
+                0x00001828       0x70 build/my/walk.o
  .debug_aranges
-                0x00001890       0x60 build/build_support/runtime.o
+                0x00001898       0x60 build/build_support/runtime.o
  .debug_aranges
-                0x000018f0       0x48 build/my/control_task.o
+                0x000018f8       0x48 build/my/control_task.o
  .debug_aranges
-                0x00001938       0x88 build/my/motor_task.o
+                0x00001940       0x88 build/my/motor_task.o
  .debug_aranges
-                0x000019c0       0x38 build/Device/unitree/UART.o
+                0x000019c8       0x38 build/Device/unitree/UART.o
  .debug_aranges
-                0x000019f8       0x60 build/Device/unitree/motor_YS.o
+                0x00001a00       0x60 build/Device/unitree/motor_YS.o
  .debug_aranges
-                0x00001a58       0x50 build/Device/unitree/math_support.o
+                0x00001a60       0x50 build/Device/unitree/math_support.o
  .debug_aranges
-                0x00001aa8       0x38 build/Device/remote_control/remote_control.o
+                0x00001ab0       0x38 build/Device/remote_control/remote_control.o
  .debug_aranges
-                0x00001ae0       0x28 build/build_support/startup_stm32h723xx.o
+                0x00001ae8       0x28 build/build_support/startup_stm32h723xx.o
 
 .debug_rnglists
-                0x00000000     0x1520
+                0x00000000     0x154f
  .debug_rnglists
                 0x00000000       0x20 build/Core/Src/main.o
  .debug_rnglists
@@ -10252,33 +10253,33 @@ LOAD linker stubs
  .debug_rnglists
                 0x00000fce       0xc3 build/my/action.o
  .debug_rnglists
-                0x00001091       0xc7 build/my/dog.o
+                0x00001091       0xf6 build/my/dog.o
  .debug_rnglists
-                0x00001158      0x139 build/my/fsm.o
+                0x00001187      0x139 build/my/fsm.o
  .debug_rnglists
-                0x00001291       0x2b build/my/delay_DWT.o
+                0x000012c0       0x2b build/my/delay_DWT.o
  .debug_rnglists
-                0x000012bc       0x4f build/my/pos_ctrl.o
+                0x000012eb       0x4f build/my/pos_ctrl.o
  .debug_rnglists
-                0x0000130b       0x5f build/my/walk.o
+                0x0000133a       0x5f build/my/walk.o
  .debug_rnglists
-                0x0000136a       0x43 build/build_support/runtime.o
+                0x00001399       0x43 build/build_support/runtime.o
  .debug_rnglists
-                0x000013ad       0x31 build/my/control_task.o
+                0x000013dc       0x31 build/my/control_task.o
  .debug_rnglists
-                0x000013de       0x61 build/my/motor_task.o
+                0x0000140d       0x61 build/my/motor_task.o
  .debug_rnglists
-                0x0000143f       0x26 build/Device/unitree/UART.o
+                0x0000146e       0x26 build/Device/unitree/UART.o
  .debug_rnglists
-                0x00001465       0x45 build/Device/unitree/motor_YS.o
+                0x00001494       0x45 build/Device/unitree/motor_YS.o
  .debug_rnglists
-                0x000014aa       0x37 build/Device/unitree/math_support.o
+                0x000014d9       0x37 build/Device/unitree/math_support.o
  .debug_rnglists
-                0x000014e1       0x26 build/Device/remote_control/remote_control.o
+                0x00001510       0x26 build/Device/remote_control/remote_control.o
  .debug_rnglists
-                0x00001507       0x19 build/build_support/startup_stm32h723xx.o
+                0x00001536       0x19 build/build_support/startup_stm32h723xx.o
 
-.debug_macro    0x00000000    0x3f1a8
+.debug_macro    0x00000000    0x3f334
  .debug_macro   0x00000000      0x325 build/Core/Src/main.o
  .debug_macro   0x00000325      0xaf6 build/Core/Src/main.o
  .debug_macro   0x00000e1b      0x23e build/Core/Src/main.o
@@ -10388,95 +10389,96 @@ LOAD linker stubs
  .debug_macro   0x00035608       0x16 build/BSP/bsp_sbus.o
  .debug_macro   0x0003561e      0x324 build/my/action.o
  .debug_macro   0x00035942       0x16 build/my/action.o
- .debug_macro   0x00035958      0x37f build/my/dog.o
- .debug_macro   0x00035cd7       0x3a build/my/dog.o
- .debug_macro   0x00035d11      0x2e6 build/my/fsm.o
- .debug_macro   0x00035ff7      0x2c2 build/my/delay_DWT.o
- .debug_macro   0x000362b9       0x10 build/my/delay_DWT.o
- .debug_macro   0x000362c9      0x31b build/my/pos_ctrl.o
- .debug_macro   0x000365e4      0x336 build/my/walk.o
- .debug_macro   0x0003691a      0x1d1 build/build_support/runtime.o
- .debug_macro   0x00036aeb       0x10 build/build_support/runtime.o
- .debug_macro   0x00036afb       0x75 build/build_support/runtime.o
- .debug_macro   0x00036b70       0x94 build/build_support/runtime.o
- .debug_macro   0x00036c04       0x57 build/build_support/runtime.o
- .debug_macro   0x00036c5b      0x23c build/build_support/runtime.o
- .debug_macro   0x00036e97       0x10 build/build_support/runtime.o
- .debug_macro   0x00036ea7       0x10 build/build_support/runtime.o
- .debug_macro   0x00036eb7       0x10 build/build_support/runtime.o
- .debug_macro   0x00036ec7       0x10 build/build_support/runtime.o
- .debug_macro   0x00036ed7       0x1c build/build_support/runtime.o
- .debug_macro   0x00036ef3       0x52 build/build_support/runtime.o
- .debug_macro   0x00036f45       0x22 build/build_support/runtime.o
- .debug_macro   0x00036f67       0x10 build/build_support/runtime.o
- .debug_macro   0x00036f77       0x52 build/build_support/runtime.o
- .debug_macro   0x00036fc9       0xcf build/build_support/runtime.o
- .debug_macro   0x00037098       0x1c build/build_support/runtime.o
- .debug_macro   0x000370b4       0x3d build/build_support/runtime.o
- .debug_macro   0x000370f1       0x35 build/build_support/runtime.o
- .debug_macro   0x00037126      0x12c build/build_support/runtime.o
- .debug_macro   0x00037252      0x5ff build/my/control_task.o
- .debug_macro   0x00037851      0xc40 build/my/control_task.o
- .debug_macro   0x00038491       0x1c build/my/control_task.o
- .debug_macro   0x000384ad       0x8e build/my/control_task.o
- .debug_macro   0x0003853b       0x34 build/my/control_task.o
- .debug_macro   0x0003856f      0x197 build/my/control_task.o
- .debug_macro   0x00038706      0x380 build/my/control_task.o
- .debug_macro   0x00038a86       0x4a build/my/control_task.o
- .debug_macro   0x00038ad0       0x10 build/my/control_task.o
- .debug_macro   0x00038ae0       0x3c build/my/control_task.o
- .debug_macro   0x00038b1c      0x1f2 build/my/control_task.o
- .debug_macro   0x00038d0e       0x10 build/my/control_task.o
- .debug_macro   0x00038d1e       0xc1 build/my/control_task.o
- .debug_macro   0x00038ddf       0xed build/my/control_task.o
- .debug_macro   0x00038ecc      0x45d build/my/control_task.o
- .debug_macro   0x00039329      0x712 build/my/control_task.o
- .debug_macro   0x00039a3b       0x12 build/my/control_task.o
- .debug_macro   0x00039a4d      0x194 build/my/control_task.o
- .debug_macro   0x00039be1       0x10 build/my/control_task.o
- .debug_macro   0x00039bf1       0x16 build/my/control_task.o
- .debug_macro   0x00039c07       0x16 build/my/control_task.o
- .debug_macro   0x00039c1d       0x29 build/my/control_task.o
- .debug_macro   0x00039c46       0x10 build/my/control_task.o
- .debug_macro   0x00039c56       0x16 build/my/control_task.o
- .debug_macro   0x00039c6c      0x719 build/my/control_task.o
- .debug_macro   0x0003a385      0x4f5 build/my/control_task.o
- .debug_macro   0x0003a87a       0x16 build/my/control_task.o
- .debug_macro   0x0003a890      0x719 build/my/control_task.o
- .debug_macro   0x0003afa9       0x1c build/my/control_task.o
- .debug_macro   0x0003afc5       0x4f build/my/control_task.o
- .debug_macro   0x0003b014       0x94 build/my/control_task.o
- .debug_macro   0x0003b0a8      0x75c build/my/control_task.o
- .debug_macro   0x0003b804       0x1f build/my/control_task.o
- .debug_macro   0x0003b823       0x20 build/my/control_task.o
- .debug_macro   0x0003b843       0x28 build/my/control_task.o
- .debug_macro   0x0003b86b       0x2e build/my/control_task.o
- .debug_macro   0x0003b899       0x12 build/my/control_task.o
- .debug_macro   0x0003b8ab       0x88 build/my/control_task.o
- .debug_macro   0x0003b933       0x10 build/my/control_task.o
- .debug_macro   0x0003b943      0x6ac build/my/control_task.o
- .debug_macro   0x0003bfef       0x22 build/my/control_task.o
- .debug_macro   0x0003c011       0x12 build/my/control_task.o
- .debug_macro   0x0003c023      0x158 build/my/control_task.o
- .debug_macro   0x0003c17b       0x11 build/my/control_task.o
- .debug_macro   0x0003c18c       0x17 build/my/control_task.o
- .debug_macro   0x0003c1a3       0x17 build/my/control_task.o
- .debug_macro   0x0003c1ba       0x17 build/my/control_task.o
- .debug_macro   0x0003c1d1       0x17 build/my/control_task.o
- .debug_macro   0x0003c1e8       0x17 build/my/control_task.o
- .debug_macro   0x0003c1ff       0x17 build/my/control_task.o
- .debug_macro   0x0003c216      0x201 build/my/control_task.o
- .debug_macro   0x0003c417       0xc8 build/my/control_task.o
- .debug_macro   0x0003c4df     0x1305 build/my/control_task.o
- .debug_macro   0x0003d7e4       0x28 build/my/control_task.o
- .debug_macro   0x0003d80c       0x16 build/my/control_task.o
- .debug_macro   0x0003d822      0x57a build/my/motor_task.o
- .debug_macro   0x0003dd9c      0x535 build/Device/unitree/UART.o
- .debug_macro   0x0003e2d1      0x5a0 build/Device/unitree/motor_YS.o
- .debug_macro   0x0003e871      0x3c6 build/Device/unitree/math_support.o
- .debug_macro   0x0003ec37      0x571 build/Device/remote_control/remote_control.o
+ .debug_macro   0x00035958      0x388 build/my/dog.o
+ .debug_macro   0x00035ce0      0x183 build/my/dog.o
+ .debug_macro   0x00035e63       0x3a build/my/dog.o
+ .debug_macro   0x00035e9d      0x2e6 build/my/fsm.o
+ .debug_macro   0x00036183      0x2c2 build/my/delay_DWT.o
+ .debug_macro   0x00036445       0x10 build/my/delay_DWT.o
+ .debug_macro   0x00036455      0x31b build/my/pos_ctrl.o
+ .debug_macro   0x00036770      0x336 build/my/walk.o
+ .debug_macro   0x00036aa6      0x1d1 build/build_support/runtime.o
+ .debug_macro   0x00036c77       0x10 build/build_support/runtime.o
+ .debug_macro   0x00036c87       0x75 build/build_support/runtime.o
+ .debug_macro   0x00036cfc       0x94 build/build_support/runtime.o
+ .debug_macro   0x00036d90       0x57 build/build_support/runtime.o
+ .debug_macro   0x00036de7      0x23c build/build_support/runtime.o
+ .debug_macro   0x00037023       0x10 build/build_support/runtime.o
+ .debug_macro   0x00037033       0x10 build/build_support/runtime.o
+ .debug_macro   0x00037043       0x10 build/build_support/runtime.o
+ .debug_macro   0x00037053       0x10 build/build_support/runtime.o
+ .debug_macro   0x00037063       0x1c build/build_support/runtime.o
+ .debug_macro   0x0003707f       0x52 build/build_support/runtime.o
+ .debug_macro   0x000370d1       0x22 build/build_support/runtime.o
+ .debug_macro   0x000370f3       0x10 build/build_support/runtime.o
+ .debug_macro   0x00037103       0x52 build/build_support/runtime.o
+ .debug_macro   0x00037155       0xcf build/build_support/runtime.o
+ .debug_macro   0x00037224       0x1c build/build_support/runtime.o
+ .debug_macro   0x00037240       0x3d build/build_support/runtime.o
+ .debug_macro   0x0003727d       0x35 build/build_support/runtime.o
+ .debug_macro   0x000372b2      0x12c build/build_support/runtime.o
+ .debug_macro   0x000373de      0x5ff build/my/control_task.o
+ .debug_macro   0x000379dd      0xc40 build/my/control_task.o
+ .debug_macro   0x0003861d       0x1c build/my/control_task.o
+ .debug_macro   0x00038639       0x8e build/my/control_task.o
+ .debug_macro   0x000386c7       0x34 build/my/control_task.o
+ .debug_macro   0x000386fb      0x197 build/my/control_task.o
+ .debug_macro   0x00038892      0x380 build/my/control_task.o
+ .debug_macro   0x00038c12       0x4a build/my/control_task.o
+ .debug_macro   0x00038c5c       0x10 build/my/control_task.o
+ .debug_macro   0x00038c6c       0x3c build/my/control_task.o
+ .debug_macro   0x00038ca8      0x1f2 build/my/control_task.o
+ .debug_macro   0x00038e9a       0x10 build/my/control_task.o
+ .debug_macro   0x00038eaa       0xc1 build/my/control_task.o
+ .debug_macro   0x00038f6b       0xed build/my/control_task.o
+ .debug_macro   0x00039058      0x45d build/my/control_task.o
+ .debug_macro   0x000394b5      0x712 build/my/control_task.o
+ .debug_macro   0x00039bc7       0x12 build/my/control_task.o
+ .debug_macro   0x00039bd9      0x194 build/my/control_task.o
+ .debug_macro   0x00039d6d       0x10 build/my/control_task.o
+ .debug_macro   0x00039d7d       0x16 build/my/control_task.o
+ .debug_macro   0x00039d93       0x16 build/my/control_task.o
+ .debug_macro   0x00039da9       0x29 build/my/control_task.o
+ .debug_macro   0x00039dd2       0x10 build/my/control_task.o
+ .debug_macro   0x00039de2       0x16 build/my/control_task.o
+ .debug_macro   0x00039df8      0x719 build/my/control_task.o
+ .debug_macro   0x0003a511      0x4f5 build/my/control_task.o
+ .debug_macro   0x0003aa06       0x16 build/my/control_task.o
+ .debug_macro   0x0003aa1c      0x719 build/my/control_task.o
+ .debug_macro   0x0003b135       0x1c build/my/control_task.o
+ .debug_macro   0x0003b151       0x4f build/my/control_task.o
+ .debug_macro   0x0003b1a0       0x94 build/my/control_task.o
+ .debug_macro   0x0003b234      0x75c build/my/control_task.o
+ .debug_macro   0x0003b990       0x1f build/my/control_task.o
+ .debug_macro   0x0003b9af       0x20 build/my/control_task.o
+ .debug_macro   0x0003b9cf       0x28 build/my/control_task.o
+ .debug_macro   0x0003b9f7       0x2e build/my/control_task.o
+ .debug_macro   0x0003ba25       0x12 build/my/control_task.o
+ .debug_macro   0x0003ba37       0x88 build/my/control_task.o
+ .debug_macro   0x0003babf       0x10 build/my/control_task.o
+ .debug_macro   0x0003bacf      0x6ac build/my/control_task.o
+ .debug_macro   0x0003c17b       0x22 build/my/control_task.o
+ .debug_macro   0x0003c19d       0x12 build/my/control_task.o
+ .debug_macro   0x0003c1af      0x158 build/my/control_task.o
+ .debug_macro   0x0003c307       0x11 build/my/control_task.o
+ .debug_macro   0x0003c318       0x17 build/my/control_task.o
+ .debug_macro   0x0003c32f       0x17 build/my/control_task.o
+ .debug_macro   0x0003c346       0x17 build/my/control_task.o
+ .debug_macro   0x0003c35d       0x17 build/my/control_task.o
+ .debug_macro   0x0003c374       0x17 build/my/control_task.o
+ .debug_macro   0x0003c38b       0x17 build/my/control_task.o
+ .debug_macro   0x0003c3a2      0x201 build/my/control_task.o
+ .debug_macro   0x0003c5a3       0xc8 build/my/control_task.o
+ .debug_macro   0x0003c66b     0x1305 build/my/control_task.o
+ .debug_macro   0x0003d970       0x28 build/my/control_task.o
+ .debug_macro   0x0003d998       0x16 build/my/control_task.o
+ .debug_macro   0x0003d9ae      0x57a build/my/motor_task.o
+ .debug_macro   0x0003df28      0x535 build/Device/unitree/UART.o
+ .debug_macro   0x0003e45d      0x5a0 build/Device/unitree/motor_YS.o
+ .debug_macro   0x0003e9fd      0x3c6 build/Device/unitree/math_support.o
+ .debug_macro   0x0003edc3      0x571 build/Device/remote_control/remote_control.o
 
-.debug_line     0x00000000    0x2a27a
+.debug_line     0x00000000    0x2a0ca
  .debug_line    0x00000000      0x7de build/Core/Src/main.o
  .debug_line    0x000007de      0x63e build/Core/Src/gpio.o
  .debug_line    0x00000e1c      0x5ea build/Core/Src/dma.o
@@ -10504,62 +10506,62 @@ LOAD linker stubs
  .debug_line    0x0001f05e      0x6a0 build/BSP/bsp_uart.o
  .debug_line    0x0001f6fe      0x916 build/BSP/bsp_sbus.o
  .debug_line    0x00020014      0xb93 build/my/action.o
- .debug_line    0x00020ba7     0x18ce build/my/dog.o
- .debug_line    0x00022475      0xada build/my/fsm.o
- .debug_line    0x00022f4f      0x6f6 build/my/delay_DWT.o
- .debug_line    0x00023645      0xa1a build/my/pos_ctrl.o
- .debug_line    0x0002405f      0xb97 build/my/walk.o
- .debug_line    0x00024bf6      0x4d0 build/build_support/runtime.o
- .debug_line    0x000250c6      0xd4a build/my/control_task.o
- .debug_line    0x00025e10     0x1114 build/my/motor_task.o
- .debug_line    0x00026f24      0xcae build/Device/unitree/UART.o
- .debug_line    0x00027bd2      0xf4e build/Device/unitree/motor_YS.o
- .debug_line    0x00028b20      0x9a9 build/Device/unitree/math_support.o
- .debug_line    0x000294c9      0xd3e build/Device/remote_control/remote_control.o
- .debug_line    0x0002a207       0x73 build/build_support/startup_stm32h723xx.o
+ .debug_line    0x00020ba7     0x171e build/my/dog.o
+ .debug_line    0x000222c5      0xada build/my/fsm.o
+ .debug_line    0x00022d9f      0x6f6 build/my/delay_DWT.o
+ .debug_line    0x00023495      0xa1a build/my/pos_ctrl.o
+ .debug_line    0x00023eaf      0xb97 build/my/walk.o
+ .debug_line    0x00024a46      0x4d0 build/build_support/runtime.o
+ .debug_line    0x00024f16      0xd4a build/my/control_task.o
+ .debug_line    0x00025c60     0x1114 build/my/motor_task.o
+ .debug_line    0x00026d74      0xcae build/Device/unitree/UART.o
+ .debug_line    0x00027a22      0xf4e build/Device/unitree/motor_YS.o
+ .debug_line    0x00028970      0x9a9 build/Device/unitree/math_support.o
+ .debug_line    0x00029319      0xd3e build/Device/remote_control/remote_control.o
+ .debug_line    0x0002a057       0x73 build/build_support/startup_stm32h723xx.o
 
-.debug_str      0x00000000   0x1600f8
- .debug_str     0x00000000   0x1600f8 build/Core/Src/main.o
+.debug_str      0x00000000   0x16012c
+ .debug_str     0x00000000   0x16012c build/Core/Src/main.o
                              0x1494c0 (size before relaxing)
- .debug_str     0x001600f8   0x148a79 build/Core/Src/gpio.o
- .debug_str     0x001600f8   0x14919d build/Core/Src/dma.o
- .debug_str     0x001600f8   0x149c70 build/Core/Src/spi.o
- .debug_str     0x001600f8   0x149570 build/Core/Src/stm32h7xx_it.o
- .debug_str     0x001600f8   0x148990 build/Core/Src/stm32h7xx_hal_msp.o
- .debug_str     0x001600f8   0x149d1b build/Core/Src/usart.o
- .debug_str     0x001600f8   0x149990 build/Core/Src/tim.o
- .debug_str     0x001600f8   0x1494df build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.o
- .debug_str     0x001600f8   0x148f41 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.o
- .debug_str     0x001600f8   0x149459 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.o
- .debug_str     0x001600f8   0x148bbe build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.o
- .debug_str     0x001600f8   0x149328 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.o
- .debug_str     0x001600f8   0x148fc6 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.o
- .debug_str     0x001600f8   0x149bfd build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.o
- .debug_str     0x001600f8   0x1492ab build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.o
- .debug_str     0x001600f8   0x149d2f build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.o
- .debug_str     0x001600f8   0x1496ec build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.o
- .debug_str     0x001600f8   0x149af2 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.o
- .debug_str     0x001600f8   0x1490a1 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o
- .debug_str     0x001600f8   0x148b73 build/Core/Src/system_stm32h7xx.o
- .debug_str     0x001600f8   0x14a806 build/Device/BMI088/BMI088driver.o
- .debug_str     0x001600f8   0x148f54 build/Device/BMI088/BMI088Middleware.o
- .debug_str     0x001600f8   0x148910 build/Device/BMI088/imu.o
- .debug_str     0x001600f8   0x14973f build/BSP/bsp_uart.o
- .debug_str     0x001600f8   0x1491c9 build/BSP/bsp_sbus.o
- .debug_str     0x001600f8   0x148e61 build/my/action.o
- .debug_str     0x001600f8   0x1497b8 build/my/dog.o
- .debug_str     0x001600f8   0x148a69 build/my/fsm.o
- .debug_str     0x001600f8   0x1488ae build/my/delay_DWT.o
- .debug_str     0x001600f8   0x148e28 build/my/pos_ctrl.o
- .debug_str     0x001600f8   0x148f06 build/my/walk.o
- .debug_str     0x001600f8     0x81de build/build_support/runtime.o
- .debug_str     0x001600f8   0x153973 build/my/control_task.o
- .debug_str     0x001600f8   0x153472 build/my/motor_task.o
- .debug_str     0x001600f8   0x152ba8 build/Device/unitree/UART.o
- .debug_str     0x001600f8   0x153c05 build/Device/unitree/motor_YS.o
- .debug_str     0x001600f8    0x12463 build/Device/unitree/math_support.o
- .debug_str     0x001600f8   0x152ab2 build/Device/remote_control/remote_control.o
- .debug_str     0x001600f8      0xb85 build/build_support/startup_stm32h723xx.o
+ .debug_str     0x0016012c   0x148a79 build/Core/Src/gpio.o
+ .debug_str     0x0016012c   0x14919d build/Core/Src/dma.o
+ .debug_str     0x0016012c   0x149c70 build/Core/Src/spi.o
+ .debug_str     0x0016012c   0x149570 build/Core/Src/stm32h7xx_it.o
+ .debug_str     0x0016012c   0x148990 build/Core/Src/stm32h7xx_hal_msp.o
+ .debug_str     0x0016012c   0x149d1b build/Core/Src/usart.o
+ .debug_str     0x0016012c   0x149990 build/Core/Src/tim.o
+ .debug_str     0x0016012c   0x1494df build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.o
+ .debug_str     0x0016012c   0x148f41 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.o
+ .debug_str     0x0016012c   0x149459 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.o
+ .debug_str     0x0016012c   0x148bbe build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.o
+ .debug_str     0x0016012c   0x149328 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.o
+ .debug_str     0x0016012c   0x148fc6 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.o
+ .debug_str     0x0016012c   0x149bfd build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.o
+ .debug_str     0x0016012c   0x1492ab build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.o
+ .debug_str     0x0016012c   0x149d2f build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.o
+ .debug_str     0x0016012c   0x1496ec build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.o
+ .debug_str     0x0016012c   0x149af2 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.o
+ .debug_str     0x0016012c   0x1490a1 build/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o
+ .debug_str     0x0016012c   0x148b73 build/Core/Src/system_stm32h7xx.o
+ .debug_str     0x0016012c   0x14a806 build/Device/BMI088/BMI088driver.o
+ .debug_str     0x0016012c   0x148f54 build/Device/BMI088/BMI088Middleware.o
+ .debug_str     0x0016012c   0x148910 build/Device/BMI088/imu.o
+ .debug_str     0x0016012c   0x14973f build/BSP/bsp_uart.o
+ .debug_str     0x0016012c   0x1491c9 build/BSP/bsp_sbus.o
+ .debug_str     0x0016012c   0x148e61 build/my/action.o
+ .debug_str     0x0016012c   0x149c8f build/my/dog.o
+ .debug_str     0x0016012c   0x148a69 build/my/fsm.o
+ .debug_str     0x0016012c   0x1488ae build/my/delay_DWT.o
+ .debug_str     0x0016012c   0x148e28 build/my/pos_ctrl.o
+ .debug_str     0x0016012c   0x148f06 build/my/walk.o
+ .debug_str     0x0016012c     0x81de build/build_support/runtime.o
+ .debug_str     0x0016012c   0x153973 build/my/control_task.o
+ .debug_str     0x0016012c   0x153472 build/my/motor_task.o
+ .debug_str     0x0016012c   0x152ba8 build/Device/unitree/UART.o
+ .debug_str     0x0016012c   0x153c05 build/Device/unitree/motor_YS.o
+ .debug_str     0x0016012c    0x12463 build/Device/unitree/math_support.o
+ .debug_str     0x0016012c   0x152ab2 build/Device/remote_control/remote_control.o
+ .debug_str     0x0016012c      0xb85 build/build_support/startup_stm32h723xx.o
 
 .comment        0x00000000       0x46
  .comment       0x00000000       0x46 build/Core/Src/main.o
@@ -10692,87 +10694,85 @@ LOAD linker stubs
  .ARM.attributes
                 0x00000825       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_fmod.o)
  .ARM.attributes
-                0x00000857       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_sqrt.o)
+                0x00000857       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_fabs.o)
  .ARM.attributes
-                0x00000889       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_fabs.o)
+                0x00000889       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_nan.o)
  .ARM.attributes
-                0x000008bb       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_nan.o)
+                0x000008bb       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sinf.o)
  .ARM.attributes
-                0x000008ed       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sinf.o)
+                0x000008ed       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-cosf.o)
  .ARM.attributes
-                0x0000091f       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-cosf.o)
+                0x0000091f       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sincosf_data.o)
  .ARM.attributes
-                0x00000951       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sincosf_data.o)
+                0x00000951       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-math_errf.o)
  .ARM.attributes
-                0x00000983       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-math_errf.o)
+                0x00000983       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_sqrt.o)
  .ARM.attributes
-                0x000009b5       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_sqrt.o)
+                0x000009b5       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_acos.o)
  .ARM.attributes
-                0x000009e7       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_acos.o)
+                0x000009e7       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_atan2.o)
  .ARM.attributes
-                0x00000a19       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_atan2.o)
+                0x00000a19       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_fmod.o)
  .ARM.attributes
-                0x00000a4b       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_fmod.o)
+                0x00000a4b       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_atan.o)
  .ARM.attributes
-                0x00000a7d       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_atan.o)
+                0x00000a7d       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-puts.o)
  .ARM.attributes
-                0x00000aaf       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-puts.o)
+                0x00000aaf       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-wbuf.o)
  .ARM.attributes
-                0x00000ae1       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-wbuf.o)
+                0x00000ae1       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-wsetup.o)
  .ARM.attributes
-                0x00000b13       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-wsetup.o)
+                0x00000b13       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-memset.o)
  .ARM.attributes
-                0x00000b45       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-memset.o)
+                0x00000b45       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-impure.o)
  .ARM.attributes
-                0x00000b77       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-impure.o)
+                0x00000b77       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-errno.o)
  .ARM.attributes
-                0x00000ba9       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-errno.o)
+                0x00000ba9       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-init.o)
  .ARM.attributes
-                0x00000bdb       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-init.o)
+                0x00000bdb       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lock.o)
  .ARM.attributes
-                0x00000c0d       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lock.o)
+                0x00000c0d       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-freer.o)
  .ARM.attributes
-                0x00000c3f       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-freer.o)
+                0x00000c3f       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mallocr.o)
  .ARM.attributes
-                0x00000c71       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mallocr.o)
+                0x00000c71       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mlock.o)
  .ARM.attributes
-                0x00000ca3       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mlock.o)
+                0x00000ca3       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fflush.o)
  .ARM.attributes
-                0x00000cd5       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fflush.o)
+                0x00000cd5       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
  .ARM.attributes
-                0x00000d07       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
+                0x00000d07       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fwalk.o)
  .ARM.attributes
-                0x00000d39       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fwalk.o)
+                0x00000d39       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-makebuf.o)
  .ARM.attributes
-                0x00000d6b       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-makebuf.o)
+                0x00000d6b       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-stdio.o)
  .ARM.attributes
-                0x00000d9d       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-stdio.o)
+                0x00000d9d       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-closer.o)
  .ARM.attributes
-                0x00000dcf       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-closer.o)
+                0x00000dcf       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-reent.o)
  .ARM.attributes
-                0x00000e01       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-reent.o)
+                0x00000e01       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fstatr.o)
  .ARM.attributes
-                0x00000e33       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fstatr.o)
+                0x00000e33       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-isattyr.o)
  .ARM.attributes
-                0x00000e65       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-isattyr.o)
+                0x00000e65       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lseekr.o)
  .ARM.attributes
-                0x00000e97       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lseekr.o)
+                0x00000e97       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-readr.o)
  .ARM.attributes
-                0x00000ec9       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-readr.o)
+                0x00000ec9       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-sbrkr.o)
  .ARM.attributes
-                0x00000efb       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-sbrkr.o)
+                0x00000efb       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-writer.o)
  .ARM.attributes
-                0x00000f2d       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-writer.o)
+                0x00000f2d       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_arm_addsubdf3.o)
  .ARM.attributes
-                0x00000f5f       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_arm_addsubdf3.o)
+                0x00000f4d       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_aeabi_uldivmod.o)
  .ARM.attributes
-                0x00000f7f       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_aeabi_uldivmod.o)
+                0x00000f6d       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_udivmoddi4.o)
  .ARM.attributes
-                0x00000f9f       0x32 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_udivmoddi4.o)
- .ARM.attributes
-                0x00000fd1       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_dvmd_tls.o)
+                0x00000f9f       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_dvmd_tls.o)
 
-.debug_frame    0x00000000     0x5358
+.debug_frame    0x00000000     0x52e8
  .debug_frame   0x00000000       0x58 build/Core/Src/main.o
  .debug_frame   0x00000058       0x34 build/Core/Src/gpio.o
  .debug_frame   0x0000008c       0x2c build/Core/Src/dma.o
@@ -10800,61 +10800,60 @@ LOAD linker stubs
  .debug_frame   0x00003444       0x6c build/BSP/bsp_uart.o
  .debug_frame   0x000034b0       0x74 build/BSP/bsp_sbus.o
  .debug_frame   0x00003524      0x288 build/my/action.o
- .debug_frame   0x000037ac      0x504 build/my/dog.o
- .debug_frame   0x00003cb0      0x33c build/my/fsm.o
- .debug_frame   0x00003fec       0x80 build/my/delay_DWT.o
- .debug_frame   0x0000406c      0x1c8 build/my/pos_ctrl.o
- .debug_frame   0x00004234      0x108 build/my/walk.o
- .debug_frame   0x0000433c       0xdc build/build_support/runtime.o
- .debug_frame   0x00004418       0x90 build/my/control_task.o
- .debug_frame   0x000044a8      0x14c build/my/motor_task.o
- .debug_frame   0x000045f4       0x74 build/Device/unitree/UART.o
- .debug_frame   0x00004668       0xd4 build/Device/unitree/motor_YS.o
- .debug_frame   0x0000473c       0x80 build/Device/unitree/math_support.o
- .debug_frame   0x000047bc       0x74 build/Device/remote_control/remote_control.o
- .debug_frame   0x00004830       0x48 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_acos.o)
- .debug_frame   0x00004878       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_atan2.o)
- .debug_frame   0x00004898       0x44 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_fmod.o)
- .debug_frame   0x000048dc       0x44 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_sqrt.o)
- .debug_frame   0x00004920       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_fabs.o)
- .debug_frame   0x00004940       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_nan.o)
- .debug_frame   0x00004960       0x48 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sinf.o)
- .debug_frame   0x000049a8       0x38 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-cosf.o)
- .debug_frame   0x000049e0       0x98 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-math_errf.o)
- .debug_frame   0x00004a78       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_sqrt.o)
- .debug_frame   0x00004a98       0x6c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_acos.o)
- .debug_frame   0x00004b04       0x44 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_atan2.o)
- .debug_frame   0x00004b48       0x3c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_fmod.o)
- .debug_frame   0x00004b84       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_atan.o)
- .debug_frame   0x00004bb0       0x3c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-puts.o)
- .debug_frame   0x00004bec       0x40 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-wbuf.o)
- .debug_frame   0x00004c2c       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-wsetup.o)
- .debug_frame   0x00004c58       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-memset.o)
- .debug_frame   0x00004c78       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-errno.o)
- .debug_frame   0x00004c98       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-init.o)
- .debug_frame   0x00004cc4       0xb0 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lock.o)
- .debug_frame   0x00004d74       0x38 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-freer.o)
- .debug_frame   0x00004dac       0x50 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mallocr.o)
- .debug_frame   0x00004dfc       0x30 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mlock.o)
- .debug_frame   0x00004e2c       0x5c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fflush.o)
- .debug_frame   0x00004e88      0x144 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
- .debug_frame   0x00004fcc       0x34 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fwalk.o)
- .debug_frame   0x00005000       0x58 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-makebuf.o)
- .debug_frame   0x00005058       0x88 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-stdio.o)
- .debug_frame   0x000050e0       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-closer.o)
- .debug_frame   0x0000510c       0x38 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-reent.o)
- .debug_frame   0x00005144       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fstatr.o)
- .debug_frame   0x00005170       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-isattyr.o)
- .debug_frame   0x0000519c       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lseekr.o)
- .debug_frame   0x000051c8       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-readr.o)
- .debug_frame   0x000051f4       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-sbrkr.o)
- .debug_frame   0x00005220       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-writer.o)
- .debug_frame   0x0000524c       0xac C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_arm_addsubdf3.o)
- .debug_frame   0x000052f8       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_aeabi_uldivmod.o)
- .debug_frame   0x00005324       0x34 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_udivmoddi4.o)
+ .debug_frame   0x000037ac      0x4d8 build/my/dog.o
+ .debug_frame   0x00003c84      0x33c build/my/fsm.o
+ .debug_frame   0x00003fc0       0x80 build/my/delay_DWT.o
+ .debug_frame   0x00004040      0x1c8 build/my/pos_ctrl.o
+ .debug_frame   0x00004208      0x108 build/my/walk.o
+ .debug_frame   0x00004310       0xdc build/build_support/runtime.o
+ .debug_frame   0x000043ec       0x90 build/my/control_task.o
+ .debug_frame   0x0000447c      0x14c build/my/motor_task.o
+ .debug_frame   0x000045c8       0x74 build/Device/unitree/UART.o
+ .debug_frame   0x0000463c       0xd4 build/Device/unitree/motor_YS.o
+ .debug_frame   0x00004710       0x80 build/Device/unitree/math_support.o
+ .debug_frame   0x00004790       0x74 build/Device/remote_control/remote_control.o
+ .debug_frame   0x00004804       0x48 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_acos.o)
+ .debug_frame   0x0000484c       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_atan2.o)
+ .debug_frame   0x0000486c       0x44 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_fmod.o)
+ .debug_frame   0x000048b0       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_fabs.o)
+ .debug_frame   0x000048d0       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_nan.o)
+ .debug_frame   0x000048f0       0x48 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sinf.o)
+ .debug_frame   0x00004938       0x38 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-cosf.o)
+ .debug_frame   0x00004970       0x98 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-math_errf.o)
+ .debug_frame   0x00004a08       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_sqrt.o)
+ .debug_frame   0x00004a28       0x6c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_acos.o)
+ .debug_frame   0x00004a94       0x44 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_atan2.o)
+ .debug_frame   0x00004ad8       0x3c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-ef_fmod.o)
+ .debug_frame   0x00004b14       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_atan.o)
+ .debug_frame   0x00004b40       0x3c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-puts.o)
+ .debug_frame   0x00004b7c       0x40 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-wbuf.o)
+ .debug_frame   0x00004bbc       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-wsetup.o)
+ .debug_frame   0x00004be8       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-memset.o)
+ .debug_frame   0x00004c08       0x20 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-errno.o)
+ .debug_frame   0x00004c28       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-init.o)
+ .debug_frame   0x00004c54       0xb0 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lock.o)
+ .debug_frame   0x00004d04       0x38 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-freer.o)
+ .debug_frame   0x00004d3c       0x50 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mallocr.o)
+ .debug_frame   0x00004d8c       0x30 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-mlock.o)
+ .debug_frame   0x00004dbc       0x5c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fflush.o)
+ .debug_frame   0x00004e18      0x144 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-findfp.o)
+ .debug_frame   0x00004f5c       0x34 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fwalk.o)
+ .debug_frame   0x00004f90       0x58 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-makebuf.o)
+ .debug_frame   0x00004fe8       0x88 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-stdio.o)
+ .debug_frame   0x00005070       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-closer.o)
+ .debug_frame   0x0000509c       0x38 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-reent.o)
+ .debug_frame   0x000050d4       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-fstatr.o)
+ .debug_frame   0x00005100       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-isattyr.o)
+ .debug_frame   0x0000512c       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-lseekr.o)
+ .debug_frame   0x00005158       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-readr.o)
+ .debug_frame   0x00005184       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-sbrkr.o)
+ .debug_frame   0x000051b0       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-writer.o)
+ .debug_frame   0x000051dc       0xac C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_arm_addsubdf3.o)
+ .debug_frame   0x00005288       0x2c C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_aeabi_uldivmod.o)
+ .debug_frame   0x000052b4       0x34 C:/Users/MECHREVO/Desktop/make/gcc/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard\libgcc.a(_udivmoddi4.o)
 
 .debug_loclists
-                0x00000000    0x119dc
+                0x00000000    0x11a67
  .debug_loclists
                 0x00000000       0x45 build/Core/Src/spi.o
  .debug_loclists
@@ -10900,29 +10899,29 @@ LOAD linker stubs
  .debug_loclists
                 0x0000e7f8      0x514 build/my/action.o
  .debug_loclists
-                0x0000ed0c     0x110c build/my/dog.o
+                0x0000ed0c     0x1197 build/my/dog.o
  .debug_loclists
-                0x0000fe18       0x22 build/my/fsm.o
+                0x0000fea3       0x22 build/my/fsm.o
  .debug_loclists
-                0x0000fe3a       0x9b build/my/delay_DWT.o
+                0x0000fec5       0x9b build/my/delay_DWT.o
  .debug_loclists
-                0x0000fed5      0x8bb build/my/pos_ctrl.o
+                0x0000ff60      0x8bb build/my/pos_ctrl.o
  .debug_loclists
-                0x00010790      0x542 build/my/walk.o
+                0x0001081b      0x542 build/my/walk.o
  .debug_loclists
-                0x00010cd2      0x227 build/build_support/runtime.o
+                0x00010d5d      0x227 build/build_support/runtime.o
  .debug_loclists
-                0x00010ef9       0x57 build/my/control_task.o
+                0x00010f84       0x57 build/my/control_task.o
  .debug_loclists
-                0x00010f50      0x29c build/my/motor_task.o
+                0x00010fdb      0x29c build/my/motor_task.o
  .debug_loclists
-                0x000111ec      0x1d8 build/Device/unitree/UART.o
+                0x00011277      0x1d8 build/Device/unitree/UART.o
  .debug_loclists
-                0x000113c4      0x34c build/Device/unitree/motor_YS.o
+                0x0001144f      0x34c build/Device/unitree/motor_YS.o
  .debug_loclists
-                0x00011710      0x256 build/Device/unitree/math_support.o
+                0x0001179b      0x256 build/Device/unitree/math_support.o
  .debug_loclists
-                0x00011966       0x76 build/Device/remote_control/remote_control.o
+                0x000119f1       0x76 build/Device/remote_control/remote_control.o
 
 .debug_line_str
                 0x00000000      0x124

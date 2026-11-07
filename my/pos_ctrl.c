@@ -36,6 +36,15 @@ void line_Pos(uint8_t legid, float start_x, float start_z, float end_x, float en
         p = line_Generator(legid, start_x, start_z, end_x, end_z, T, t);
         Coordinate_Transform(&p, &leg[legid].Foot_Target.p, Euler_Angle.Pitch, &leg[legid], legid);
 
+        Point v = {0, 0, 0};
+        if (T > 0.0f && t >= 0.0f && t < T)
+        {
+            v.x = (end_x - start_x) / T;
+            v.z = (end_z - start_z) / T;
+        }
+        // 这里只包含轨迹速度，未包含机身俯仰变化引起的速度项。
+        Coordinate_Transform(&v, &leg[legid].Foot_Target.v, Euler_Angle.Pitch, &leg[legid], legid);
+
         Foot_Convert_To_Motor(&leg[legid].const_param, &leg[legid].Foot_Target, &leg[legid].Pctrl.Joint_Target, &leg[legid].Pctrl.Motor_Target);
         Set_Motor_Target_Pos(&leg[legid]);
     }
