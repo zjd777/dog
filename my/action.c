@@ -388,9 +388,20 @@ void start_enter(void)
 void start_run(void)
 {
     GetTick();
-    float t = Time_Points_Param.Now_Tick - tick_start;
-    line(0,Action_Param.Init_Pos[0].x,Action_Param.Init_Pos[0].z,
-        Action_Param.Init_Pos[0].x + 0.05f,Action_Param.Init_Pos[0].z,2.0f,t,&Action_Param.VMC_Swing_Stand[0]);
+    float t = fmodf(Time_Points_Param.Now_Tick - tick_start, 4.0f);
+    float x0 = Action_Param.Init_Pos[0].x;
+    float z0 = Action_Param.Init_Pos[0].z;
+
+    if (t < 2.0f)
+    {
+        line(0, x0, z0, x0 + 0.05f, z0,
+             2.0f, t, &Action_Param.VMC_Swing_Stand[0]);
+    }
+    else
+    {
+        line(0, x0 + 0.05f, z0, x0, z0,
+             2.0f, t - 2.0f, &Action_Param.VMC_Swing_Stand[0]);
+    }
 }
 
 void start_exit(void)
