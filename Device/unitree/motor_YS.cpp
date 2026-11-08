@@ -44,17 +44,19 @@ void Class_Motor_YS::Init(UART_HandleTypeDef *huart,uint16_t __id,const Enum_Mot
  */
 void Class_Motor_YS::send_data(){
     uint16_t crc;
-    uint32_t YS_T,YS_W,YS_Angle_Pos,YS_Kp,YS_Kd;    
+    uint16_t YS_T, YS_W;
+    uint32_t YS_Angle_Pos, YS_Kp, YS_Kd;
     motor_YS_send_Temp_buffer[0] = 0xFE;
     motor_YS_send_Temp_buffer[1] = 0xEE;
     motor_YS_send_Temp_buffer[2] = id | Motor_YS_Status<<4;
-    YS_T = T * 256;
-    YS_W = (W * 128*Gearbox_Rate) /PI;
+    // 有符号协议量先量化，再转成无符号位模式用于拆字节。
+    YS_T = static_cast<uint16_t>(static_cast<int16_t>(T * 256));
+    YS_W = static_cast<uint16_t>(static_cast<int16_t>((W * 128*Gearbox_Rate) /PI));
     if(control_mode == Motor_YS_Pos_control)
-        YS_Angle_Pos = ((Pos+init_Pos) * 32768 * Gearbox_Rate)/2/PI;
+        YS_Angle_Pos = static_cast<uint32_t>(static_cast<int32_t>(((Pos+init_Pos) * 32768 * Gearbox_Rate)/2/PI));
         // YS_Angle_Pos = ((Pos+init_Pos) * 32768 * Gearbox_Rate);
     else 
-        YS_Angle_Pos = ((Angle+init_Angle) *MATH_RPM_TO_RADPS* 32768 * Gearbox_Rate) /2/PI;
+        YS_Angle_Pos = static_cast<uint32_t>(static_cast<int32_t>(((Angle+init_Angle) *MATH_RPM_TO_RADPS* 32768 * Gearbox_Rate) /2/PI));
 
     YS_Kp = Kp * 1280;
     YS_Kd = Kd * 1280;

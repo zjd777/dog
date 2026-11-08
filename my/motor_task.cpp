@@ -19,7 +19,7 @@ extern UART_HandleTypeDef huart3;
 //宇树电机类和控制所需数据
 Class_Motor_YS motor_YS[8];
 Motor_Control motor[MOTOR_COUNT] = {};
-// 仅为现有 USART2 / ID0 分配通信测试槽，尚未确认它的实际髋膝位置。
+// motor_control_text使用的测试槽：0为髋电机，1为膝电机。
 static constexpr uint8_t motor_ys_test_slot = 0U;
 static constexpr float motor_ys_gear_ratio = 6.33f;
 
@@ -200,13 +200,8 @@ uint8_t motor_task_init(void)
 
     for (uint8_t id = 0U; id < 2U; ++id)
     {
-        if (!motor_YS_Init(&huart2,
-                           &motor_YS[id],
-                           id,
-                           &motor[id]))
-        {
+        if (!motor_YS_Init(&huart2, &motor_YS[id], id, &motor[id]))
             return 0U;
-        }
     }
 
     return 1U;
@@ -218,18 +213,12 @@ uint8_t motor_task_init(void)
  */
  //在这里面把数据处理好之后发给电机,再中断里被调用
 void motor_task(){
-
-    //进一次中断每一次仅仅发一个电机的数据
     static uint8_t index = 0U;
-    if(index==2)
-    {
-        index=0;
-    }
-	motor_YS_Data_send(&motor_YS[index], &motor[index]);
-	motor_YS[index].UART_send();
+    if (index == 2U)
+        index = 0U;
 
-    //当前只有两个后面再改
-
+    motor_YS_Data_send(&motor_YS[index], &motor[index]);
+    motor_YS[index].UART_send();
     index++;
 }
 
@@ -244,35 +233,41 @@ void motor_test(void)
         return;
     }
 
-    const float test_speed = 1.0f; // 输出轴目标速度，rad/s
-    const float test_kd = 0.01f;   // 速度增益，需根据实际响应调整
+    const float test_speed = 0.5f; // 输出轴目标速度，rad/s
+    const float test_kd = 0.04f;   // 速度增益，需根据实际响应调整
 
     // 一次性设置参数，避免定时中断读取到中间状态
     const uint32_t primask = __get_PRIMASK();
     __disable_irq();
 
-    motor[motor_ys_test_slot].target.Pos = 0.0f;
-    motor[motor_ys_test_slot].target.T   = 0.0f;
-    motor[motor_ys_test_slot].target.W   = test_speed;
-    motor[motor_ys_test_slot].K_p = 0.0f;
-    // 保持原台架测试的转子端阻尼，换成统一接口的输出端增益。
-    motor[motor_ys_test_slot].K_w = test_kd * motor_ys_gear_ratio * motor_ys_gear_ratio;
-    motor[motor_ys_test_slot].command_mode = 1U;
+    for (uint8_t id = 0U; id < 2U; ++id)
+    {
+        motor[id].target.Pos = 0.0f;
+        motor[id].target.T = 0.0f;
+        motor[id].target.W = test_speed;
+        motor[id].K_p = 0.0f;
+        // 转子端速度增益换成统一接口的输出端增益。
+        motor[id].K_w = test_kd * motor_ys_gear_ratio * motor_ys_gear_ratio;
+        motor[id].command_mode = 1U;
+    }
 
     __set_PRIMASK(primask);
 
-    HAL_Delay(10000U);
-
-    motor[motor_ys_test_slot].target.W = 0.0f;
     HAL_Delay(3000U);
 
-    motor[motor_ys_test_slot].target.W = test_speed;
-    HAL_Delay(5000U);
+    for (uint8_t id = 0U; id < 2U; ++id)
+        motor[id].target.W = 0.0f;
+    HAL_Delay(1000U);
 
-    motor[motor_ys_test_slot].target.W = 0.0f;
+    for (uint8_t id = 0U; id < 2U; ++id)
+        motor[id].target.W = -test_speed;
+    HAL_Delay(3000U);
+
+    for (uint8_t id = 0U; id < 2U; ++id)
+        motor[id].target.W = 0.0f;
 
     // 给 TIM8 留出发送零速目标的时间
-    HAL_Delay(5U);
+    HAL_Delay(1000U);
 }
 
 
