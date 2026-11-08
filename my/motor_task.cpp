@@ -233,8 +233,11 @@ void motor_test(void)
         return;
     }
 
-    const float test_speed = 0.5f; // 输出轴目标速度，rad/s
-    const float test_kd = 0.04f;   // 速度增益，需根据实际响应调整
+    const float torque_limit[2] = {0.3f, 0.5f}; // ID0、ID1输出轴力矩限幅，N·m
+    const float hold_kp = 5.0f; // 输出轴 N·m/rad
+    const float hold_kd = 0.2f; // 输出轴 N·m/(rad/s)
+    const uint32_t hold_ms = 10000U;
+    const uint32_t pause_ms = 1000U;
 
     // 一次性设置参数，避免定时中断读取到中间状态
     const uint32_t primask = __get_PRIMASK();
@@ -244,30 +247,38 @@ void motor_test(void)
     {
         motor[id].target.Pos = 0.0f;
         motor[id].target.T = 0.0f;
-        motor[id].target.W = test_speed;
+        motor[id].target.W = 0.0f;
         motor[id].K_p = 0.0f;
-        // 转子端速度增益换成统一接口的输出端增益。
-        motor[id].K_w = test_kd * motor_ys_gear_ratio * motor_ys_gear_ratio;
+        motor[id].K_w = 0.0f;
         motor[id].command_mode = 1U;
     }
 
     __set_PRIMASK(primask);
 
-    HAL_Delay(3000U);
+    HAL_Delay(pause_ms);
 
     for (uint8_t id = 0U; id < 2U; ++id)
-        motor[id].target.W = 0.0f;
-    HAL_Delay(1000U);
+    {
+        motor[id].target.Pos = motor[id].measure.Pos;
+        const uint32_t start_tick = HAL_GetTick();
 
-    for (uint8_t id = 0U; id < 2U; ++id)
-        motor[id].target.W = -test_speed;
-    HAL_Delay(3000U);
+        while ((uint32_t)(HAL_GetTick() - start_tick) < hold_ms)
+        {
+            const float error = motor[id].target.Pos - motor[id].measure.Pos;
+            float torque = hold_kp * error - hold_kd * motor[id].measure.W;
 
-    for (uint8_t id = 0U; id < 2U; ++id)
-        motor[id].target.W = 0.0f;
+            if (torque > torque_limit[id])
+                torque = torque_limit[id];
+            else if (torque < -torque_limit[id])
+                torque = -torque_limit[id];
 
-    // 给 TIM8 留出发送零速目标的时间
-    HAL_Delay(1000U);
+            motor[id].target.T = torque;
+            HAL_Delay(2U);
+        }
+
+        motor[id].target.T = 0.0f;
+        HAL_Delay(pause_ms);
+    }
 }
 
 

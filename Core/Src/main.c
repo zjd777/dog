@@ -106,7 +106,7 @@ int main(void)
   {
     Error_Handler();
   }
-  // leg_init();                                       //给腿设参数
+  leg_init();                                       //给腿设参数
   // HAL_Delay(2000);
   // 软件测试使用预设参考值；实物在已知姿态下再采集。
   // Leg_Initpos_Reset();                             //记录当前的角度，和init的值形成对照
@@ -117,7 +117,7 @@ int main(void)
     //     ;
     // }
     
-  // 电机速度测试仅由TIM8发送，避免足端控制覆盖测试目标。
+  // 电机力矩测试仅由TIM8发送，避免足端控制覆盖测试目标。
   // start_enter();
   // __HAL_TIM_SET_COUNTER(&htim3, 0);                // 清零计数器
   // __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);  // 清除残留更新标志
@@ -131,7 +131,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+    Get_Now_Pos_Spd(0);
+    HAL_Delay(10);
     /* USER CODE BEGIN 3 */
     // control_task ();
   }
