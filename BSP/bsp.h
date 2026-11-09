@@ -11,8 +11,7 @@
 
 
 /* Import device driver library  导入设备驱动库 */
-#include "bsp_beep.h"
-#include "bsp_key.h"
+
 #include "bsp_uart.h"
 #include "bsp_sbus.h"
 
@@ -21,9 +20,9 @@
 
 
 /* DEFINE */
-#define LED_ON()         HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, SET)
-#define LED_OFF()        HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, RESET)
-#define LED_TOGGLE()     HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin)
+// #define LED_ON()         HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, SET)
+// #define LED_OFF()        HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, RESET)
+// #define LED_TOGGLE()     HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin)
 
 
 /* functions */

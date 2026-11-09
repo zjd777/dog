@@ -36,7 +36,8 @@ build/my/control_task.o: my/control_task.cpp my/control_task.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h BSP/bsp_sbus.h \
- Core/Inc/tim.h Device/BMI088/imu.h my/dog.h my/fsm.h
+ Core/Inc/tim.h Device/BMI088/imu.h my/dog.h my/fsm.h \
+ Device/remote_control/obstacle_course.h
 my/control_task.h:
 Device/unitree/math_support.h:
 Device/unitree/struct_typedef.h:
@@ -87,3 +88,4 @@ Core/Inc/tim.h:
 Device/BMI088/imu.h:
 my/dog.h:
 my/fsm.h:
+Device/remote_control/obstacle_course.h:

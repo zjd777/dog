@@ -32,8 +32,7 @@ build/BSP/bsp_uart.o: BSP/bsp_uart.c BSP/bsp_uart.h BSP/bsp.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h Core/Inc/gpio.h \
  Core/Inc/main.h Core/Inc/usart.h \
- Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h BSP/bsp_beep.h \
- BSP/bsp_key.h BSP/bsp_sbus.h
+ Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h BSP/bsp_sbus.h
 BSP/bsp_uart.h:
 BSP/bsp.h:
 Core/Inc/main.h:
@@ -75,6 +74,4 @@ Core/Inc/gpio.h:
 Core/Inc/main.h:
 Core/Inc/usart.h:
 Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h:
-BSP/bsp_beep.h:
-BSP/bsp_key.h:
 BSP/bsp_sbus.h:

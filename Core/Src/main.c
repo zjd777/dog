@@ -122,7 +122,7 @@ int main(void)
   // __HAL_TIM_SET_COUNTER(&htim3, 0);                // 清零计数器
   // __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);  // 清除残留更新标志
   // HAL_TIM_Base_Start_IT(&htim3);
-  motor_test();
+  // motor_test();
 
   /* USER CODE END 2 */
 
@@ -131,10 +131,10 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    Get_Now_Pos_Spd(0);
-    HAL_Delay(10);
+    // Get_Now_Pos_Spd(0);
+    // HAL_Delay(10);
     /* USER CODE BEGIN 3 */
-    // control_task ();
+    control_task ();
   }
   /* USER CODE END 3 */
 }

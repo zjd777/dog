@@ -43,6 +43,7 @@ C_SOURCES := \
   my/delay_DWT.c \
   my/pos_ctrl.c \
   my/walk.c \
+  Device/remote_control/obstacle_course.c\
   build_support/runtime.c
 
 CXX_SOURCES := \

@@ -64,6 +64,7 @@ static int SBUS_Parse_Data(void)
 }
 
 // Receives SBUS cache data  接收SBUS的缓存数据
+//接收完一个字节就存起来，接受完完整一帧就修改 sbus_new_cmd
 //在中断里被调用，就先使用IT把
 void SBUS_Reveive(uint8_t data)
 {

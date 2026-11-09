@@ -16,7 +16,7 @@
 #include "tim.h"
 #include "imu.h"
 #include "fsm.h"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
-
+#include "obstacle_course.h"
 /**
  * @brief 1ms的回调函数
  * @return void
@@ -29,7 +29,6 @@ void Task1ms_Callback(){
     //测试函数
 	// if(control_system_init_bl)motor_control_text();
 
-	
 }
 
 /**
@@ -67,7 +66,9 @@ uint8_t control_task_init(void){
 void control_task (){
 	SBUS_Handle();
 	// motor_control_text(); // 显式台架测试入口，常规循环不覆盖动作目标。
-
+    if (!SBUS_IsOnline())
+        return;
+    GamePad_Control_Obs();
 }
 
 

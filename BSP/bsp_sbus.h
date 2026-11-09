@@ -18,7 +18,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+extern int16_t g_sbus_channels[18];
 void SBUS_Reveive(uint8_t data);
 void SBUS_Handle(void);
 uint8_t SBUS_IsOnline(void);
