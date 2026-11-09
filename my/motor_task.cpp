@@ -20,7 +20,6 @@ extern UART_HandleTypeDef huart3;
 Class_Motor_YS motor_YS[8];
 Motor_Control motor[MOTOR_COUNT] = {};
 // motor_control_text使用的测试槽：0为髋电机，1为膝电机。
-static constexpr uint8_t motor_ys_test_slot = 0U;
 static constexpr float motor_ys_gear_ratio = 6.33f;
 
 void motor_YS_Data_send(Class_Motor_YS *__motor_YS, const Motor_Control *data);
@@ -284,19 +283,48 @@ void motor_test(void)
 
 void motor_control_text()
 {
-    const float run_speed = 1.0f;  // 输出轴目标速度，rad/s
-    const float speed_kd = 0.01f;
+    static uint32_t last_update_tick = 0U;
+    const uint32_t now = HAL_GetTick();
+    if ((uint32_t)(now - last_update_tick) < 2U)
+        return;
+    last_update_tick = now;
 
-    motor[motor_ys_test_slot].K_p = 0.0f;
-    motor[motor_ys_test_slot].K_w = speed_kd * motor_ys_gear_ratio * motor_ys_gear_ratio;
-    motor[motor_ys_test_slot].target.T = 0.0f;
-    motor[motor_ys_test_slot].command_mode = 1U;
+    const float max_speed = 0.5f; // 输出轴 rad/s
+    const float speed_gain = 1.6f; // 软件速度误差增益，输出轴 N·m/(rad/s)
+    const float torque_limit[2] = {0.3f, 0.5f}; // ID0、ID1输出轴 N·m
+    const bool enabled = SBUS_IsOnline() && g_sbus_channels[5] == 2000;
+    const float stick[2] = {
+        g_sbus_channels[0] - 1500.0f,
+        g_sbus_channels[1] - 1500.0f
+    };
+    const bool outside_deadzone =
+        stick[0] * stick[0] + stick[1] * stick[1] >= 200.0f * 200.0f;
 
-    if (SBUS_IsOnline())
-        motor[motor_ys_test_slot].target.W = run_speed;
-    else
-        motor[motor_ys_test_slot].target.W = 0.0f;
+    for (uint8_t id = 0U; id < 2U; ++id)
+    {
+        float target_speed = enabled && outside_deadzone ?
+                             max_speed * stick[id] / 500.0f : 0.0f;
+        if (target_speed > max_speed)
+            target_speed = max_speed;
+        else if (target_speed < -max_speed)
+            target_speed = -max_speed;
 
+        // 允许控制时回中做零速制动；SWB低档或离线只归零力矩。
+        float torque = enabled ?
+                       speed_gain * (target_speed - motor[id].measure.W) : 0.0f;
+        if (torque > torque_limit[id])
+            torque = torque_limit[id];
+        else if (torque < -torque_limit[id])
+            torque = -torque_limit[id];
+
+        // 内置PD关闭，全部控制力矩都经过上面的软件限幅。
+        motor[id].K_p = 0.0f;
+        motor[id].K_w = 0.0f;
+        motor[id].command_mode = 1U;
+        motor[id].target.Pos = motor[id].measure.Pos;
+        motor[id].target.W = target_speed;
+        motor[id].target.T = torque;
+    }
 }
 
 

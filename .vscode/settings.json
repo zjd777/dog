@@ -2,5 +2,6 @@
     "C_Cpp.intelliSenseEngine": "default",
     "makefile.makePath": "C:/Users/MECHREVO/Desktop/make/mingw64/bin/make.exe",
     "makefile.configureOnOpen": true,
-    "makefile.configureOnEdit": false
+    "makefile.configureOnEdit": false,
+    "cortex-debug.variableUseNaturalFormat": false
 }

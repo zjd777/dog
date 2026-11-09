@@ -22,6 +22,8 @@ int16_t g_sbus_channels[18] = {0};
 //最近完整帧的接收时间
 static volatile uint32_t sbus_last_rx_tick = 0;
 static volatile uint8_t sbus_frame_ok = 0;   //帧是否报告正常
+volatile uint32_t sbus_uart_error_count = 0U;
+volatile uint32_t sbus_uart_last_error = 0U;
 
 // Parses SBUS data into channel values  解析SBUS的数据，转化成通道数值。
 static int SBUS_Parse_Data(void)
@@ -44,6 +46,10 @@ static int SBUS_Parse_Data(void)
     g_sbus_channels[14] = ((sbus_data[20] >> 2 | sbus_data[21] << 6) & 0x07FF);
     g_sbus_channels[15] = ((sbus_data[21] >> 5 | sbus_data[22] << 3) & 0x07FF);
     #endif
+
+    // SBUS原始值192/992/1792统一换算为控制端使用的1000/1500/2000。
+    for (uint8_t i = 0U; i < 10U; ++i)
+        g_sbus_channels[i] = g_sbus_channels[i] * 5 / 8 + 880;
 
     // 安全检测，检测是否失联或者数据错误
     // Security detection to check for lost connections or data errors
@@ -95,6 +101,29 @@ void SBUS_Reveive(uint8_t data)
             sbus_frame_ok =((inBuffer[23] & ((1U << 2) | (1U << 3))) == 0U);
         }
     }
+}
+
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+{
+    if (huart != &huart5)
+        return;
+
+    sbus_uart_error_count++;
+    sbus_uart_last_error = huart->ErrorCode;
+
+    sbus_start = 0U;
+    sbus_buf_index = 0U;
+    sbus_new_cmd = 0U;
+    sbus_frame_ok = 0U;
+    failsafe_status = SBUS_SIGNAL_LOST;
+
+    __HAL_UART_CLEAR_FLAG(huart, UART_CLEAR_PEF | UART_CLEAR_FEF |
+                               UART_CLEAR_NEF | UART_CLEAR_OREF);
+    __HAL_UART_SEND_REQ(huart, UART_RXDATA_FLUSH_REQUEST);
+
+    // ORE时HAL已结束接收；非阻塞错误仍在接收时沿用原接收任务。
+    if (huart->RxState == HAL_UART_STATE_READY)
+        (void)HAL_UART_Receive_IT(huart, &RxTemp_2, 1U);
 }
 
 // SBUS receives and processes data handle  SBUS接收处理数据句柄

@@ -65,10 +65,9 @@ uint8_t control_task_init(void){
  */
 void control_task (){
 	SBUS_Handle();
-	// motor_control_text(); // 显式台架测试入口，常规循环不覆盖动作目标。
-    if (!SBUS_IsOnline())
-        return;
-    GamePad_Control_Obs();
+    // 台架测试独占电机目标，离线归零也由测试函数处理。
+    motor_control_text();
+    // GamePad_Control_Obs();
 }
 
 

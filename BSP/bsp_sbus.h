@@ -18,7 +18,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+// CH1～CH10为换算后的控制值，中值1500。
 extern int16_t g_sbus_channels[18];
+extern volatile uint32_t sbus_uart_error_count;
+extern volatile uint32_t sbus_uart_last_error;
 void SBUS_Reveive(uint8_t data);
 void SBUS_Handle(void);
 uint8_t SBUS_IsOnline(void);
