@@ -379,7 +379,7 @@
 
   11.1 力控步态
 
-  Walk_Away()
+  Walk_Away（）
   ├─ 必要时 fmodf(t, term)，将时间折算到一个步态周期内
   ├─ 更新 last_t、t
   ├─ SetDogChangeAble(DISABLE)

@@ -517,9 +517,9 @@ void leg_init() // 更换电机只需改此部分
     // 腿0：软件测试参考姿态，非实物标定；逻辑槽1/0分别表示髋/膝。
     id = 0;
     leg[id].const_param.motor_Alpha_id = 0;
-    leg[id].const_param.motor_Alpha_dir = 1;
+    leg[id].const_param.motor_Alpha_dir = 1;   //方向
     leg[id].const_param.start_Alpha = 30.0f * CHANGE_TO_RADIAN;
-    leg[id].const_param.start_motor_Alpha = 0.0f;
+    leg[id].const_param.start_motor_Alpha = 0.0f;   // 此姿态下ID0的反馈位置  后面标定玩在给
 
     leg[id].const_param.motor_Beta_id = 1;
     leg[id].const_param.motor_Beta_dir = 1;

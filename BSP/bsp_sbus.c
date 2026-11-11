@@ -48,6 +48,7 @@ static int SBUS_Parse_Data(void)
     #endif
 
     // SBUS原始值192/992/1792统一换算为控制端使用的1000/1500/2000。
+    //原来的没有进行值的换算
     for (uint8_t i = 0U; i < 10U; ++i)
         g_sbus_channels[i] = g_sbus_channels[i] * 5 / 8 + 880;
 

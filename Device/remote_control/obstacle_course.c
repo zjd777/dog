@@ -50,6 +50,7 @@ GroundForward在楼梯上往上跳 脚在楼梯中间 身体靠左防止掉下�
 */
 
 float std_step_length[3] = {0.1, 0.08, 0.035};
+//用来处理遥控发来的数据，把通道的值转换成步态参数，写进全局变量Action_Param，gait_param让waik_away来读取
 void GamePad_Control_Obs(void)
 {
 	if ((fabs(g_sbus_channels[2] - 1500.0f) <= 40) && (fabs(g_sbus_channels[3] - 1000.0f)) <= 40 && (g_sbus_channels[5] == 1000))

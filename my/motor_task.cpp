@@ -291,7 +291,7 @@ void motor_control_text()
 
     const float max_speed = 0.5f; // 输出轴 rad/s
     const float speed_gain = 1.6f; // 软件速度误差增益，输出轴 N·m/(rad/s)
-    const float torque_limit[2] = {0.3f, 0.5f}; // ID0、ID1输出轴 N·m
+    const float torque_limit[2] = {0.9f, 0.8f}; // ID0、ID1输出轴 N·m
     const bool enabled = SBUS_IsOnline() && g_sbus_channels[5] == 2000;
     const float stick[2] = {
         g_sbus_channels[0] - 1500.0f,
