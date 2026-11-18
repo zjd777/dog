@@ -115,7 +115,10 @@ void USART_init(UART_HandleTypeDef *huart,USART_Callback back){
  */
 uint8_t UART_Transmit_Data(UART_HandleTypeDef *huart, uint8_t *Data,uint8_t len)
 {
-    __attribute__((section (".AXI_SRAM")))  static uint8_t Usart_send_Data[RS485_Send_Data_N];
+    // 两路DMA可同时读取，发送数据不能共用同一个缓冲区。
+    __attribute__((section (".AXI_SRAM"))) static uint8_t Usart2_send_Data[RS485_Send_Data_N];
+    __attribute__((section (".AXI_SRAM"))) static uint8_t Usart3_send_Data[RS485_Send_Data_N];
+    uint8_t *Usart_send_Data = huart == &huart2 ? Usart2_send_Data : Usart3_send_Data;
     for(uint8_t i=0;i<len;++i)Usart_send_Data[i] = Data[i];
 
     return (HAL_UART_Transmit_DMA(huart, Usart_send_Data, len));

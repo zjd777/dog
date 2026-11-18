@@ -1,20 +1,11 @@
-/*
- * 工程文件说明（注释整理，不修改程序逻辑）
- * 文件：Corgi_for_ROBOCON/corgi/My/pos_ctrl.c
- * 作用：足端位置轨迹控制。
- * 用途：把轨迹生成、逆运动学与电机位置目标串接；原几何和方向参数不可直接用于新机构。
- * 主要符号（节选）：line_Pos、Cycloid_Pos、Bezier_Pos、Bezier_Stance_Pos、gait_posctrl、Walk_Away_Posctrl、Jump_s_pos。
- * 依赖：pos_ctrl.h、jump.h。
- * 注意：仅统一编码并补注释，不修复原算法、通信、超时或安全联锁问题；移植前按当前硬件检查依赖。
- * 编码：UTF-8；原作者、版权声明和自动生成标记保留。
- */
+//位控代码，主要使用力控
 /*
  * 文件：pos_ctrl.c
  * 用途：足端位置控制。
  * 说明：使用直线、摆线和贝塞尔轨迹生成足端目标，经逆运动学换算为电机位置，支持站蹲、步态、保持和跳跃。
  */
 #include "pos_ctrl.h"
-// #include "jump.h"
+// #include "jump.h"  在未实现
 
 /**
  * @brief 足端走一条直线,位控

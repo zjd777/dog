@@ -36,12 +36,10 @@ void Task1ms_Callback(){
  * @return void
  */
 void Task500us_Callback (){
-
 }
 
 
 void Task25ns_Callback (){
-
 }
 
 /**
@@ -65,8 +63,7 @@ uint8_t control_task_init(void){
  */
 void control_task (){
 	SBUS_Handle();
-    // 台架测试独占电机目标，离线归零也由测试函数处理。
-    motor_control_text();
+    single_leg_test();
     // GamePad_Control_Obs();
 }
 

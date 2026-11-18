@@ -39,7 +39,7 @@ typedef struct
  * K_p约0~1025.72 N·m/rad，K_w约0~1025.72 N·m/(rad/s)。
  * 厂家最大输出力矩23.7 N·m、最高转速30 rad/s（24V），非持续同时工作点。
  * 当前遥控测试：W限±0.5 rad/s，ID0/1的T限±0.9/±0.8 N·m，内置增益均为0。
- * 装腿后关节角约束：髋[-60,+60]°，相对膝[-150,+30]°；须经标定转换到P。
+ * 装腿后关节角约束：髋[-90,+110]°，相对膝[-150,+30]°；须经标定转换到P。
  * 上述协议范围、关节角约束是说明，本结构体及发送层不自动实施限幅。
  */
 typedef struct
@@ -57,6 +57,32 @@ typedef struct
 
 extern Motor_Control motor[MOTOR_COUNT];
 
+//测试结构体，可以删除
+
+typedef enum
+{
+    Single_Leg_Return = 0,
+    Single_Leg_Hold,
+    Single_Leg_Prepare,
+    Single_Leg_Stance,
+    Single_Leg_Swing,
+} Single_Leg_Stage;
+
+extern Single_Leg_Stage single_leg_stage;
+
+typedef struct
+{
+    uint32_t update_count;
+    uint32_t stage_elapsed_ms;
+    uint32_t settled_ms;
+    float boot_pos[2];
+    float reference_pos[2];
+    float return_error_deg[2];
+} Single_Leg_Debug;
+
+extern Single_Leg_Debug single_leg_debug;
+//
+
 struct Pos_motor;
 /* 仅设置全部逻辑槽的增益，不发送、不使能、不叠加 Tfb。 */
 void Set_All_Motor_Param(const struct Pos_motor *param);
@@ -67,6 +93,7 @@ void motor_task();
 //两个测试函数
 void motor_test(void);
 void motor_control_text();
+void single_leg_test(void);
 #ifdef __cplusplus
 };
 

@@ -168,6 +168,10 @@ typedef struct
 
 } LEG;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern Euler Euler_Angle;
 extern LEG leg[4];
 extern float data2send[10];
@@ -204,5 +208,9 @@ void ano_tc(void);
 void Coordinate_Transform(Point *Input, Point *Output, float Pitch, LEG *leg, uint8_t legid);
 void Change_Dog_Pitch_State(Pitch_Ctrl_State state);
 void Change_Single_Pitch_State(Pitch_Ctrl_State state, uint8_t legid);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

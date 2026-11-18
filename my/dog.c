@@ -269,8 +269,8 @@ static bool Kinematic_Inversion_Update(Param *param, foot *Foot, Kine *Joint)
 {
     const float L1 = param->rod[0];
     const float L2 = param->rod[1];
-    const float hip_min = -PI / 3.0f;
-    const float hip_max = PI / 3.0f;
+    const float hip_min = -90.0f * CHANGE_TO_RADIAN;
+    const float hip_max = 110.0f * CHANGE_TO_RADIAN;
     const float knee_min = -5.0f * PI / 6.0f;
     const float knee_max = PI / 6.0f;
     const float roundoff = 8.0f * FLT_EPSILON;
@@ -498,14 +498,14 @@ void Leg_Initpos_Reset(void)
         leg[0].const_param.start_motor_Alpha = motor[0].measure.Pos;
         leg[0].const_param.start_motor_Beta = motor[1].measure.Pos;
 
-        leg[1].const_param.start_motor_Alpha = motor[3].measure.Pos;
-        leg[1].const_param.start_motor_Beta = motor[2].measure.Pos;
+        leg[1].const_param.start_motor_Alpha = motor[2].measure.Pos;
+        leg[1].const_param.start_motor_Beta = motor[3].measure.Pos;
 
-        leg[2].const_param.start_motor_Alpha = motor[5].measure.Pos;
-        leg[2].const_param.start_motor_Beta = motor[4].measure.Pos;
+        leg[2].const_param.start_motor_Alpha = motor[4].measure.Pos;
+        leg[2].const_param.start_motor_Beta = motor[5].measure.Pos;
 
-        leg[3].const_param.start_motor_Alpha = motor[7].measure.Pos;
-        leg[3].const_param.start_motor_Beta = motor[6].measure.Pos;
+        leg[3].const_param.start_motor_Alpha = motor[6].measure.Pos;
+        leg[3].const_param.start_motor_Beta = motor[7].measure.Pos;
     }
 }
 
@@ -514,50 +514,51 @@ void Leg_Initpos_Reset(void)
 void leg_init() // 更换电机只需改此部分
 {
     uint8_t id = 0;
-    // 腿0：软件测试参考姿态，非实物标定；逻辑槽1/0分别表示髋/膝。
+    // 腿0：手动参考姿态约为髋+60°、相对膝-120°，ID0/1分别为髋/膝。
+    //只是告了，对应关系
     id = 0;
     leg[id].const_param.motor_Alpha_id = 0;
     leg[id].const_param.motor_Alpha_dir = 1;   //方向
-    leg[id].const_param.start_Alpha = 30.0f * CHANGE_TO_RADIAN;
-    leg[id].const_param.start_motor_Alpha = 0.0f;   // 此姿态下ID0的反馈位置  后面标定玩在给
+    leg[id].const_param.start_Alpha = 60.0f * CHANGE_TO_RADIAN;
+    leg[id].const_param.start_motor_Alpha = 0.0717615187f;   // 此姿态下ID0的反馈位置
 
     leg[id].const_param.motor_Beta_id = 1;
     leg[id].const_param.motor_Beta_dir = 1;
-    leg[id].const_param.start_Beta = -60.0f * CHANGE_TO_RADIAN;
-    leg[id].const_param.start_motor_Beta = 0.0f;
+    leg[id].const_param.start_Beta = -120.0f * CHANGE_TO_RADIAN;
+    leg[id].const_param.start_motor_Beta = 0.38349548f;
 
     // 腿1。后面的参数还没有改
     id = 1;
-    leg[id].const_param.motor_Alpha_id = 1;
+    leg[id].const_param.motor_Alpha_id = 0;
     leg[id].const_param.motor_Alpha_dir = 1;
     leg[id].const_param.start_Alpha = -116.41f * REG_TO_RADIN;
     leg[id].const_param.start_motor_Alpha = 0.1255;
 
-    leg[id].const_param.motor_Beta_id = 0;
+    leg[id].const_param.motor_Beta_id = 1;
     leg[id].const_param.motor_Beta_dir = -1;
     leg[id].const_param.start_Beta = -203.01f * REG_TO_RADIN;
     leg[id].const_param.start_motor_Beta = 0.1488;
 
     // 腿2
     id = 2;
-    leg[id].const_param.motor_Alpha_id = 1;
+    leg[id].const_param.motor_Alpha_id = 0;
     leg[id].const_param.motor_Alpha_dir = 1;
     leg[id].const_param.start_Alpha = 23.01f * REG_TO_RADIN;
     leg[id].const_param.start_motor_Alpha = 0.5963;
 
-    leg[id].const_param.motor_Beta_id = 0;
+    leg[id].const_param.motor_Beta_id = 1;
     leg[id].const_param.motor_Beta_dir = -1;
     leg[id].const_param.start_Beta = -63.59f * REG_TO_RADIN;
     leg[id].const_param.start_motor_Beta = 0.0851;
 
     // 腿3
     id = 3;
-    leg[id].const_param.motor_Alpha_id = 1;
+    leg[id].const_param.motor_Alpha_id = 0;
     leg[id].const_param.motor_Alpha_dir = 1;
     leg[id].const_param.start_Alpha = 23.01f * REG_TO_RADIN;
     leg[id].const_param.start_motor_Alpha = 0.2546;
 
-    leg[id].const_param.motor_Beta_id = 0;
+    leg[id].const_param.motor_Beta_id = 1;
     leg[id].const_param.motor_Beta_dir = -1;
     leg[id].const_param.start_Beta = -63.59f * REG_TO_RADIN;
     leg[id].const_param.start_motor_Beta = 0.0902;
@@ -620,10 +621,10 @@ void Get_Now_Pos_Spd(uint8_t legid)
             break;
 
         case 1:
-            leg[1].Motor.Pos.Alpha = motor[3].measure.Pos;
-            leg[1].Motor.Pos.Beta = motor[2].measure.Pos;
-            leg[1].Motor.Spd.Alpha = motor[3].measure.W;
-            leg[1].Motor.Spd.Beta = motor[2].measure.W;
+            leg[1].Motor.Pos.Alpha = motor[2].measure.Pos;
+            leg[1].Motor.Pos.Beta = motor[3].measure.Pos;
+            leg[1].Motor.Spd.Alpha = motor[2].measure.W;
+            leg[1].Motor.Spd.Beta = motor[3].measure.W;
 
             // 电机坐标系转化到足端,更新足端位置
             Motor_Convert_To_Joint(&leg[1].const_param, &leg[1].Joint, &leg[1].Motor);
@@ -635,10 +636,10 @@ void Get_Now_Pos_Spd(uint8_t legid)
             break;
 
         case 2:
-            leg[2].Motor.Pos.Alpha = motor[5].measure.Pos;
-            leg[2].Motor.Pos.Beta = motor[4].measure.Pos;
-            leg[2].Motor.Spd.Alpha = motor[5].measure.W;
-            leg[2].Motor.Spd.Beta = motor[4].measure.W;
+            leg[2].Motor.Pos.Alpha = motor[4].measure.Pos;
+            leg[2].Motor.Pos.Beta = motor[5].measure.Pos;
+            leg[2].Motor.Spd.Alpha = motor[4].measure.W;
+            leg[2].Motor.Spd.Beta = motor[5].measure.W;
 
             // 电机坐标系转化到足端,更新足端位置
             Motor_Convert_To_Joint(&leg[2].const_param, &leg[2].Joint, &leg[2].Motor);
@@ -650,10 +651,10 @@ void Get_Now_Pos_Spd(uint8_t legid)
             break;
 
         case 3:
-            leg[3].Motor.Pos.Alpha = motor[7].measure.Pos;
-            leg[3].Motor.Pos.Beta = motor[6].measure.Pos;
-            leg[3].Motor.Spd.Alpha = motor[7].measure.W;
-            leg[3].Motor.Spd.Beta = motor[6].measure.W;
+            leg[3].Motor.Pos.Alpha = motor[6].measure.Pos;
+            leg[3].Motor.Pos.Beta = motor[7].measure.Pos;
+            leg[3].Motor.Spd.Alpha = motor[6].measure.W;
+            leg[3].Motor.Spd.Beta = motor[7].measure.W;
 
             // 电机坐标系转化到足端,更新足端位置
             Motor_Convert_To_Joint(&leg[3].const_param, &leg[3].Joint, &leg[3].Motor);

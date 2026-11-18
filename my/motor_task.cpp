@@ -1,7 +1,7 @@
 /*
  * 文件：DM02_control-main/dm02_motor/User_File/task/motor_task.cpp
  * 作用：宇树电机任务，保留原有 RS485 接收、初始化及周期发送。
- * 用途：USART2 接收 ID 0 的宇树反馈；motor_task_init 初始化，motor_task 周期发送。
+ * 用途：USART2 对应 ID0~3，USART3 对应 ID4~7；初始化并周期发送已接入电机。
  * 依赖：motor_task.h、motor_YS.h、crc_ccitt.h、tim.h。
  * 接口：motor[] 统一保存上层目标和反馈，在本任务边界换算力矩与增益。
  * 编码：UTF-8。
@@ -12,6 +12,7 @@
 #include "crc_ccitt.h"
 #include "tim.h"
 #include "bsp_sbus.h"
+#include <math.h>
 
 extern UART_HandleTypeDef huart2;
 extern UART_HandleTypeDef huart3;
@@ -21,6 +22,9 @@ Class_Motor_YS motor_YS[8];
 Motor_Control motor[MOTOR_COUNT] = {};
 // motor_control_text使用的测试槽：0为髋电机，1为膝电机。
 static constexpr float motor_ys_gear_ratio = 6.33f;
+// 这里只列实际接入的ID；扩展电机时，初始化与轮发共用这份列表。
+static constexpr uint8_t active_motor_ids[] = {0U, 1U};
+static constexpr uint8_t active_motor_count = sizeof(active_motor_ids) / sizeof(active_motor_ids[0]);
 
 void motor_YS_Data_send(Class_Motor_YS *__motor_YS, const Motor_Control *data);
 void motor_YS_Data_recv(Class_Motor_YS *__motor_YS, Motor_Control *data);
@@ -67,6 +71,27 @@ void USART2_RxHandler(UART_HandleTypeDef *Header, uint8_t *Buffer){
         motor_YS[3].UART_recv(Buffer);
 	    motor_YS_Data_recv(&motor_YS[3], &motor[3]);
     break;       
+    default:
+        break;
+    }
+}
+
+/**
+ * @brief 串口3的回调函数
+ * @param Header 串口指针
+ * @param *Buffer 串口收数据数组
+ * @return void
+ */
+void USART3_RxHandler(UART_HandleTypeDef *Header, uint8_t *Buffer){
+    if (Buffer[0] != 0xFD || Buffer[1] != 0xEE)
+        return;
+    uint16_t crc = crc_ccitt(Buffer,RS485_recv_Data_N-2);
+    if((Buffer[14] != (crc&0xFF)) || (Buffer[15] != ((crc>>8) & 0xFF))){
+        return;
+    }
+    uint8_t User_Rx_usart_id = Buffer[2]&0xF;
+    switch (User_Rx_usart_id )
+    {
     case  4:
         motor_YS[4].UART_recv(Buffer);
 	    motor_YS_Data_recv(&motor_YS[4], &motor[4]);
@@ -86,16 +111,6 @@ void USART2_RxHandler(UART_HandleTypeDef *Header, uint8_t *Buffer){
     default:
         break;
     }
-}
-
-/**
- * @brief 串口3的回调函数
- * @param Header 串口指针
- * @param *Buffer 串口收数据数组
- * @return void
- */
-void USART3_RxHandler(UART_HandleTypeDef *Header, uint8_t *Buffer){
- 
 }
 
 /**
@@ -196,10 +211,13 @@ void motor_YS_Data_send(Class_Motor_YS *__motor_YS, const Motor_Control *data){
 uint8_t motor_task_init(void)
 {
     USART_RX485_init(&huart2, USART2_RxHandler);
+    USART_RX485_init(&huart3, USART3_RxHandler);
 
-    for (uint8_t id = 0U; id < 2U; ++id)
+    for (uint8_t index = 0U; index < active_motor_count; ++index)
     {
-        if (!motor_YS_Init(&huart2, &motor_YS[id], id, &motor[id]))
+        const uint8_t id = active_motor_ids[index];
+        UART_HandleTypeDef *uart = id < 4U ? &huart2 : &huart3;
+        if (!motor_YS_Init(uart, &motor_YS[id], id, &motor[id]))
             return 0U;
     }
 
@@ -207,20 +225,21 @@ uint8_t motor_task_init(void)
 }
 
 /**
- * @brief 电机任务
+ * @brief 电机任务，控制函数
  * @return void
  */
  //在这里面把数据处理好之后发给电机,再中断里被调用
 void motor_task(){
     static uint8_t index = 0U;
-    if (index == 2U)
+    if (index == active_motor_count)
         index = 0U;
 
-    motor_YS_Data_send(&motor_YS[index], &motor[index]);
-    motor_YS[index].UART_send();
+    const uint8_t id = active_motor_ids[index];
+    motor_YS_Data_send(&motor_YS[id], &motor[id]);
+    motor_YS[id].UART_send();
     index++;
 }
-
+//电机转动测试
 void motor_test(void)
 {
     extern bool control_system_init_bl;
@@ -280,7 +299,184 @@ void motor_test(void)
     }
 }
 
+//测试代码，可以删除
+Single_Leg_Stage single_leg_stage = Single_Leg_Return;
+Single_Leg_Debug single_leg_debug = {};
 
+void single_leg_test(void)
+{
+    const float torque_limit[2] = {1.5f, 2.5f};//轴 N·m，沿用当前遥控测试限幅。
+    const float return_kp = 20.0f; // 输出轴 N·m/rad
+    const float return_kd = 0.4f;  // 输出轴 N·m/(rad/s)
+    const float return_max_speed = 0.3f; // 输出轴 rad/s
+    const float foot_kp = 150.0f;       // N/m
+    const float foot_kd = 5.0f;         // N·s/m
+    const float step_length = 0.080f;
+    const float step_height = 0.020f;
+    const float prepare_seconds = 2.0f;
+    const float stance_seconds = 2.0f;
+    const float swing_seconds = 2.0f;
+
+    static bool initialized = false;
+    static uint32_t last_update_tick = 0U;
+    static uint32_t stage_start_tick = 0U;
+    static uint32_t settled_ms = 0U;
+    static float return_seconds;
+    static Kine boot_motor;
+    static foot reference_foot;
+    static Point prepare_start;
+
+    const uint32_t now = HAL_GetTick();
+    const uint32_t update_ms = now - last_update_tick;
+    if (update_ms < 2U)
+        return;
+    last_update_tick = now;
+
+    LEG *test_leg = &leg[0];
+    Param *param = &test_leg->const_param;
+    if (!initialized)
+    {
+        // 每次上电或复位前，必须人工对齐髋+60°、相对膝-120°的机械标记。
+        param->start_motor_Alpha = motor[0].measure.Pos;
+        param->start_motor_Beta = motor[1].measure.Pos;
+    }
+    Get_Now_Pos_Spd(0);
+
+    if (!initialized)
+    {
+        boot_motor = test_leg->Motor;
+        single_leg_debug.boot_pos[0] = boot_motor.Pos.Alpha;
+        single_leg_debug.boot_pos[1] = boot_motor.Pos.Beta;
+        single_leg_debug.reference_pos[0] = param->start_motor_Alpha;
+        single_leg_debug.reference_pos[1] = param->start_motor_Beta;
+        Kine reference_joint = {};
+        reference_joint.Pos.Alpha = param->start_Alpha;
+        reference_joint.Pos.Beta = param->start_Beta;
+        Kinematic_Solution(param, &reference_foot, &reference_joint);
+        const float distance = fmaxf(
+            fabsf(param->start_motor_Alpha - boot_motor.Pos.Alpha),
+            fabsf(param->start_motor_Beta - boot_motor.Pos.Beta));
+        // 三次平滑插值的峰值速度是平均速度的1.5倍。
+        return_seconds = fmaxf(4.0f, 1.5f * distance / return_max_speed);
+        for (uint8_t id = 0U; id < 2U; ++id)
+        {
+            motor[id].K_p = 0.0f;
+            motor[id].K_w = 0.0f;
+            motor[id].command_mode = 1U;
+        }
+        single_leg_stage = Single_Leg_Hold;
+        stage_start_tick = now;
+        initialized = true;
+    }
+
+    single_leg_debug.update_count++;
+    single_leg_debug.stage_elapsed_ms = now - stage_start_tick;
+    single_leg_debug.return_error_deg[0] =
+        (param->start_motor_Alpha - test_leg->Motor.Pos.Alpha) / CHANGE_TO_RADIAN;
+    single_leg_debug.return_error_deg[1] =
+        (param->start_motor_Beta - test_leg->Motor.Pos.Beta) / CHANGE_TO_RADIAN;
+    const float elapsed = single_leg_debug.stage_elapsed_ms * 0.001f;
+    if (single_leg_stage == Single_Leg_Return || single_leg_stage == Single_Leg_Hold)
+    {
+        const float u = single_leg_stage == Single_Leg_Return ?
+                        fminf(elapsed / return_seconds, 1.0f) : 1.0f;
+        const float blend = u * u * (3.0f - 2.0f * u);
+        const float blend_speed = 6.0f * u * (1.0f - u) / return_seconds;
+        Kine *target = &test_leg->Pctrl.Motor_Target;
+        const float hip_distance = param->start_motor_Alpha - boot_motor.Pos.Alpha;
+        const float knee_distance = param->start_motor_Beta - boot_motor.Pos.Beta;
+        target->Pos.Alpha = boot_motor.Pos.Alpha + blend * hip_distance;
+        target->Pos.Beta = boot_motor.Pos.Beta + blend * knee_distance;
+        target->Spd.Alpha = blend_speed * hip_distance;
+        target->Spd.Beta = blend_speed * knee_distance;
+        test_leg->Motor_Torque.Alpha =
+            return_kp * (target->Pos.Alpha - test_leg->Motor.Pos.Alpha) +
+            return_kd * (target->Spd.Alpha - test_leg->Motor.Spd.Alpha);
+        test_leg->Motor_Torque.Beta =
+            return_kp * (target->Pos.Beta - test_leg->Motor.Pos.Beta) +
+            return_kd * (target->Spd.Beta - test_leg->Motor.Spd.Beta);
+        Motor_Convert_To_Joint(param, &test_leg->Pctrl.Joint_Target, target);
+        Kinematic_Solution(param, &test_leg->Foot_Target, &test_leg->Pctrl.Joint_Target);
+
+        if (single_leg_stage == Single_Leg_Return)
+        {
+            const bool arrived = elapsed >= return_seconds &&
+                fabsf(param->start_motor_Alpha - test_leg->Motor.Pos.Alpha) < 2.0f * CHANGE_TO_RADIAN &&
+                fabsf(param->start_motor_Beta - test_leg->Motor.Pos.Beta) < 2.0f * CHANGE_TO_RADIAN &&
+                fabsf(test_leg->Motor.Spd.Alpha) < 0.1f &&
+                fabsf(test_leg->Motor.Spd.Beta) < 0.1f;
+            settled_ms = arrived ? settled_ms + update_ms : 0U;
+            single_leg_debug.settled_ms = settled_ms;
+            if (settled_ms >= 500U)
+            {
+                single_leg_stage = Single_Leg_Hold;
+                stage_start_tick = now;
+            }
+        }
+        else if (elapsed >= 1.0f)
+        {
+            prepare_start = test_leg->Foot.p;
+            single_leg_stage = Single_Leg_Prepare;
+            stage_start_tick = now;
+        }
+    }
+    else
+    {
+        const float front_x = reference_foot.p.x + step_length * 0.5f;
+        const float rear_x = reference_foot.p.x - step_length * 0.5f;
+        const float stance_z = reference_foot.p.z;
+        const float duration = single_leg_stage == Single_Leg_Prepare ? prepare_seconds :
+                               single_leg_stage == Single_Leg_Stance ? stance_seconds : swing_seconds;
+        const float u = fminf(elapsed / duration, 1.0f);
+        const float blend = u * u * (3.0f - 2.0f * u);
+        const float blend_speed = 6.0f * u * (1.0f - u) / duration;
+        foot *target = &test_leg->Foot_Target;
+        target->p.y = 0.0f;
+        target->v.y = 0.0f;
+        if (single_leg_stage == Single_Leg_Prepare)
+        {
+            target->p.x = prepare_start.x + blend * (front_x - prepare_start.x);
+            target->p.z = prepare_start.z + blend * (stance_z - prepare_start.z);
+            target->v.x = blend_speed * (front_x - prepare_start.x);
+            target->v.z = blend_speed * (stance_z - prepare_start.z);
+        }
+        else if (single_leg_stage == Single_Leg_Stance)
+        {
+            target->p.x = front_x - blend * step_length;
+            target->p.z = stance_z;
+            target->v.x = -blend_speed * step_length;
+            target->v.z = 0.0f;
+        }
+        else
+        {
+            const float lift = sinf(PI * u);
+            target->p.x = rear_x + blend * step_length;
+            target->p.z = stance_z + step_height * lift * lift;
+            target->v.x = blend_speed * step_length;
+            target->v.z = step_height * PI / duration * sinf(2.0f * PI * u);
+        }
+
+        // 使用足端速度反馈作阻尼，单位不依赖调用周期。
+        test_leg->VMC_Output_Force.x = foot_kp * (target->p.x - test_leg->Foot.p.x) +
+                                       foot_kd * (target->v.x - test_leg->Foot.v.x);
+        test_leg->VMC_Output_Force.y = 0.0f;
+        test_leg->VMC_Output_Force.z = foot_kp * (target->p.z - test_leg->Foot.p.z) +
+                                       foot_kd * (target->v.z - test_leg->Foot.v.z);
+        VMC_Jacobi_Matrix(test_leg, param, &test_leg->VMC_Output_Force, &test_leg->Motor_Torque);
+
+        if (elapsed >= duration)
+        {
+            single_leg_stage = single_leg_stage == Single_Leg_Stance ?
+                               Single_Leg_Swing : Single_Leg_Stance;
+            stage_start_tick = now;
+        }
+    }
+
+    test_leg->Motor_Torque.Alpha = fmaxf(-torque_limit[0], fminf(torque_limit[0], test_leg->Motor_Torque.Alpha));
+    test_leg->Motor_Torque.Beta = fmaxf(-torque_limit[1], fminf(torque_limit[1], test_leg->Motor_Torque.Beta));
+    Set_Motor_Target_Torque(test_leg);
+}
+//遥控的测试
 void motor_control_text()
 {
     static uint32_t last_update_tick = 0U;
